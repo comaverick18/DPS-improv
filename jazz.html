@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAZZ - AI Practice Partner | improvU</title>
+    <meta name="description" content="Practice conversations with your AI coach in a safe, judgment-free environment. Master improvisational skills through real-time feedback.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                        <!-- Speech Bubble -->
+                        <path d="M18 4H6C4.9 4 4 4.9 4 6V14C4 15.1 4.9 16 6 16H8L12 20L16 16H18C19.1 16 20 15.1 20 14V6C20 4.9 19.1 4 18 4Z" fill="#4169E1"/>
+                        <!-- Growth Arrow -->
+                        <path d="M9 10L12 7L15 10" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 7V13" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Conversation Dots -->
+                        <circle cx="9" cy="9" r="1" fill="#FFFFFF"/>
+                        <circle cx="12" cy="9" r="1" fill="#FFFFFF"/>
+                        <circle cx="15" cy="9" r="1" fill="#FFFFFF"/>
+                    </svg>
+                    <a href="index.html" class="logo-text">improvU</a>
+                </div>
+                <div class="nav-links">
+                    <a href="jazz.html" class="nav-link active">Jazz</a>
+                    <a href="convoquest.html" class="nav-link">ConvoQuest</a>
+                    <a href="improvcircle.html" class="nav-link">ImprovCircle</a>
+                    <button class="nav-login-btn">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- JAZZ Main Content -->
+    <section class="jazz-main">
+        <div class="container">
+            <div class="jazz-layout">
+                <!-- Left Sidebar -->
+                <div class="jazz-sidebar">
+                    <div class="jazz-header">
+                        <h1 class="jazz-title">Jazz AI Chat</h1>
+                        <button class="new-session-btn">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            New Session
+                        </button>
+                    </div>
+
+                    <div class="session-list">
+                        <div class="session-item active">
+                            <h3>Planning a Trip</h3>
+                            <p>Current session</p>
+                        </div>
+                        <div class="session-item">
+                            <h3>Job Interview Practice</h3>
+                            <p>Yesterday</p>
+                        </div>
+                        <div class="session-item">
+                            <h3>Coffee Shop Conversation</h3>
+                            <p>2 days ago</p>
+                        </div>
+                        <div class="session-item">
+                            <h3>First Date Scenarios</h3>
+                            <p>1 week ago</p>
+                        </div>
+                        <div class="session-item">
+                            <h3>Networking Event Chat</h3>
+                            <p>2 weeks ago</p>
+                        </div>
+                    </div>
+
+                    <div class="user-profile">
+                        <div class="user-avatar">U</div>
+                        <div class="user-info">
+                            <h4>User Name</h4>
+                            <p>Level 7</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Chat Area -->
+                <div class="jazz-chat">
+                    <div class="scenario-header">
+                        <span class="scenario-badge">Scenario: Planning a trip</span>
+                    </div>
+
+                    <div class="chat-messages">
+                        <div class="message ai-message">
+                            <div class="message-content">
+                                Hey! Ready to practice? Let's plan a trip together. Where would you like to go?
+                            </div>
+                        </div>
+
+                        <div class="message user-message">
+                            <div class="message-content">
+                                Maybe somewhere warm? I'm not sure yet.
+                            </div>
+                        </div>
+
+                        <div class="message ai-message">
+                            <div class="message-content">
+                                Great! Yes, and we could explore some beach destinations. Have you thought about the Caribbean or Southeast Asia?
+                            </div>
+                        </div>
+
+                        <div class="message user-message typing">
+                            <div class="message-content">
+                                <div class="typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="voice-input">
+                        <button class="voice-btn" id="voiceBtn">
+                            <svg class="mic-icon" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2C10.34 2 9 3.34 9 5V12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12V5C15 3.34 13.66 2 12 2Z" fill="currentColor"/>
+                                <path d="M19 10V12C19 16.42 15.42 20 11 20H13C17.42 20 21 16.42 21 12V10H19Z" fill="currentColor"/>
+                                <path d="M7 19H17M12 23V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <p class="voice-prompt">Tap to speak your response</p>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar - Feedback -->
+                <div class="jazz-feedback">
+                    <h3>Conversation Feedback</h3>
+                    
+                    <div class="feedback-metric">
+                        <div class="metric-header">
+                            <span>Confidence</span>
+                            <span class="metric-value">75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%"></div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-metric">
+                        <div class="metric-header">
+                            <span>Flow</span>
+                            <span class="metric-value">82%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 82%"></div>
+                        </div>
+                    </div>
+
+                    <div class="session-settings">
+                        <h4>Session Settings</h4>
+                        <div class="setting-item">
+                            <span>Voice</span>
+                            <span class="setting-value">Female</span>
+                        </div>
+                        <div class="setting-item">
+                            <span>Difficulty</span>
+                            <span class="setting-value">Medium</span>
+                        </div>
+                        <div class="setting-item">
+                            <span>Duration</span>
+                            <span class="setting-value">15 min</span>
+                        </div>
+                    </div>
+
+                    <button class="end-session-btn">End Session & Get Feedback</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        // Voice input functionality
+        let isRecording = false;
+        const voiceBtn = document.getElementById('voiceBtn');
+        const typingMessage = document.querySelector('.message.typing');
+
+        voiceBtn.addEventListener('click', function() {
+            if (!isRecording) {
+                startRecording();
+            } else {
+                stopRecording();
+            }
+        });
+
+        function startRecording() {
+            isRecording = true;
+            voiceBtn.classList.add('recording');
+            voiceBtn.innerHTML = `
+                <svg class="stop-icon" viewBox="0 0 24 24" fill="none">
+                    <rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/>
+                </svg>
+            `;
+            
+            // Show typing indicator
+            typingMessage.style.display = 'block';
+            
+            // Simulate speech recognition (in real app, use Web Speech API)
+            setTimeout(() => {
+                stopRecording();
+                addUserMessage("That sounds amazing! Yes, and I'd love to learn about local cultures too. What activities would you recommend?");
+                setTimeout(() => {
+                    addAIResponse();
+                }, 1000);
+            }, 3000);
+        }
+
+        function stopRecording() {
+            isRecording = false;
+            voiceBtn.classList.remove('recording');
+            voiceBtn.innerHTML = `
+                <svg class="mic-icon" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2C10.34 2 9 3.34 9 5V12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12V5C15 3.34 13.66 2 12 2Z" fill="currentColor"/>
+                    <path d="M19 10V12C19 16.42 15.42 20 11 20H13C17.42 20 21 16.42 21 12V10H19Z" fill="currentColor"/>
+                    <path d="M7 19H17M12 23V19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            `;
+            
+            // Hide typing indicator
+            typingMessage.style.display = 'none';
+        }
+
+        function addUserMessage(text) {
+            const chatMessages = document.querySelector('.chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            messageDiv.innerHTML = `<div class="message-content">${text}</div>`;
+            
+            // Remove typing indicator
+            const typingMsg = chatMessages.querySelector('.message.typing');
+            if (typingMsg) {
+                chatMessages.removeChild(typingMsg);
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addAIResponse() {
+            const chatMessages = document.querySelector('.chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai-message';
+            messageDiv.innerHTML = `<div class="message-content">Excellent! Yes, and we could look into cooking classes, local markets, and maybe some historical tours. What type of cultural experiences interest you most?</div>`;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Update confidence score
+            updateConfidenceScore();
+        }
+
+        function updateConfidenceScore() {
+            const confidenceValue = document.querySelector('.feedback-metric .metric-value');
+            const progressFill = document.querySelector('.feedback-metric .progress-fill');
+            
+            const newScore = Math.min(85, parseInt(confidenceValue.textContent) + 5);
+            confidenceValue.textContent = newScore + '%';
+            progressFill.style.width = newScore + '%';
+        }
+    </script>
+</body>
+</html>

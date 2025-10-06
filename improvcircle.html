@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImprovCircle - Community Practice | improvU</title>
+    <meta name="description" content="Connect, practice, and grow with the community. Join live group sessions and practice improv skills with expert guidance.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                        <!-- Speech Bubble -->
+                        <path d="M18 4H6C4.9 4 4 4.9 4 6V14C4 15.1 4.9 16 6 16H8L12 20L16 16H18C19.1 16 20 15.1 20 14V6C20 4.9 19.1 4 18 4Z" fill="#4169E1"/>
+                        <!-- Growth Arrow -->
+                        <path d="M9 10L12 7L15 10" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Conversation Dots -->
+                        <circle cx="9" cy="9" r="1" fill="#FFFFFF"/>
+                        <circle cx="12" cy="9" r="1" fill="#FFFFFF"/>
+                        <circle cx="15" cy="9" r="1" fill="#FFFFFF"/>
+                    </svg>
+                    <a href="index.html" class="logo-text">improvU</a>
+                </div>
+                <div class="nav-links">
+                    <a href="jazz.html" class="nav-link">Jazz</a>
+                    <a href="convoquest.html" class="nav-link">ConvoQuest</a>
+                    <a href="improvcircle.html" class="nav-link active">ImprovCircle</a>
+                    <button class="nav-login-btn">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ImprovCircle Main Content -->
+    <section class="improvcircle-main">
+        <div class="container">
+            <div class="improvcircle-header">
+                <h1 class="page-title">ImprovCircle</h1>
+                <p class="page-subtitle">Connect, practice, and grow with the community.</p>
+            </div>
+
+            <div class="improvcircle-layout">
+                <!-- Left Column - Group Sessions -->
+                <div class="sessions-column">
+                    <div class="section-header">
+                        <h2>
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M17 21V19C17 16.79 15.21 15 13 15H5C2.79 15 1 16.79 1 19V21M23 21V19C23 16.79 21.21 15 19 15H18M13 7C13 9.21 11.21 11 9 11C6.79 11 5 9.21 5 7C5 4.79 6.79 3 9 3C11.21 3 13 4.79 13 7ZM19 7C19 9.21 17.21 11 15 11C14.47 11 13.96 10.89 13.5 10.69" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Active Group Sessions
+                        </h2>
+                        <button class="new-btn">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            New
+                        </button>
+                    </div>
+
+                    <div class="sessions-list">
+                        <!-- "Yes, And..." Beginners -->
+                        <div class="session-card">
+                            <div class="session-header">
+                                <h3>"Yes, And..." Starters</h3>
+                                <span class="level-badge beginner">Beginner</span>
+                            </div>
+                            <p class="session-description">Learn the fundamental principle of improv in a supportive environment.</p>
+                            <div class="session-stats">
+                                <span class="participants">3/8 joined</span>
+                                <span class="session-time">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    45 min
+                                </span>
+                            </div>
+                            <button class="join-btn">Join</button>
+                        </div>
+
+                        <!-- Story Weaving Intermediate -->
+                        <div class="session-card">
+                            <div class="session-header">
+                                <h3>Story Weaving</h3>
+                                <span class="level-badge intermediate">Intermediate</span>
+                            </div>
+                            <p class="session-description">Practice collaborative storytelling and narrative building skills.</p>
+                            <div class="session-stats">
+                                <span class="participants">5/10 joined</span>
+                                <span class="session-time">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    60 min
+                                </span>
+                            </div>
+                            <button class="join-btn">Join</button>
+                        </div>
+
+                        <!-- Job Interview Practice Advanced -->
+                        <div class="session-card">
+                            <div class="session-header">
+                                <h3>Job Interview Practice</h3>
+                                <span class="level-badge advanced">Advanced</span>
+                            </div>
+                            <p class="session-description">Master professional conversations and interview scenarios.</p>
+                            <div class="session-stats">
+                                <span class="participants">2/6 joined</span>
+                                <span class="session-time">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                    30 min
+                                </span>
+                            </div>
+                            <button class="join-btn">Join</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Find Partner & Community Feed -->
+                <div class="community-column">
+                    <!-- Find a Partner -->
+                    <div class="find-partner-section">
+                        <div class="section-header">
+                            <h2>Find a Partner</h2>
+                            <button class="refresh-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M1 4V10H7M23 20V14H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M20.49 9C19.9 5.5 16.8 3 13 3C8.03 3 4 7.03 4 12C4 13.1 4.2 14.17 4.57 15.14M3.51 15C4.1 18.5 7.2 21 11 21C15.97 21 20 16.97 20 12C20 10.9 19.8 9.83 19.43 8.86" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="partners-list">
+                            <div class="partner-card">
+                                <div class="partner-avatar">S</div>
+                                <div class="partner-info">
+                                    <h4>Sarah J.</h4>
+                                    <span class="partner-status online">Online</span>
+                                </div>
+                                <button class="invite-btn">Invite</button>
+                            </div>
+
+                            <div class="partner-card">
+                                <div class="partner-avatar">M</div>
+                                <div class="partner-info">
+                                    <h4>Mike T.</h4>
+                                    <span class="partner-status online">Online</span>
+                                </div>
+                                <button class="invite-btn">Invite</button>
+                            </div>
+
+                            <div class="partner-card">
+                                <div class="partner-avatar">A</div>
+                                <div class="partner-info">
+                                    <h4>Alex K.</h4>
+                                    <span class="partner-status offline">Offline</span>
+                                </div>
+                                <button class="invite-btn" disabled>Invite</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unlock Notice -->
+                    <div class="unlock-notice">
+                        <h3>🔒 Unlock ImprovCircle</h3>
+                        <p>Complete 5 successful quests to unlock group sessions and connect with the community!</p>
+                        <div class="unlock-progress">
+                            <div class="unlock-bar">
+                                <div class="unlock-fill" style="width: 20%"></div>
+                            </div>
+                            <span>1/5 quests completed</span>
+                        </div>
+                    </div>
+
+                    <!-- Community Feed -->
+                    <div class="community-feed-section">
+                        <div class="section-header">
+                            <h2>
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M22 12H18L15 21L9 3L6 12H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Community Feed
+                            </h2>
+                        </div>
+
+                        <div class="feed-list">
+                            <div class="feed-item">
+                                <div class="feed-avatar">M</div>
+                                <div class="feed-content">
+                                    <p><strong>Mike T.</strong> completed "Barista Banter"</p>
+                                    <span class="feed-time">2 hours ago</span>
+                                </div>
+                            </div>
+
+                            <div class="feed-item">
+                                <div class="feed-avatar">J</div>
+                                <div class="feed-content">
+                                    <p><strong>Jenna R.</strong> joined "Yes, And..."</p>
+                                    <span class="feed-time">4 hours ago</span>
+                                </div>
+                            </div>
+
+                            <div class="feed-item">
+                                <div class="feed-avatar">S</div>
+                                <div class="feed-content">
+                                    <p><strong>Sarah J.</strong> reached Level 10</p>
+                                    <span class="feed-time">1 day ago</span>
+                                </div>
+                            </div>
+
+                            <div class="feed-item">
+                                <div class="feed-avatar">A</div>
+                                <div class="feed-content">
+                                    <p><strong>Alex K.</strong> completed "Elevator Pitch Challenge"</p>
+                                    <span class="feed-time">2 days ago</span>
+                                </div>
+                            </div>
+
+                            <div class="feed-item">
+                                <div class="feed-avatar">L</div>
+                                <div class="feed-content">
+                                    <p><strong>Lisa M.</strong> started "Story Weaving" session</p>
+                                    <span class="feed-time">3 days ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        // Join session functionality
+        const joinBtns = document.querySelectorAll('.join-btn');
+        joinBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const sessionCard = this.closest('.session-card');
+                const sessionTitle = sessionCard.querySelector('h3').textContent;
+                
+                // Check if user has unlocked ImprovCircle
+                const questsCompleted = 1; // This would come from user data
+                if (questsCompleted < 5) {
+                    alert('Complete 5 quests to unlock ImprovCircle sessions!');
+                    return;
+                }
+                
+                // In a real app, this would join the session
+                alert(`Joining session: ${sessionTitle}\n\nYou'll receive a notification when the session starts.`);
+                
+                // Update participant count
+                const participantsSpan = sessionCard.querySelector('.participants');
+                const currentCount = parseInt(participantsSpan.textContent.split('/')[0]);
+                const maxCount = parseInt(participantsSpan.textContent.split('/')[1]);
+                
+                if (currentCount < maxCount) {
+                    participantsSpan.textContent = `${currentCount + 1}/${maxCount} joined`;
+                    this.textContent = 'Joined';
+                    this.disabled = true;
+                    this.classList.add('joined');
+                }
+            });
+        });
+
+        // Invite partner functionality
+        const inviteBtns = document.querySelectorAll('.invite-btn:not([disabled])');
+        inviteBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const partnerCard = this.closest('.partner-card');
+                const partnerName = partnerCard.querySelector('h4').textContent;
+                
+                // Check if user has unlocked ImprovCircle
+                const questsCompleted = 1; // This would come from user data
+                if (questsCompleted < 5) {
+                    alert('Complete 5 quests to unlock partner invitations!');
+                    return;
+                }
+                
+                // In a real app, this would send an invitation
+                alert(`Invitation sent to ${partnerName}!`);
+                this.textContent = 'Invited';
+                this.disabled = true;
+            });
+        });
+
+        // Refresh partners functionality
+        const refreshBtn = document.querySelector('.refresh-btn');
+        refreshBtn.addEventListener('click', function() {
+            // Rotate the refresh icon
+            this.style.transform = 'rotate(360deg)';
+            this.style.transition = 'transform 0.5s ease';
+            
+            setTimeout(() => {
+                this.style.transform = 'rotate(0deg)';
+            }, 500);
+            
+            // In a real app, this would fetch new partner suggestions
+            console.log('Refreshing partner suggestions...');
+        });
+
+        // New session functionality
+        const newBtn = document.querySelector('.new-btn');
+        newBtn.addEventListener('click', function() {
+            // Check if user has unlocked ImprovCircle
+            const questsCompleted = 1; // This would come from user data
+            if (questsCompleted < 5) {
+                alert('Complete 5 quests to unlock the ability to create sessions!');
+                return;
+            }
+            
+            // In a real app, this would open a create session modal
+            alert('Create new session feature coming soon!');
+        });
+
+        // Simulate real-time updates
+        function simulateRealTimeUpdates() {
+            const feedList = document.querySelector('.feed-list');
+            const activities = [
+                { name: 'Emma S.', action: 'completed "Coffee Shop Challenge"', avatar: 'E' },
+                { name: 'David L.', action: 'joined "Networking Basics"', avatar: 'D' },
+                { name: 'Rachel M.', action: 'reached Level 5', avatar: 'R' }
+            ];
+            
+            setInterval(() => {
+                const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+                const feedItem = document.createElement('div');
+                feedItem.className = 'feed-item';
+                feedItem.innerHTML = `
+                    <div class="feed-avatar">${randomActivity.avatar}</div>
+                    <div class="feed-content">
+                        <p><strong>${randomActivity.name}</strong> ${randomActivity.action}</p>
+                        <span class="feed-time">Just now</span>
+                    </div>
+                `;
+                
+                feedList.insertBefore(feedItem, feedList.firstChild);
+                
+                // Remove last item if more than 8 items
+                if (feedList.children.length > 8) {
+                    feedList.removeChild(feedList.lastChild);
+                }
+            }, 30000); // Add new activity every 30 seconds
+        }
+
+        // Start real-time updates simulation
+        simulateRealTimeUpdates();
+    </script>
+</body>
+</html>

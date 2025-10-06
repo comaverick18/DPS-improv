@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConvoQuest - Real-World Challenges | improvU</title>
+    <meta name="description" content="Level up your confidence with gamified daily missions. Complete real-world conversation challenges and track your progress.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                        <!-- Speech Bubble -->
+                        <path d="M18 4H6C4.9 4 4 4.9 4 6V14C4 15.1 4.9 16 6 16H8L12 20L16 16H18C19.1 16 20 15.1 20 14V6C20 4.9 19.1 4 18 4Z" fill="#4169E1"/>
+                        <!-- Growth Arrow -->
+                        <path d="M9 10L12 7L15 10" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 7V13" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Conversation Dots -->
+                        <circle cx="9" cy="9" r="1" fill="#FFFFFF"/>
+                        <circle cx="12" cy="9" r="1" fill="#FFFFFF"/>
+                        <circle cx="15" cy="9" r="1" fill="#FFFFFF"/>
+                    </svg>
+                    <a href="index.html" class="logo-text">improvU</a>
+                </div>
+                <div class="nav-links">
+                    <a href="jazz.html" class="nav-link">Jazz</a>
+                    <a href="convoquest.html" class="nav-link active">ConvoQuest</a>
+                    <a href="improvcircle.html" class="nav-link">ImprovCircle</a>
+                    <button class="nav-login-btn">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ConvoQuest Main Content -->
+    <section class="convoquest-main">
+        <div class="container">
+            <div class="convoquest-header">
+                <h1 class="page-title">Conversation Quests</h1>
+                <p class="page-subtitle">Real-world challenges to build your confidence</p>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="progress-section">
+                <div class="progress-card">
+                    <h3>Your Quest Progress</h3>
+                    <div class="progress-stats">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-large">
+                                <div class="progress-fill-large" style="width: 20%"></div>
+                            </div>
+                            <span class="progress-text">1/5 completed</span>
+                        </div>
+                    </div>
+                    <p class="progress-note">Complete 3 more quests to unlock new challenges!</p>
+                </div>
+            </div>
+
+            <!-- Difficulty Filter -->
+            <div class="difficulty-filter">
+                <span class="filter-label">Difficulty:</span>
+                <button class="difficulty-btn active" data-difficulty="all">All</button>
+                <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+                <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+            </div>
+
+            <!-- Quests Grid -->
+            <div class="quests-grid">
+                <!-- Coffee Shop Chat - Easy -->
+                <div class="quest-card" data-difficulty="easy">
+                    <div class="quest-header">
+                        <h3>Coffee Shop Chat</h3>
+                        <div class="quest-badges">
+                            <span class="difficulty-badge easy">Easy</span>
+                            <span class="points-badge">50 XP</span>
+                        </div>
+                    </div>
+                    <p class="quest-description">Ask a barista a non-coffee related question and have a brief conversation.</p>
+                    <div class="quest-tags">
+                        <span class="tag">Small Talk</span>
+                        <span class="tag">Curiosity</span>
+                    </div>
+                    <div class="quest-time">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        5 min
+                    </div>
+                    <div class="quest-actions">
+                        <button class="view-details-btn">View details</button>
+                        <button class="start-quest-btn">Start Quest</button>
+                    </div>
+                </div>
+
+                <!-- Book Recommendation - Easy -->
+                <div class="quest-card" data-difficulty="easy">
+                    <div class="quest-header">
+                        <h3>Book Recommendation</h3>
+                        <div class="quest-badges">
+                            <span class="difficulty-badge easy">Easy</span>
+                            <span class="points-badge">75 XP</span>
+                        </div>
+                    </div>
+                    <p class="quest-description">Ask someone for a book recommendation and discuss why they like it.</p>
+                    <div class="quest-tags">
+                        <span class="tag">Active Listening</span>
+                        <span class="tag">Questions</span>
+                    </div>
+                    <div class="quest-time">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        10 min
+                    </div>
+                    <div class="quest-actions">
+                        <button class="view-details-btn">View details</button>
+                        <button class="start-quest-btn">Start Quest</button>
+                    </div>
+                </div>
+
+                <!-- Networking Introduction - Medium -->
+                <div class="quest-card" data-difficulty="medium">
+                    <div class="quest-header">
+                        <h3>Networking Introduction</h3>
+                        <div class="quest-badges">
+                            <span class="difficulty-badge medium">Medium</span>
+                            <span class="points-badge">100 XP</span>
+                        </div>
+                    </div>
+                    <p class="quest-description">Introduce yourself to someone new at a professional event.</p>
+                    <div class="quest-tags">
+                        <span class="tag">First Impressions</span>
+                        <span class="tag">Professional</span>
+                    </div>
+                    <div class="quest-time">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        15 min
+                    </div>
+                    <div class="quest-actions">
+                        <button class="view-details-btn">View details</button>
+                        <button class="start-quest-btn">Start Quest</button>
+                    </div>
+                </div>
+
+                <!-- Elevator Pitch - Hard -->
+                <div class="quest-card" data-difficulty="hard" data-completed="true">
+                    <div class="quest-header">
+                        <h3>Elevator Pitch</h3>
+                        <div class="quest-badges">
+                            <span class="difficulty-badge advanced">Advanced</span>
+                            <span class="points-badge completed">100 XP</span>
+                        </div>
+                    </div>
+                    <p class="quest-description">Share what you do with a stranger in under 60 seconds.</p>
+                    <div class="quest-tags">
+                        <span class="tag">Clarity</span>
+                        <span class="tag">Confidence</span>
+                    </div>
+                    <div class="quest-time">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        5 min
+                    </div>
+                    <div class="quest-actions">
+                        <button class="view-details-btn">View details</button>
+                        <button class="completed-btn">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Completed
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Compliment & Connect - Medium -->
+                <div class="quest-card" data-difficulty="medium">
+                    <div class="quest-header">
+                        <h3>Compliment & Connect</h3>
+                        <div class="quest-badges">
+                            <span class="difficulty-badge medium">Medium</span>
+                            <span class="points-badge">50 XP</span>
+                        </div>
+                    </div>
+                    <p class="quest-description">Give a genuine compliment to a stranger and start a conversation.</p>
+                    <div class="quest-tags">
+                        <span class="tag">Positivity</span>
+                        <span class="tag">Connection</span>
+                    </div>
+                    <div class="quest-time">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        5 min
+                    </div>
+                    <div class="quest-actions">
+                        <button class="view-details-btn">View details</button>
+                        <button class="start-quest-btn">Start Quest</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quest Detail Modal -->
+    <div class="quest-modal" id="questModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Coffee Shop Chat</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="quest-details">
+                    <div class="quest-objective">
+                        <h4>Objective</h4>
+                        <p id="modalObjective">Ask a barista a non-coffee related question and have a brief conversation.</p>
+                    </div>
+                    
+                    <div class="quest-tips">
+                        <h4>Tips for Success</h4>
+                        <ul id="modalTips">
+                            <li>Choose a time when the coffee shop isn't too busy</li>
+                            <li>Start with a genuine smile and friendly tone</li>
+                            <li>Ask open-ended questions like "How's your day going?"</li>
+                            <li>Practice active listening and follow up on their responses</li>
+                        </ul>
+                    </div>
+
+                    <div class="location-finder">
+                        <h4>Find Nearby Locations</h4>
+                        <button class="find-locations-btn" id="findLocationsBtn">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M21 10C21 17 12 23 12 23S3 17 3 10C3 5.03 7.03 1 12 1S21 5.03 21 10Z" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            Find Coffee Shops Near Me
+                        </button>
+                        <div class="locations-list" id="locationsList"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="modalCancel">Cancel</button>
+                <button class="btn-primary" id="modalStart">Start Quest</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Difficulty filter functionality
+        const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+        const questCards = document.querySelectorAll('.quest-card');
+
+        difficultyBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Update active button
+                difficultyBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const selectedDifficulty = this.dataset.difficulty;
+
+                // Filter quest cards
+                questCards.forEach(card => {
+                    if (selectedDifficulty === 'all' || card.dataset.difficulty === selectedDifficulty) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('questModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalCancel = document.getElementById('modalCancel');
+        const viewDetailsBtns = document.querySelectorAll('.view-details-btn');
+
+        viewDetailsBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const questCard = this.closest('.quest-card');
+                const title = questCard.querySelector('h3').textContent;
+                const description = questCard.querySelector('.quest-description').textContent;
+                
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalObjective').textContent = description;
+                
+                // Update tips based on quest type
+                updateModalTips(title);
+                
+                modal.style.display = 'flex';
+            });
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modalCancel.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        function updateModalTips(questTitle) {
+            const tipsList = document.getElementById('modalTips');
+            let tips = [];
+
+            switch(questTitle) {
+                case 'Coffee Shop Chat':
+                    tips = [
+                        'Choose a time when the coffee shop isn\'t too busy',
+                        'Start with a genuine smile and friendly tone',
+                        'Ask open-ended questions like "How\'s your day going?"',
+                        'Practice active listening and follow up on their responses'
+                    ];
+                    break;
+                case 'Book Recommendation':
+                    tips = [
+                        'Approach someone who looks relaxed and approachable',
+                        'Explain why you\'re asking (e.g., "I\'m looking for something new to read")',
+                        'Ask follow-up questions about why they enjoyed the book',
+                        'Share your own reading preferences to keep the conversation flowing'
+                    ];
+                    break;
+                case 'Networking Introduction':
+                    tips = [
+                        'Have a clear, concise introduction ready',
+                        'Show genuine interest in the other person',
+                        'Ask about their work or interests',
+                        'Exchange contact information if the conversation goes well'
+                    ];
+                    break;
+                default:
+                    tips = [
+                        'Be genuine and authentic',
+                        'Listen actively to their responses',
+                        'Stay positive and friendly',
+                        'Don\'t worry about being perfect'
+                    ];
+            }
+
+            tipsList.innerHTML = tips.map(tip => `<li>${tip}</li>`).join('');
+        }
+
+        // Location finder functionality
+        const findLocationsBtn = document.getElementById('findLocationsBtn');
+        const locationsList = document.getElementById('locationsList');
+
+        findLocationsBtn.addEventListener('click', function() {
+            this.textContent = 'Finding locations...';
+            this.disabled = true;
+
+            // Simulate geolocation and search (in real app, use Google Places API)
+            setTimeout(() => {
+                const locations = [
+                    { name: 'Starbucks Coffee', address: '123 Main St', distance: '0.2 miles' },
+                    { name: 'Local Brew Café', address: '456 Oak Ave', distance: '0.4 miles' },
+                    { name: 'The Coffee Bean', address: '789 Pine St', distance: '0.6 miles' }
+                ];
+
+                locationsList.innerHTML = locations.map(location => `
+                    <div class="location-item">
+                        <div class="location-info">
+                            <h5>${location.name}</h5>
+                            <p>${location.address}</p>
+                        </div>
+                        <div class="location-distance">${location.distance}</div>
+                    </div>
+                `).join('');
+
+                this.textContent = 'Find Coffee Shops Near Me';
+                this.disabled = false;
+            }, 2000);
+        });
+
+        // Start quest functionality
+        const startQuestBtns = document.querySelectorAll('.start-quest-btn');
+        startQuestBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const questCard = this.closest('.quest-card');
+                const questTitle = questCard.querySelector('h3').textContent;
+                
+                // In a real app, this would start the quest tracking
+                alert(`Starting quest: ${questTitle}\n\nGood luck! Remember to journal your experience when you're done.`);
+            });
+        });
+    </script>
+</body>
+</html>

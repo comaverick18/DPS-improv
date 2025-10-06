@@ -1,47 +1,23 @@
-// Smooth scrolling and interactive functionality for ConfidenceFlow landing page
+// improvU JavaScript - Interactive functionality
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
-    initScrollAnimations();
     initSmoothScrolling();
-    initDownloadTracking();
+    initScrollAnimations();
+    initButtonInteractions();
     initMobileMenu();
     
     console.log('improvU website loaded successfully!');
 });
 
-// Scroll animations for fade-in effects
-function initScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
-    
-    // Add fade-in class to elements that should animate
-    const animatedElements = document.querySelectorAll('.feature-content, .feature-image, .cta-content');
-    animatedElements.forEach(el => {
-        el.classList.add('fade-in');
-        observer.observe(el);
-    });
-}
-
-// Smooth scrolling for navigation links and CTA buttons
+// Smooth scrolling for navigation links
 function initSmoothScrolling() {
-    // Handle navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const offsetTop = target.offsetTop - 80; // Account for fixed nav
+                const offsetTop = target.offsetTop - 80; // Account for sticky nav
                 window.scrollTo({
                     top: offsetTop,
                     behavior: 'smooth'
@@ -51,11 +27,37 @@ function initSmoothScrolling() {
     });
 }
 
-// Download button functionality with tracking
-function initDownloadTracking() {
-    const downloadButtons = document.querySelectorAll('.btn-primary');
+// Scroll animations for elements coming into view
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
     
-    downloadButtons.forEach(button => {
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    const animatedElements = document.querySelectorAll(
+        '.benefit-item, .process-step, .portfolio-item, .pricing-card'
+    );
+    
+    animatedElements.forEach(el => {
+        observer.observe(el);
+    });
+}
+
+// Button interactions and CTA handling
+function initButtonInteractions() {
+    // Primary CTA buttons
+    const ctaButtons = document.querySelectorAll('.btn-primary, .btn-secondary');
+    
+    ctaButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             // Add click animation
             this.style.transform = 'scale(0.95)';
@@ -63,20 +65,37 @@ function initDownloadTracking() {
                 this.style.transform = '';
             }, 150);
             
-            // Track download attempt (in a real app, this would send to analytics)
-            trackDownloadClick(this);
+            // Handle different button actions
+            const buttonText = this.textContent.trim();
             
-            // Show download modal or redirect to app store
-            showDownloadOptions();
+            if (buttonText.includes('Start Building') || buttonText.includes('Start Free Trial')) {
+                handleAppDownload();
+            } else if (buttonText.includes('Download Now') || buttonText.includes('Download App')) {
+                handleAppDownload();
+            } else if (buttonText.includes('learn more')) {
+                handleLearnMore();
+            }
         });
     });
 }
 
-// Scroll to download function for hero CTA
-function scrollToDownload() {
-    const downloadSection = document.getElementById('download');
-    if (downloadSection) {
-        const offsetTop = downloadSection.offsetTop - 80;
+// Handle app download/trial start
+function handleAppDownload() {
+    showDownloadModal();
+}
+
+// Handle learn more clicks
+function handleLearnMore() {
+    showNotification('Opening more information...', 'info');
+    // In real implementation: scroll to features or open modal with details
+    scrollToFeatures();
+}
+
+// Scroll to features section
+function scrollToFeatures() {
+    const featuresSection = document.getElementById('features');
+    if (featuresSection) {
+        const offsetTop = featuresSection.offsetTop - 80;
         window.scrollTo({
             top: offsetTop,
             behavior: 'smooth'
@@ -84,24 +103,8 @@ function scrollToDownload() {
     }
 }
 
-// Track download clicks (placeholder for analytics)
-function trackDownloadClick(button) {
-    const buttonText = button.textContent.trim();
-    const section = button.closest('section').className;
-    
-    // In a real implementation, you'd send this to Google Analytics, Mixpanel, etc.
-    console.log('Download clicked:', {
-        button: buttonText,
-        section: section,
-        timestamp: new Date().toISOString()
-    });
-    
-    // You could also send to your backend
-    // fetch('/api/track-download', { method: 'POST', body: JSON.stringify(data) });
-}
-
-// Show download options modal
-function showDownloadOptions() {
+// Show download modal with app store options
+function showDownloadModal() {
     // Create modal overlay
     const modal = document.createElement('div');
     modal.className = 'download-modal';
@@ -112,7 +115,7 @@ function showDownloadOptions() {
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Choose your platform to download improvU:</p>
+                <p>Choose your platform to start building confidence:</p>
                 <div class="download-options">
                     <a href="#" class="download-option" data-platform="ios">
                         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -133,189 +136,241 @@ function showDownloadOptions() {
                         </div>
                     </a>
                 </div>
-                <p class="modal-note">Coming soon to all platforms! Join our waitlist to be notified when improvU launches.</p>
-                <div class="waitlist-form">
-                    <input type="email" placeholder="Enter your email" class="email-input">
-                    <button class="btn-primary btn-small">Join Waitlist</button>
+                <div class="trial-info">
+                    <div class="trial-badge">
+                        <span class="trial-dot"></span>
+                        7-day free trial • No commitment
+                    </div>
+                    <p class="trial-description">Start your confidence journey today. Cancel anytime during your free trial.</p>
+                </div>
+                <div class="waitlist-section">
+                    <p class="waitlist-note">Coming soon! Join our waitlist to be notified when improvU launches.</p>
+                    <div class="waitlist-form">
+                        <input type="email" placeholder="Enter your email" class="email-input">
+                        <button class="btn-primary btn-small">Join Waitlist</button>
+                    </div>
                 </div>
             </div>
         </div>
     `;
     
     // Add modal styles
-    const modalStyles = `
-        .download-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 24px;
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: slideUp 0.3s ease-out;
-        }
-        
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-        
-        .modal-header h3 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1E2875;
-            margin: 0;
-        }
-        
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #6B7280;
-            cursor: pointer;
-            padding: 0;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background-color 0.2s ease;
-        }
-        
-        .modal-close:hover {
-            background-color: #F3F4F6;
-        }
-        
-        .modal-body p {
-            font-size: 16px;
-            color: #6B7280;
-            margin-bottom: 24px;
-        }
-        
-        .download-options {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-        
-        .download-option {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 20px;
-            border: 2px solid #E5E8F0;
-            border-radius: 16px;
-            text-decoration: none;
-            color: #1E2875;
-            transition: all 0.3s ease;
-        }
-        
-        .download-option:hover {
-            border-color: #4169E1;
-            background-color: #F8F9FB;
-        }
-        
-        .download-option svg {
-            width: 32px;
-            height: 32px;
-            color: #4169E1;
-        }
-        
-        .download-option strong {
-            display: block;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        
-        .download-option span {
-            font-size: 14px;
-            color: #6B7280;
-        }
-        
-        .modal-note {
-            font-size: 14px;
-            color: #9CA3AF;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        
-        .waitlist-form {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        
-        .email-input {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid #E5E8F0;
-            border-radius: 12px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        
-        .email-input:focus {
-            border-color: #4169E1;
-        }
-        
-        .btn-small {
-            padding: 12px 24px;
-            font-size: 14px;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(30px);
+    if (!document.querySelector('#modal-styles')) {
+        const modalStyles = `
+            .download-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+                animation: fadeIn 0.3s ease-out;
             }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @media (max-width: 480px) {
+            
             .modal-content {
-                padding: 24px;
+                background: white;
+                border-radius: 24px;
+                padding: 40px;
+                max-width: 500px;
+                width: 90%;
+                max-height: 90vh;
+                overflow-y: auto;
+                animation: slideUp 0.3s ease-out;
+            }
+            
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 24px;
+            }
+            
+            .modal-header h3 {
+                font-size: 24px;
+                font-weight: 700;
+                color: #1E2875;
+                margin: 0;
+            }
+            
+            .modal-close {
+                background: none;
+                border: none;
+                font-size: 24px;
+                color: #6B7280;
+                cursor: pointer;
+                padding: 0;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                transition: background-color 0.2s ease;
+            }
+            
+            .modal-close:hover {
+                background-color: #F3F4F6;
+            }
+            
+            .modal-body p {
+                font-size: 16px;
+                color: #6B7280;
+                margin-bottom: 24px;
+            }
+            
+            .download-options {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+            
+            .download-option {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 20px;
+                border: 2px solid #E5E8F0;
+                border-radius: 16px;
+                text-decoration: none;
+                color: #1E2875;
+                transition: all 0.3s ease;
+            }
+            
+            .download-option:hover {
+                border-color: #4169E1;
+                background-color: #F8F9FB;
+            }
+            
+            .download-option svg {
+                width: 32px;
+                height: 32px;
+                color: #4169E1;
+            }
+            
+            .download-option strong {
+                display: block;
+                font-size: 16px;
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+            
+            .download-option span {
+                font-size: 14px;
+                color: #6B7280;
+            }
+            
+            .trial-info {
+                background: #F8F9FB;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 24px;
+                text-align: center;
+            }
+            
+            .trial-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: #1E2875;
+                color: #FFFFFF;
+                font-size: 13px;
+                font-weight: 600;
+                padding: 6px 16px;
+                border-radius: 100px;
+                margin-bottom: 12px;
+            }
+            
+            .trial-dot {
+                width: 8px;
+                height: 8px;
+                background: #10B981;
+                border-radius: 50%;
+            }
+            
+            .trial-description {
+                font-size: 14px;
+                color: #6B7280;
+                margin: 0;
+            }
+            
+            .waitlist-section {
+                border-top: 1px solid #E5E8F0;
+                padding-top: 24px;
+            }
+            
+            .waitlist-note {
+                font-size: 14px;
+                color: #9CA3AF;
+                text-align: center;
+                margin-bottom: 16px;
             }
             
             .waitlist-form {
-                flex-direction: column;
+                display: flex;
+                gap: 12px;
+                align-items: center;
             }
             
             .email-input {
-                width: 100%;
+                flex: 1;
+                padding: 12px 16px;
+                border: 2px solid #E5E8F0;
+                border-radius: 12px;
+                font-size: 16px;
+                outline: none;
+                transition: border-color 0.3s ease;
             }
-        }
-    `;
-    
-    // Add styles to head if not already added
-    if (!document.querySelector('#modal-styles')) {
+            
+            .email-input:focus {
+                border-color: #4169E1;
+            }
+            
+            .btn-small {
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes slideUp {
+                from { 
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to { 
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+            
+            @media (max-width: 480px) {
+                .modal-content {
+                    padding: 24px;
+                }
+                
+                .waitlist-form {
+                    flex-direction: column;
+                }
+                
+                .email-input {
+                    width: 100%;
+                }
+            }
+        `;
+        
         const styleSheet = document.createElement('style');
         styleSheet.id = 'modal-styles';
         styleSheet.textContent = modalStyles;
@@ -329,7 +384,9 @@ function showDownloadOptions() {
     const closeModal = () => {
         modal.style.animation = 'fadeOut 0.3s ease-out';
         setTimeout(() => {
-            document.body.removeChild(modal);
+            if (document.body.contains(modal)) {
+                document.body.removeChild(modal);
+            }
         }, 300);
     };
     
@@ -343,9 +400,10 @@ function showDownloadOptions() {
         option.addEventListener('click', (e) => {
             e.preventDefault();
             const platform = option.dataset.platform;
-            console.log(`Redirecting to ${platform} store...`);
+            trackEvent('app_store_click', { platform: platform });
+            showNotification(`Redirecting to ${platform} app store...`, 'info');
             // In a real app, redirect to actual app store URLs
-            alert(`Redirecting to ${platform} app store...`);
+            // window.open(platform === 'ios' ? 'https://apps.apple.com/app/improvu' : 'https://play.google.com/store/apps/details?id=com.improvu.app', '_blank');
         });
     });
     
@@ -359,24 +417,169 @@ function showDownloadOptions() {
         const email = emailInput.value.trim();
         
         if (!email) {
-            alert('Please enter your email address');
+            showNotification('Please enter your email address', 'error');
             return;
         }
         
         if (!isValidEmail(email)) {
-            alert('Please enter a valid email address');
+            showNotification('Please enter a valid email address', 'error');
             return;
         }
         
-        // Submit to waitlist (placeholder)
-        console.log('Adding to waitlist:', email);
+        // Submit to waitlist
+        trackEvent('waitlist_signup', { email: email });
         submitBtn.textContent = 'Added!';
         submitBtn.style.background = '#10B981';
+        showNotification('Welcome to the improvU waitlist!', 'success');
         
         setTimeout(() => {
             closeModal();
         }, 1500);
     });
+}
+
+// Show notification messages
+function showNotification(message, type = 'info') {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-message">${message}</span>
+            <button class="notification-close">&times;</button>
+        </div>
+    `;
+    
+    // Add styles if not already added
+    if (!document.querySelector('#notification-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'notification-styles';
+        styles.textContent = `
+            .notification {
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: #FFFFFF;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(30, 40, 117, 0.12);
+                padding: 16px 20px;
+                z-index: 1000;
+                animation: slideInRight 0.3s ease-out;
+                max-width: 300px;
+            }
+            
+            .notification-info {
+                border-left: 4px solid #4169E1;
+            }
+            
+            .notification-success {
+                border-left: 4px solid #10B981;
+            }
+            
+            .notification-error {
+                border-left: 4px solid #EF4444;
+            }
+            
+            .notification-content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+            }
+            
+            .notification-message {
+                font-size: 14px;
+                font-weight: 500;
+                color: #374151;
+            }
+            
+            .notification-close {
+                background: none;
+                border: none;
+                font-size: 18px;
+                color: #6B7280;
+                cursor: pointer;
+                padding: 0;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .notification-close:hover {
+                color: #374151;
+            }
+            
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+    
+    // Add to page
+    document.body.appendChild(notification);
+    
+    // Handle close button
+    const closeBtn = notification.querySelector('.notification-close');
+    closeBtn.addEventListener('click', () => {
+        removeNotification(notification);
+    });
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            removeNotification(notification);
+        }
+    }, 3000);
+}
+
+// Remove notification with animation
+function removeNotification(notification) {
+    notification.style.animation = 'slideOutRight 0.3s ease-out';
+    setTimeout(() => {
+        if (document.body.contains(notification)) {
+            document.body.removeChild(notification);
+        }
+    }, 300);
+}
+
+// Mobile menu functionality
+function initMobileMenu() {
+    // Handle mobile navigation visibility
+    const handleResize = () => {
+        const navLinks = document.querySelector('.nav-links');
+        if (window.innerWidth <= 768) {
+            // Mobile view - nav links hidden by CSS
+        } else {
+            // Desktop view - ensure nav is visible
+            if (navLinks) {
+                navLinks.style.display = 'flex';
+            }
+        }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Initial call
 }
 
 // Email validation helper
@@ -385,35 +588,58 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
-// Mobile menu functionality (for future expansion)
-function initMobileMenu() {
-    // Placeholder for mobile hamburger menu if needed
-    // Currently using simple responsive design without hamburger menu
+// Analytics tracking (placeholder for real implementation)
+function trackEvent(eventName, properties = {}) {
+    // In real implementation, send to Google Analytics, Mixpanel, etc.
+    console.log('Event tracked:', eventName, properties);
+    
+    // Example integrations:
+    // gtag('event', eventName, properties);
+    // mixpanel.track(eventName, properties);
+    // amplitude.logEvent(eventName, properties);
 }
 
-// Parallax effect for hero section (subtle)
-function initParallaxEffect() {
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const hero = document.querySelector('.hero');
-        
-        if (hero && scrolled < hero.offsetHeight) {
-            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-        }
+// Track button clicks for analytics
+document.addEventListener('click', function(e) {
+    if (e.target.matches('.btn-primary, .btn-secondary')) {
+        const buttonText = e.target.textContent.trim();
+        trackEvent('button_click', {
+            button_text: buttonText,
+            section: e.target.closest('section')?.className || 'unknown'
+        });
+    }
+});
+
+// Portfolio item interactions
+function initPortfolioInteractions() {
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    
+    portfolioItems.forEach(item => {
+        item.addEventListener('click', function() {
+            showNotification('Opening app screenshot...', 'info');
+            // Could expand to show larger image or app demo
+        });
     });
 }
 
-// Add CSS for fadeOut animation
-const additionalStyles = `
-    @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-    }
-`;
+// Initialize additional interactions when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    initPortfolioInteractions();
+});
 
-const styleSheet = document.createElement('style');
-styleSheet.textContent = additionalStyles;
-document.head.appendChild(styleSheet);
+// Smooth scroll to top functionality
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
 
-// Make scrollToDownload globally available
-window.scrollToDownload = scrollToDownload;
+// Export functions for potential external use
+window.improvU = {
+    scrollToFeatures,
+    showNotification,
+    trackEvent,
+    scrollToTop,
+    showDownloadModal
+};
