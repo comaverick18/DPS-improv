@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initDownloadTracking();
     initMobileMenu();
     
-    console.log('ConfidenceFlow website loaded successfully!');
+    console.log('improvU website loaded successfully!');
 });
 
 // Scroll animations for fade-in effects
@@ -108,11 +108,11 @@ function showDownloadOptions() {
     modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Download ConfidenceFlow</h3>
+                <h3>Download improvU</h3>
                 <button class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Choose your platform to download ConfidenceFlow:</p>
+                <p>Choose your platform to download improvU:</p>
                 <div class="download-options">
                     <a href="#" class="download-option" data-platform="ios">
                         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -133,7 +133,7 @@ function showDownloadOptions() {
                         </div>
                     </a>
                 </div>
-                <p class="modal-note">Coming soon to all platforms! Join our waitlist to be notified when ConfidenceFlow launches.</p>
+                <p class="modal-note">Coming soon to all platforms! Join our waitlist to be notified when improvU launches.</p>
                 <div class="waitlist-form">
                     <input type="email" placeholder="Enter your email" class="email-input">
                     <button class="btn-primary btn-small">Join Waitlist</button>
