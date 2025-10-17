@@ -10,6 +10,36 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('improvU website loaded successfully!');
 });
 
+// Toggle feature detail sections
+function toggleFeatureDetail(featureId) {
+    const detail = document.getElementById(featureId + '-detail');
+    const button = event.target;
+    
+    if (detail.style.display === 'none' || detail.style.display === '') {
+        // Show the detail
+        detail.style.display = 'block';
+        button.textContent = button.textContent.replace('→', '↑').replace('Try ', 'Hide ').replace('Start ', 'Hide ').replace('Join ', 'Hide ');
+        
+        // Smooth scroll to the detail
+        setTimeout(() => {
+            detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    } else {
+        // Hide the detail
+        detail.style.display = 'none';
+        button.textContent = button.textContent.replace('↑', '→').replace('Hide ', 'Try ').replace('Hide ', 'Start ').replace('Hide ', 'Join ');
+        
+        // Fix button text for specific features
+        if (featureId === 'jazz') {
+            button.textContent = 'Try JAZZ →';
+        } else if (featureId === 'convoquest') {
+            button.textContent = 'Start Quest →';
+        } else if (featureId === 'improvcircle') {
+            button.textContent = 'Join Session →';
+        }
+    }
+}
+
 // Smooth scrolling for navigation links
 function initSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
