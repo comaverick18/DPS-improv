@@ -97,12 +97,22 @@ function initButtonInteractions() {
             
             // Handle different button actions
             const buttonText = this.textContent.trim();
-            
-            if (buttonText.includes('Start Building') || buttonText.includes('Start Free Trial')) {
+
+            // Only handle explicit download actions. Do not intercept normal links like the hero Typeform CTA.
+            const isExplicitDownload =
+                this.dataset.action === 'download' ||
+                buttonText.includes('Download Now') ||
+                buttonText.includes('Download App');
+
+            if (isExplicitDownload) {
+                // Prevent navigation if this element is an <a>
+                e.preventDefault();
                 handleAppDownload();
-            } else if (buttonText.includes('Download Now') || buttonText.includes('Download App')) {
-                handleAppDownload();
-            } else if (buttonText.includes('learn more')) {
+                return;
+            }
+
+            if (buttonText.includes('learn more')) {
+                e.preventDefault();
                 handleLearnMore();
             }
         });
