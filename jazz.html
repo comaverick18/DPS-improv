@@ -271,5 +271,162 @@
             progressFill.style.width = newScore + '%';
         }
     </script>
+    <script>
+        // Minimal text-only Yes-And flow (teach -> prompt -> 3-min play -> feedback)
+        (function() {
+            const chatMessages = document.querySelector('.chat-messages');
+            const feedbackPanel = document.querySelector('.jazz-feedback');
+
+            // Simple input controls injected below the chat
+            const controls = document.createElement('div');
+            controls.style.display = 'flex';
+            controls.style.gap = '8px';
+            controls.style.padding = '12px';
+            controls.style.borderTop = '1px solid #E5E8F0';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = 'Type your reply...';
+            input.style.flex = '1';
+            input.style.padding = '10px 12px';
+            input.style.border = '2px solid #E5E8F0';
+            input.style.borderRadius = '8px';
+
+            const sendBtn = document.createElement('button');
+            sendBtn.className = 'btn-primary';
+            sendBtn.textContent = 'Send';
+
+            const timerEl = document.createElement('div');
+            timerEl.style.marginLeft = 'auto';
+            timerEl.style.fontWeight = '600';
+            timerEl.style.color = '#1E2875';
+
+            controls.appendChild(input);
+            controls.appendChild(sendBtn);
+            controls.appendChild(timerEl);
+
+            document.querySelector('.jazz-chat').appendChild(controls);
+
+            let phase = 'teach';
+            let history = [];
+            let transcript = [];
+            let warmupPrompt = '';
+            let timeLeft = 0;
+            let timerId = null;
+
+            const append = (role, text) => {
+                const msg = document.createElement('div');
+                msg.className = `message ${role === 'You' ? 'user-message' : 'ai-message'}`;
+                msg.innerHTML = `<div class="message-content">${escapeHtml(text)}</div>`;
+                chatMessages.appendChild(msg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            };
+
+            const escapeHtml = (s) => s.replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+            const setTimer = (seconds) => {
+                timeLeft = seconds;
+                timerEl.textContent = timeLeft > 0 ? `Time left: ${formatTime(timeLeft)}` : '';
+            };
+            const formatTime = (s) => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+            async function callTeach() {
+                const res = await fetch('/api/jazz/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phase: 'teach', messages: history })
+                });
+                const data = await res.json();
+                append('Coach', data.reply || 'Welcome! Ready to learn "Yes, and..."?');
+            }
+
+            function askWarmup() {
+                phase = 'prompt';
+                append('Coach', 'Do you want your own prompt, or should I pick one? Type yours, or say: choose one.');
+            }
+
+            function startPlay() {
+                phase = 'play';
+                setTimer(180);
+                input.disabled = false;
+                sendBtn.disabled = false;
+                if (timerId) clearInterval(timerId);
+                timerId = setInterval(async () => {
+                    setTimer(timeLeft - 1);
+                    if (timeLeft <= 1) {
+                        clearInterval(timerId);
+                        input.disabled = true;
+                        sendBtn.disabled = true;
+                        phase = 'feedback';
+                        await getFeedback();
+                    }
+                }, 1000);
+            }
+
+            async function getFeedback() {
+                append('Coach', 'Time! Generating feedback...');
+                const res = await fetch('/api/jazz/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ transcript })
+                });
+                const fb = await res.json();
+                append('Coach', `Badge: ${fb.badge}`);
+                append('Coach', `Summary: ${fb.summary}`);
+                if (Array.isArray(fb.wins) && fb.wins.length) append('Coach', `Wins: • ${fb.wins.join(' • ')}`);
+                if (Array.isArray(fb.improvements) && fb.improvements.length) append('Coach', `Improve: • ${fb.improvements.join(' • ')}`);
+                if (Array.isArray(fb.references) && fb.references.length) append('Coach', `Examples: • ${fb.references.join(' • ')}`);
+            }
+
+            async function sendToPlay() {
+                const res = await fetch('/api/jazz/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phase: 'play', messages: history, warmupPrompt })
+                });
+                const data = await res.json();
+                const reply = (data.reply || '').trim();
+                if (reply) {
+                    history.push({ role: 'assistant', content: reply });
+                    transcript.push({ role: 'assistant', content: reply });
+                    append('Coach', reply);
+                }
+            }
+
+            sendBtn.addEventListener('click', async () => {
+                const text = input.value.trim();
+                if (!text) return;
+                input.value = '';
+                history.push({ role: 'user', content: text });
+                transcript.push({ role: 'user', content: text });
+                append('You', text);
+
+                if (phase === 'prompt') {
+                    if (/^choose one/i.test(text)) {
+                        warmupPrompt = 'We are planning a surprise birthday party for a friend.';
+                    } else {
+                        warmupPrompt = text;
+                    }
+                    append('Coach', `Great! Prompt: ${warmupPrompt}`);
+                    startPlay();
+                    return;
+                }
+
+                if (phase === 'play') {
+                    await sendToPlay();
+                }
+            });
+
+            // Kickoff
+            (async function init() {
+                // Reset transcript to a new session context
+                history = [];
+                transcript = [];
+                phase = 'teach';
+                await callTeach();
+                askWarmup();
+            })();
+        })();
+    </script>
 </body>
 </html>
