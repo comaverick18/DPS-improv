@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+t p<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -188,9 +188,11 @@
             border-radius: 20px 20px 4px 20px;
         }
         
-        /* Yes And Badge */
+        /* Yes And Badge - user messages need column layout for badge below */
         .message.user-message {
             position: relative;
+            flex-direction: column !important;
+            align-items: flex-end !important;
         }
         .yes-and-badge {
             display: inline-flex;
