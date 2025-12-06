@@ -19,9 +19,43 @@
     }
     </script>
     
-    <!-- Minimal styles for text input (maintaining improvU design language) -->
     <style>
-        /* Chat input styling - matches improvU design system */
+        /* ============================================
+           LAYOUT OVERRIDES - Full height chat with pinned input
+           ============================================ */
+        .jazz-main {
+            padding-top: 100px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #F8F9FB 0%, #EEF1F8 100%);
+        }
+        .jazz-layout {
+            height: calc(100vh - 140px);
+        }
+        .jazz-chat {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 100%;
+            overflow: hidden;
+        }
+        .chat-messages {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 24px;
+            scroll-behavior: smooth;
+        }
+        .chat-input-area {
+            flex-shrink: 0;
+            padding: 20px 24px;
+            background: white;
+            border-top: 1px solid #E5E8F0;
+            border-radius: 0 0 16px 16px;
+        }
+
+        /* ============================================
+           CHAT INPUT STYLING
+           ============================================ */
         .chat-input-container {
             display: flex;
             gap: 12px;
@@ -29,10 +63,10 @@
         }
         .chat-input {
             flex: 1;
-            padding: 14px 20px;
+            padding: 16px 24px;
             border: 2px solid #E5E8F0;
             border-radius: 100px;
-            font-size: 14px;
+            font-size: 15px;
             font-family: 'Inter', sans-serif;
             color: #1E2875;
             background: #F8F9FB;
@@ -42,36 +76,37 @@
             outline: none;
             border-color: #4169E1;
             background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(65, 105, 225, 0.1);
         }
         .chat-input::placeholder {
-            color: #6B7280;
+            color: #9CA3AF;
         }
         .chat-input:disabled {
-            background: #E5E8F0;
+            background: #F3F4F6;
             cursor: not-allowed;
+            opacity: 0.7;
         }
         .send-btn {
-            background: #4169E1;
+            background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
             color: white;
             border: none;
-            padding: 14px 28px;
+            padding: 16px 32px;
             border-radius: 100px;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+            box-shadow: 0 4px 14px rgba(65, 105, 225, 0.35);
         }
         .send-btn:hover:not(:disabled) {
-            background: #5B7FFF;
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(65, 105, 225, 0.4);
+            box-shadow: 0 6px 20px rgba(65, 105, 225, 0.45);
         }
         .send-btn:disabled {
-            background: #A5B4FC;
+            background: #CBD5E1;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
@@ -80,78 +115,440 @@
             width: 18px;
             height: 18px;
         }
-        
-        /* AI Avatar in messages */
+        .input-hint {
+            text-align: center;
+            font-size: 13px;
+            color: #9CA3AF;
+            margin-top: 10px;
+        }
+        .input-hint .keyboard-hint {
+            color: #6B7280;
+            font-weight: 500;
+        }
+
+        /* ============================================
+           MESSAGE STYLING
+           ============================================ */
         .ai-avatar {
-            width: 32px;
-            height: 32px;
-            min-width: 32px;
-            background: #FFD700;
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             color: #1E2875;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 15px;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
         }
         .message.ai-message .message-content {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            background: #4169E1;
+            gap: 14px;
+            background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
             color: white;
+            padding: 16px 20px;
+            border-radius: 20px 20px 20px 4px;
+            box-shadow: 0 4px 12px rgba(65, 105, 225, 0.2);
         }
         .message.ai-message .ai-text {
             flex: 1;
             white-space: pre-wrap;
+            line-height: 1.6;
+        }
+        .message.user-message .message-content {
+            background: #F1F5F9;
+            color: #1E2875;
+            padding: 16px 20px;
+            border-radius: 20px 20px 4px 20px;
+        }
+        
+        /* Yes And Badge */
+        .message.user-message {
+            position: relative;
+        }
+        .yes-and-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 12px;
+            margin-top: 8px;
+            animation: badgePop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        }
+        @keyframes badgePop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
         
         /* Error message styling */
         .message.error-message .message-content {
-            background: #FEE2E2 !important;
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%) !important;
             color: #991B1B !important;
         }
         .message.error-message .ai-avatar {
-            background: #EF4444;
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
             color: white;
         }
         
-        /* Typing indicator in AI messages */
+        /* Typing indicator */
         .message.ai-message.typing .message-content {
-            padding: 12px 16px;
+            padding: 16px 20px;
         }
         .message.ai-message .typing-indicator {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             align-items: center;
+            padding: 4px 0;
         }
         .message.ai-message .typing-indicator span {
-            width: 8px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.7);
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.8);
             border-radius: 50%;
             animation: typing 1.4s infinite ease-in-out;
+        }
+        .message.ai-message .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .message.ai-message .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ============================================
+           SIDEBAR ENHANCEMENTS
+           ============================================ */
+        .jazz-sidebar {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(30, 40, 117, 0.08);
+        }
+        .how-to-play-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #1E2875;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+        }
+        .how-to-play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 215, 0, 0.4);
+        }
+        .how-to-play-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Difficulty tags */
+        .difficulty-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 10px;
+            margin-top: 8px;
+        }
+        .difficulty-tag.beginner {
+            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+            color: #065F46;
+        }
+        .difficulty-tag.intermediate {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            color: #92400E;
+        }
+        .difficulty-tag.advanced {
+            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+            color: #991B1B;
+        }
+
+        /* Session items */
+        .session-item {
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .session-item:hover {
+            background: #F8FAFC;
+            border-color: #E2E8F0;
+        }
+        .session-item.active {
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            border-color: #4169E1;
+        }
+
+        /* ============================================
+           FEEDBACK PANEL
+           ============================================ */
+        .jazz-feedback {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(30, 40, 117, 0.08);
+        }
+        .jazz-feedback h3 {
+            font-size: 18px;
+            background: linear-gradient(135deg, #1E2875 0%, #4169E1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .metric-label {
+            font-size: 11px;
+            color: #9CA3AF;
+            margin-top: 6px;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #4169E1, #10B981) !important;
+        }
+
+        /* ============================================
+           ONBOARDING MODAL
+           ============================================ */
+        .onboarding-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(30, 40, 117, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease;
+        }
+        .onboarding-modal.hidden { display: none; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .onboarding-content {
+            background: white;
+            border-radius: 28px;
+            padding: 48px;
+            max-width: 560px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 32px 64px rgba(30, 40, 117, 0.4);
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .onboarding-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .onboarding-header .ai-avatar {
+            width: 72px;
+            height: 72px;
+            font-size: 32px;
+            margin: 0 auto 20px;
+        }
+        .onboarding-header h2 {
+            color: #1E2875;
+            font-size: 32px;
+            margin: 0;
+            font-weight: 700;
+        }
+        .onboarding-body h3 {
+            color: #1E2875;
+            font-size: 18px;
+            margin: 28px 0 14px;
+            font-weight: 600;
+        }
+        .onboarding-body h3:first-child { margin-top: 0; }
+        .onboarding-body p {
+            color: #6B7280;
+            line-height: 1.7;
+            margin: 0 0 14px;
+            font-size: 15px;
+        }
+        .onboarding-body ol {
+            color: #6B7280;
+            padding-left: 24px;
+            line-height: 2;
+            margin: 0 0 28px;
+        }
+        .onboarding-body strong { color: #1E2875; }
+        
+        /* Example boxes */
+        .example-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0 28px;
+        }
+        .example-bad, .example-good {
+            padding: 20px;
+            border-radius: 16px;
+        }
+        .example-bad {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+            border: 2px solid #FECACA;
+        }
+        .example-good {
+            background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+            border: 2px solid #BBF7D0;
+        }
+        .example-box .label {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 14px;
+            font-size: 14px;
+        }
+        .example-box .dialogue {
+            margin: 8px 0;
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        /* Start button */
+        .start-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            padding: 18px 36px;
+            border-radius: 100px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(65, 105, 225, 0.35);
+            margin-top: 8px;
+        }
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(65, 105, 225, 0.45);
+        }
+
+        /* ============================================
+           SUGGESTED RESPONSES
+           ============================================ */
+        .suggested-responses {
+            padding: 16px 24px;
+            background: #F8FAFC;
+            border-top: 1px dashed #E2E8F0;
+        }
+        .suggested-responses p {
+            font-size: 13px;
+            color: #6B7280;
+            margin: 0 0 12px 0;
+            font-weight: 500;
+        }
+        .suggestions-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .suggestion-chip {
+            background: white;
+            border: 2px solid #E2E8F0;
+            color: #4169E1;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 10px 18px;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .suggestion-chip:hover {
+            background: #4169E1;
+            color: white;
+            border-color: #4169E1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(65, 105, 225, 0.25);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .example-box { grid-template-columns: 1fr; }
+            .onboarding-content { padding: 28px; }
+            .onboarding-header h2 { font-size: 26px; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- ============================================
+         ONBOARDING MODAL
+         ============================================ -->
+    <div class="onboarding-modal" id="onboardingModal">
+        <div class="onboarding-content">
+            <div class="onboarding-header">
+                <div class="ai-avatar">J</div>
+                <h2>Welcome to Jazz! 🎭</h2>
+            </div>
+            
+            <div class="onboarding-body">
+                <h3>What is "Yes, And..."?</h3>
+                <p>It's the <strong>#1 rule of improv!</strong> Instead of blocking ideas, you <strong>accept</strong> what's offered and <strong>build</strong> on it.</p>
+                
+                <div class="example-box">
+                    <div class="example-bad">
+                        <span class="label">❌ Blocking</span>
+                        <p class="dialogue"><strong>Partner:</strong> "Let's go to the moon!"</p>
+                        <p class="dialogue"><strong>You:</strong> "That's impossible."</p>
+                    </div>
+                    <div class="example-good">
+                        <span class="label">✅ Yes, And...</span>
+                        <p class="dialogue"><strong>Partner:</strong> "Let's go to the moon!"</p>
+                        <p class="dialogue"><strong>You:</strong> "Yes! And let's pack snacks for the trip!"</p>
+                    </div>
+                </div>
+                
+                <h3>How Jazz Works</h3>
+                <ol>
+                    <li><strong>Pick a scenario</strong> from the sidebar</li>
+                    <li><strong>I'll set the scene</strong> and start our conversation</li>
+                    <li><strong>You respond</strong> using "Yes, and..." thinking</li>
+                    <li><strong>We build a story together!</strong> No wrong answers 😊</li>
+                </ol>
+                
+                <p style="text-align: center; color: #4169E1; font-weight: 600; font-size: 16px;">
+                    The goal isn't perfection — it's practice!
+                </p>
+            </div>
+            
+            <button class="start-btn" id="startPracticing">
+                Got it! Let's Practice 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================
+         NAVIGATION (no icon, just text)
+         ============================================ -->
     <nav class="nav">
         <div class="container">
             <div class="nav-content">
                 <div class="logo">
-                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
-                        <!-- Speech Bubble -->
-                        <path d="M18 4H6C4.9 4 4 4.9 4 6V14C4 15.1 4.9 16 6 16H8L12 20L16 16H18C19.1 16 20 15.1 20 14V6C20 4.9 19.1 4 18 4Z" fill="#4169E1"/>
-                        <!-- Growth Arrow -->
-                        <path d="M9 10L12 7L15 10" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M12 7V13" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
-                        <!-- Conversation Dots -->
-                        <circle cx="9" cy="9" r="1" fill="#FFFFFF"/>
-                        <circle cx="12" cy="9" r="1" fill="#FFFFFF"/>
-                        <circle cx="15" cy="9" r="1" fill="#FFFFFF"/>
-                    </svg>
                     <a href="index.html" class="logo-text">improvU</a>
                 </div>
                 <div class="nav-links">
@@ -164,51 +561,67 @@
         </div>
     </nav>
 
-    <!-- JAZZ Main Content -->
+    <!-- ============================================
+         JAZZ MAIN CONTENT
+         ============================================ -->
     <section class="jazz-main">
         <div class="container">
             <div class="jazz-layout">
                 <!-- Left Sidebar -->
                 <div class="jazz-sidebar">
                     <div class="jazz-header">
-                        <h1 class="jazz-title">Jazz AI Chat</h1>
+                        <h1 class="jazz-title">Jazz AI</h1>
                         <button class="new-session-btn" id="newSessionBtn">
                             <svg viewBox="0 0 24 24" fill="none">
                                 <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                             </svg>
-                            New Session
+                            New
                         </button>
                     </div>
 
+                    <!-- How to Play Button -->
+                    <button class="how-to-play-btn" id="howToPlayBtn">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                        How to Play
+                    </button>
+
                     <!-- Topic Selection List -->
                     <div class="session-list" id="topicList">
+                        <div class="session-item" data-topic="Coffee Shop Conversation">
+                            <h3>Coffee Shop Chat</h3>
+                            <p>Casual small talk</p>
+                            <span class="difficulty-tag beginner">Beginner</span>
+                        </div>
                         <div class="session-item" data-topic="Planning a Trip">
                             <h3>Planning a Trip</h3>
-                            <p>Practice travel conversations</p>
+                            <p>Travel conversations</p>
+                            <span class="difficulty-tag beginner">Beginner</span>
+                        </div>
+                        <div class="session-item" data-topic="Networking Event">
+                            <h3>Networking Event</h3>
+                            <p>Professional mingling</p>
+                            <span class="difficulty-tag intermediate">Intermediate</span>
                         </div>
                         <div class="session-item" data-topic="Job Interview Practice">
-                            <h3>Job Interview Practice</h3>
-                            <p>Build confidence for interviews</p>
+                            <h3>Job Interview</h3>
+                            <p>Build confidence</p>
+                            <span class="difficulty-tag intermediate">Intermediate</span>
                         </div>
-                        <div class="session-item" data-topic="Coffee Shop Conversation">
-                            <h3>Coffee Shop Conversation</h3>
-                            <p>Casual small talk practice</p>
-                        </div>
-                        <div class="session-item" data-topic="First Date Scenarios">
-                            <h3>First Date Scenarios</h3>
-                            <p>Dating conversation skills</p>
-                        </div>
-                        <div class="session-item" data-topic="Networking Event Chat">
-                            <h3>Networking Event Chat</h3>
-                            <p>Professional networking</p>
+                        <div class="session-item" data-topic="First Date Scenario">
+                            <h3>First Date</h3>
+                            <p>Dating skills</p>
+                            <span class="difficulty-tag advanced">Advanced</span>
                         </div>
                     </div>
 
                     <div class="user-profile">
                         <div class="user-avatar">U</div>
                         <div class="user-info">
-                            <h4>User Name</h4>
-                            <p>Level 7</p>
+                            <h4>Guest User</h4>
+                            <p>Practice Mode</p>
                         </div>
                     </div>
                 </div>
@@ -216,21 +629,25 @@
                 <!-- Main Chat Area -->
                 <div class="jazz-chat">
                     <div class="scenario-header">
-                        <span class="scenario-badge" id="scenarioBadge">Select a topic to begin</span>
+                        <span class="scenario-badge" id="scenarioBadge">Select a scenario to begin</span>
                     </div>
 
                     <div class="chat-messages" id="chatMessages">
-                        <!-- Welcome message -->
-                        <div class="message ai-message">
-                            <div class="message-content">
-                                <div class="ai-avatar">J</div>
-                                <span class="ai-text">Hey there! 👋 I'm Jazz, your improv practice partner. Pick a scenario from the left sidebar and let's start practicing together! Remember, there are no wrong answers here - just "Yes, and..." thinking!</span>
-                            </div>
+                        <!-- Welcome message inserted by JS -->
+                    </div>
+
+                    <!-- Suggested Responses -->
+                    <div class="suggested-responses" id="suggestedResponses" style="display: none;">
+                        <p>💡 Need a starter? Try one:</p>
+                        <div class="suggestions-container">
+                            <button class="suggestion-chip" data-suggestion="Yes, and we could also...">Yes, and we could also...</button>
+                            <button class="suggestion-chip" data-suggestion="That sounds great! What if...">That sounds great! What if...</button>
+                            <button class="suggestion-chip" data-suggestion="I love that idea! And...">I love that idea! And...</button>
                         </div>
                     </div>
 
-                    <!-- Text Input Area (replacing voice input) -->
-                    <div class="voice-input">
+                    <!-- Text Input Area - PINNED TO BOTTOM -->
+                    <div class="chat-input-area">
                         <div class="chat-input-container">
                             <input 
                                 type="text" 
@@ -248,39 +665,43 @@
                                 Send
                             </button>
                         </div>
-                        <p class="voice-prompt" id="inputPrompt">Select a topic to start chatting</p>
+                        <p class="input-hint" id="inputPrompt">
+                            Pick a scenario to start chatting
+                        </p>
                     </div>
                 </div>
 
                 <!-- Right Sidebar - Feedback -->
                 <div class="jazz-feedback">
-                    <h3>Conversation Feedback</h3>
+                    <h3>Session Feedback</h3>
                     
                     <div class="feedback-metric">
                         <div class="metric-header">
-                            <span>Confidence</span>
+                            <span>"Yes, And" Usage</span>
                             <span class="metric-value" id="confidenceValue">--</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" id="confidenceFill" style="width: 0%"></div>
                         </div>
+                        <p class="metric-label">How often you build on ideas</p>
                     </div>
 
                     <div class="feedback-metric">
                         <div class="metric-header">
-                            <span>Flow</span>
+                            <span>Engagement</span>
                             <span class="metric-value" id="flowValue">--</span>
                         </div>
                         <div class="progress-bar">
                             <div class="progress-fill" id="flowFill" style="width: 0%"></div>
                         </div>
+                        <p class="metric-label">Response speed & flow</p>
                     </div>
 
                     <div class="session-settings">
-                        <h4>Session Settings</h4>
+                        <h4>Session Info</h4>
                         <div class="setting-item">
                             <span>Model</span>
-                            <span class="setting-value">Gemini 1.5 Flash</span>
+                            <span class="setting-value">Gemini 2.5 Flash</span>
                         </div>
                         <div class="setting-item">
                             <span>Mode</span>
@@ -292,60 +713,41 @@
                         </div>
                     </div>
 
-                    <button class="end-session-btn" id="endSessionBtn">End Session & Get Feedback</button>
+                    <button class="end-session-btn" id="endSessionBtn">End & Get Feedback</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Application Script -->
+    <!-- ============================================
+         MAIN APPLICATION SCRIPT
+         ============================================ -->
     <script type="module">
-        // ============================================
-        // IMPORTS
-        // ============================================
         import { GoogleGenerativeAI } from "@google/generative-ai";
 
         // ============================================
         // CONFIGURATION
         // ============================================
         
-        /**
-         * Get API key from various sources
-         * Priority: 1) Global config, 2) localStorage, 3) User prompt
-         * 
-         * Note: For production, use a backend proxy to protect your API key.
-         * This approach is for development/demo purposes only.
-         */
         async function getApiKey() {
-            // Method 1: Check for global config (set by build process or separate config file)
             if (typeof window !== 'undefined' && window.GEMINI_API_KEY) {
                 return window.GEMINI_API_KEY;
             }
-            
-            // Method 2: Check localStorage for previously stored key
             const storedKey = localStorage.getItem('gemini_api_key');
-            if (storedKey) {
-                return storedKey;
-            }
+            if (storedKey) return storedKey;
             
-            // Method 3: Prompt user for API key (development convenience)
             const key = prompt(
                 '🔑 Enter your Gemini API key:\n\n' +
                 'Get a free key at:\nhttps://makersuite.google.com/app/apikey\n\n' +
-                '(Key will be saved in localStorage for convenience)'
+                '(Key will be saved for convenience)'
             );
-            
             if (key && key.trim()) {
                 localStorage.setItem('gemini_api_key', key.trim());
                 return key.trim();
             }
-            
             return null;
         }
 
-        /**
-         * Generate system instruction for JAZZ based on selected topic
-         */
         function getSystemInstruction(topic) {
             return `You are JAZZ, an encouraging improv coach from improvU. You teach 'Yes, and...' principles through conversation practice.
 
@@ -357,17 +759,17 @@ YOUR PERSONALITY:
 - You're enthusiastic but not overwhelming
 
 CONVERSATION GUIDELINES:
-- Keep responses concise (2-4 sentences max)
+- Keep responses concise (2-3 sentences max)
 - Always model "Yes, and..." thinking in your responses
 - Build on whatever the user says, never shut down their ideas
-- Occasionally remind users about improv principles in a natural way
-- If they seem stuck, offer a gentle prompt or question to help them
+- Occasionally acknowledge good "Yes, and" technique when you see it
+- If they seem stuck, offer a gentle prompt or question
 - Use emoji sparingly to keep things friendly 😊
 - Stay in character for the scenario
 
 CURRENT SCENARIO: ${topic}
 
-Begin by briefly setting up the scenario (1-2 sentences) and invite the user to participate with an open-ended question or prompt.`;
+Begin by briefly setting up the scenario (1-2 sentences) and invite the user to participate.`;
         }
 
         // ============================================
@@ -382,6 +784,10 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
         const topicList = document.getElementById('topicList');
         const newSessionBtn = document.getElementById('newSessionBtn');
         const endSessionBtn = document.getElementById('endSessionBtn');
+        const howToPlayBtn = document.getElementById('howToPlayBtn');
+        const onboardingModal = document.getElementById('onboardingModal');
+        const startPracticingBtn = document.getElementById('startPracticing');
+        const suggestedResponses = document.getElementById('suggestedResponses');
         const confidenceValue = document.getElementById('confidenceValue');
         const confidenceFill = document.getElementById('confidenceFill');
         const flowValue = document.getElementById('flowValue');
@@ -389,39 +795,58 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
         const messageCountEl = document.getElementById('messageCount');
 
         // ============================================
-        // APPLICATION STATE
+        // STATE
         // ============================================
         
-        let genAI = null;           // Google Generative AI instance
-        let chat = null;            // Current chat session
-        let currentTopic = null;    // Selected topic
-        let isGenerating = false;   // Prevents multiple simultaneous requests
-        let messageCount = 0;       // Total messages in session
-        let confidenceScore = 0;    // Simulated confidence metric
-        let flowScore = 0;          // Simulated flow metric
+        let genAI = null;
+        let chat = null;
+        let currentTopic = null;
+        let isGenerating = false;
+        let messageCount = 0;
+        let yesAndCount = 0;
+        let userMessageCount = 0;
+        let lastMessageTime = Date.now();
+        let totalResponseTime = 0;
+        let suggestionTimeout = null;
+
+        // ============================================
+        // ONBOARDING
+        // ============================================
+        
+        const hasSeenOnboarding = localStorage.getItem('jazz_onboarding_complete');
+        if (hasSeenOnboarding) onboardingModal.classList.add('hidden');
+
+        startPracticingBtn.addEventListener('click', () => {
+            localStorage.setItem('jazz_onboarding_complete', 'true');
+            onboardingModal.classList.add('hidden');
+        });
+
+        howToPlayBtn.addEventListener('click', () => {
+            onboardingModal.classList.remove('hidden');
+        });
 
         // ============================================
         // INITIALIZATION
         // ============================================
         
-        /**
-         * Initialize the application
-         */
         async function init() {
-            const API_KEY = await getApiKey();
+            chatInput.placeholder = "Connecting to Jazz AI...";
+            showWelcomeMessage();
             
+            const API_KEY = await getApiKey();
             if (!API_KEY) {
-                showError("API key not configured. Please refresh the page and enter your Gemini API key.");
+                chatInput.placeholder = "API key required";
+                showError("API key not configured. Please refresh and enter your key.");
                 return;
             }
             
             try {
-                // Initialize Google Generative AI
                 genAI = new GoogleGenerativeAI(API_KEY);
-                console.log('✅ Gemini AI initialized successfully');
+                console.log('✅ Gemini AI initialized');
+                chatInput.placeholder = "Type your response here...";
             } catch (error) {
-                console.error('❌ Failed to initialize Gemini AI:', error);
-                showError("Failed to initialize AI. Please check your API key and refresh the page.");
+                console.error('❌ Failed to initialize:', error);
+                showError("Failed to connect. Please check your API key.");
             }
         }
 
@@ -429,68 +854,52 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
         // TOPIC SELECTION
         // ============================================
         
-        // Attach click handlers to all topic items
         topicList.querySelectorAll('.session-item').forEach(item => {
             item.addEventListener('click', () => selectTopic(item));
         });
 
-        /**
-         * Handle topic selection
-         */
         async function selectTopic(topicElement) {
             if (!genAI) {
-                showError("AI not initialized. Please refresh the page and enter your API key.");
+                showError("AI not ready. Please refresh the page.");
                 return;
             }
             
-            // Update visual selection state
             topicList.querySelectorAll('.session-item').forEach(item => {
                 item.classList.remove('active');
             });
             topicElement.classList.add('active');
             
-            // Update current topic
             currentTopic = topicElement.dataset.topic;
             scenarioBadge.textContent = `Scenario: ${currentTopic}`;
             
-            // Enable chat input
             chatInput.disabled = false;
             sendBtn.disabled = false;
-            inputPrompt.textContent = 'Type your response and press Enter or click Send';
+            inputPrompt.innerHTML = 'Type your response <span class="keyboard-hint">(Enter to send)</span>';
             
-            // Clear previous conversation
             clearChat();
-            
-            // Initialize new chat session with Gemini
             await initializeChat();
         }
 
-        /**
-         * Initialize a new chat session with Gemini
-         */
         async function initializeChat() {
             try {
-                // Create model instance with system instruction
                 const model = genAI.getGenerativeModel({ 
                     model: "gemini-2.5-flash",
                     systemInstruction: getSystemInstruction(currentTopic)
                 });
                 
-                // Start a new chat session
                 chat = model.startChat({
                     history: [],
                     generationConfig: {
-                        maxOutputTokens: 500,
-                        temperature: 0.9,  // Higher creativity for improv
+                        maxOutputTokens: 400,
+                        temperature: 0.9,
                     },
                 });
                 
-                // Get initial AI message to kick off the conversation
-                await sendToAI("Let's begin our practice session!");
-                
+                await sendToAI("Let's begin!");
+                startSuggestionTimer();
             } catch (error) {
-                console.error('❌ Failed to initialize chat:', error);
-                showError("Oops! Connection issue. Please try again.");
+                console.error('❌ Chat init failed:', error);
+                showError("Connection issue. Please try again.");
             }
         }
 
@@ -498,37 +907,34 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
         // CHAT FUNCTIONALITY
         // ============================================
         
-        // Send message on button click
         sendBtn.addEventListener('click', handleSend);
-        
-        // Send message on Enter key (Shift+Enter for new line)
         chatInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 handleSend();
             }
         });
+        chatInput.addEventListener('input', () => {
+            hideSuggestions();
+            resetSuggestionTimer();
+        });
 
-        /**
-         * Handle sending a message
-         */
         async function handleSend() {
             const message = chatInput.value.trim();
-            
-            // Validation
             if (!message || isGenerating || !chat) return;
             
-            // Add user message to chat UI
+            const responseTime = Date.now() - lastMessageTime;
+            totalResponseTime += responseTime;
+            
             addUserMessage(message);
             chatInput.value = '';
+            hideSuggestions();
             
-            // Send to Gemini AI
             await sendToAI(message);
+            lastMessageTime = Date.now();
+            resetSuggestionTimer();
         }
 
-        /**
-         * Send message to Gemini AI and stream response
-         */
         async function sendToAI(userMessage) {
             if (isGenerating) return;
             
@@ -536,40 +942,25 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
             sendBtn.disabled = true;
             chatInput.disabled = true;
             
-            // Show typing indicator while waiting for response
             const typingDiv = showTypingIndicator();
             
             try {
-                // Use streaming for real-time response display
                 const result = await chat.sendMessageStream(userMessage);
-                
-                // Remove typing indicator and create AI message container
                 typingDiv.remove();
                 const aiMessageDiv = createAIMessageElement();
                 const textSpan = aiMessageDiv.querySelector('.ai-text');
                 
-                // Stream the response chunk by chunk
                 let fullResponse = '';
                 for await (const chunk of result.stream) {
-                    const chunkText = chunk.text();
-                    fullResponse += chunkText;
+                    fullResponse += chunk.text();
                     textSpan.textContent = fullResponse;
                     scrollToBottom();
                 }
-                
-                // Update conversation metrics
                 updateMetrics();
-                
             } catch (error) {
-                console.error('❌ AI response error:', error);
+                console.error('❌ AI error:', error);
                 typingDiv.remove();
-                
-                // Provide user-friendly error message
-                if (error.message?.includes('API key')) {
-                    showError("API key issue. Please refresh and re-enter your key.");
-                } else {
-                    showError("Oops! Connection issue. Please try again.");
-                }
+                showError("Connection issue. Please try again.");
             } finally {
                 isGenerating = false;
                 sendBtn.disabled = false;
@@ -579,25 +970,58 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
         }
 
         // ============================================
-        // MESSAGE DISPLAY FUNCTIONS
+        // SUGGESTIONS
         // ============================================
         
-        /**
-         * Add a user message to the chat
-         */
+        function startSuggestionTimer() { resetSuggestionTimer(); }
+        
+        function resetSuggestionTimer() {
+            clearTimeout(suggestionTimeout);
+            suggestionTimeout = setTimeout(() => {
+                if (chat && !isGenerating && userMessageCount > 0) showSuggestions();
+            }, 12000);
+        }
+        
+        function showSuggestions() { suggestedResponses.style.display = 'block'; }
+        function hideSuggestions() { suggestedResponses.style.display = 'none'; }
+
+        document.querySelectorAll('.suggestion-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                chatInput.value = chip.dataset.suggestion;
+                chatInput.focus();
+                hideSuggestions();
+            });
+        });
+
+        // ============================================
+        // MESSAGES
+        // ============================================
+        
+        function hasYesAndPattern(text) {
+            const patterns = [/yes,?\s+and/i, /absolutely/i, /great idea/i, /love that/i, 
+                /that sounds/i, /building on/i, /i like that/i, /perfect/i, /definitely/i,
+                /what if we/i, /we could also/i, /let's also/i, /and we/i, /and maybe/i];
+            return patterns.some(p => p.test(text));
+        }
+
         function addUserMessage(text) {
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message user-message';
-            messageDiv.innerHTML = `<div class="message-content">${escapeHtml(text)}</div>`;
+            
+            const usedYesAnd = hasYesAndPattern(text);
+            if (usedYesAnd) yesAndCount++;
+            userMessageCount++;
+            
+            messageDiv.innerHTML = `
+                <div class="message-content">${escapeHtml(text)}</div>
+                ${usedYesAnd ? '<span class="yes-and-badge">✨ Nice "Yes, and..."!</span>' : ''}
+            `;
             chatMessages.appendChild(messageDiv);
             scrollToBottom();
             messageCount++;
             updateMessageCount();
         }
 
-        /**
-         * Create an AI message element (for streaming)
-         */
         function createAIMessageElement() {
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message ai-message';
@@ -613,20 +1037,13 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
             return messageDiv;
         }
 
-        /**
-         * Show typing indicator while AI is generating response
-         */
         function showTypingIndicator() {
             const typingDiv = document.createElement('div');
             typingDiv.className = 'message ai-message typing';
             typingDiv.innerHTML = `
                 <div class="message-content">
                     <div class="ai-avatar">J</div>
-                    <div class="typing-indicator">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
+                    <div class="typing-indicator"><span></span><span></span><span></span></div>
                 </div>
             `;
             chatMessages.appendChild(typingDiv);
@@ -634,9 +1051,6 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
             return typingDiv;
         }
 
-        /**
-         * Show an error message in the chat
-         */
         function showError(message) {
             const errorDiv = document.createElement('div');
             errorDiv.className = 'message ai-message error-message';
@@ -650,76 +1064,77 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
             scrollToBottom();
         }
 
-        /**
-         * Auto-scroll chat to the bottom
-         */
         function scrollToBottom() {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        /**
-         * Clear all chat messages
-         */
         function clearChat() {
             chatMessages.innerHTML = '';
             messageCount = 0;
-            confidenceScore = 0;
-            flowScore = 0;
+            userMessageCount = 0;
+            yesAndCount = 0;
+            totalResponseTime = 0;
+            lastMessageTime = Date.now();
             updateMetrics();
             updateMessageCount();
+            hideSuggestions();
+        }
+
+        function showWelcomeMessage() {
+            const welcomeDiv = document.createElement('div');
+            welcomeDiv.className = 'message ai-message';
+            welcomeDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="ai-avatar">J</div>
+                    <span class="ai-text">Hey! 👋 I'm Jazz, your improv practice partner.
+
+🎭 We practice "Yes, and..." here — accept ideas and build on them!
+
+Pick a scenario from the sidebar to get started. There are no wrong answers! ✨</span>
+                </div>
+            `;
+            chatMessages.appendChild(welcomeDiv);
         }
 
         // ============================================
         // SESSION MANAGEMENT
         // ============================================
         
-        /**
-         * Start a new session - reset everything
-         */
         newSessionBtn.addEventListener('click', () => {
-            // Reset state
             chat = null;
             currentTopic = null;
-            
-            // Reset UI elements
-            topicList.querySelectorAll('.session-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            scenarioBadge.textContent = 'Select a topic to begin';
+            topicList.querySelectorAll('.session-item').forEach(i => i.classList.remove('active'));
+            scenarioBadge.textContent = 'Select a scenario to begin';
             chatInput.disabled = true;
             sendBtn.disabled = true;
-            inputPrompt.textContent = 'Select a topic to start chatting';
-            
-            // Clear chat and show welcome message
+            inputPrompt.innerHTML = 'Pick a scenario to start chatting';
             clearChat();
             showWelcomeMessage();
+            clearTimeout(suggestionTimeout);
         });
 
-        /**
-         * End session and show feedback
-         */
         endSessionBtn.addEventListener('click', () => {
             if (messageCount < 2) {
-                alert('Have a conversation first to get feedback!');
+                alert('Have a conversation first!');
                 return;
             }
             
-            // Generate feedback summary
+            const yesAndRate = userMessageCount > 0 ? Math.round((yesAndCount / userMessageCount) * 100) : 0;
+            const avgTime = userMessageCount > 0 ? Math.round(totalResponseTime / userMessageCount / 1000) : 0;
+            
             const feedbackMsg = `🎉 Great session practicing "${currentTopic}"!
 
 📊 Your Stats:
-• Messages exchanged: ${messageCount}
-• Confidence: ${confidenceScore}%
-• Flow: ${flowScore}%
+• Messages: ${messageCount}
+• "Yes, And" usage: ${yesAndRate}% (${yesAndCount}/${userMessageCount})
+• Avg response: ${avgTime}s
 
-💡 Tips for next time:
-• Keep building on ideas with "Yes, and..."
-• Don't be afraid to take the conversation in unexpected directions
-• The more you practice, the more natural it becomes!
+💡 Tips:
+${yesAndRate < 50 ? '• Try starting with "Yes, and...", "Great idea!", or "I love that!"' : '• Great "Yes, and" usage! Keep it up!'}
+${avgTime > 15 ? '• Try responding faster — improv is about going with your gut!' : '• Nice quick responses — keeps the energy flowing!'}
 
-Ready for another round? Click "New Session" to try a different scenario!`;
+Click "New" to try another scenario!`;
             
-            // Display feedback as AI message
             const feedbackDiv = document.createElement('div');
             feedbackDiv.className = 'message ai-message';
             feedbackDiv.innerHTML = `
@@ -731,50 +1146,29 @@ Ready for another round? Click "New Session" to try a different scenario!`;
             chatMessages.appendChild(feedbackDiv);
             scrollToBottom();
             
-            // Disable further input
             chatInput.disabled = true;
             sendBtn.disabled = true;
-            inputPrompt.textContent = 'Session ended — Click "New Session" to continue';
+            inputPrompt.innerHTML = 'Session ended — Click "New" to continue';
             chat = null;
+            clearTimeout(suggestionTimeout);
+            hideSuggestions();
         });
 
-        /**
-         * Show the initial welcome message
-         */
-        function showWelcomeMessage() {
-            const welcomeDiv = document.createElement('div');
-            welcomeDiv.className = 'message ai-message';
-            welcomeDiv.innerHTML = `
-                <div class="message-content">
-                    <div class="ai-avatar">J</div>
-                    <span class="ai-text">Hey there! 👋 I'm Jazz, your improv practice partner. Pick a scenario from the left sidebar and let's start practicing together! Remember, there are no wrong answers here - just "Yes, and..." thinking!</span>
-                </div>
-            `;
-            chatMessages.appendChild(welcomeDiv);
-        }
-
         // ============================================
-        // METRICS & UTILITIES
+        // METRICS
         // ============================================
         
-        /**
-         * Update conversation metrics (simulated for demo)
-         * In production, this could use sentiment analysis or other AI evaluation
-         */
         function updateMetrics() {
-            if (messageCount > 0) {
-                // Simulated metrics that improve with conversation length
-                // Base scores increase with each exchange
-                confidenceScore = Math.min(95, 50 + (messageCount * 5) + Math.floor(Math.random() * 5));
-                flowScore = Math.min(95, 55 + (messageCount * 4) + Math.floor(Math.random() * 5));
+            if (userMessageCount > 0) {
+                const yesAndRate = Math.round((yesAndCount / userMessageCount) * 100);
+                confidenceValue.textContent = yesAndRate + '%';
+                confidenceFill.style.width = yesAndRate + '%';
                 
-                // Update UI
-                confidenceValue.textContent = confidenceScore + '%';
-                confidenceFill.style.width = confidenceScore + '%';
-                flowValue.textContent = flowScore + '%';
-                flowFill.style.width = flowScore + '%';
+                const avgTime = totalResponseTime / userMessageCount;
+                let engagement = avgTime < 6000 ? 95 : avgTime < 12000 ? 80 : avgTime < 20000 ? 65 : 50;
+                flowValue.textContent = engagement + '%';
+                flowFill.style.width = engagement + '%';
             } else {
-                // Reset to defaults
                 confidenceValue.textContent = '--';
                 confidenceFill.style.width = '0%';
                 flowValue.textContent = '--';
@@ -782,16 +1176,10 @@ Ready for another round? Click "New Session" to try a different scenario!`;
             }
         }
 
-        /**
-         * Update the message count display
-         */
         function updateMessageCount() {
             messageCountEl.textContent = messageCount;
         }
 
-        /**
-         * Escape HTML to prevent XSS
-         */
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
@@ -799,12 +1187,9 @@ Ready for another round? Click "New Session" to try a different scenario!`;
         }
 
         // ============================================
-        // APPLICATION START
+        // START
         // ============================================
-        
-        // Initialize the application when the page loads
         init();
     </script>
 </body>
 </html>
-
