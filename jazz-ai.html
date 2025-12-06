@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAZZ - AI Practice Partner | improvU</title>
+    <meta name="description" content="Practice conversations with your AI coach in a safe, judgment-free environment. Master improvisational skills through real-time feedback.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Google Generative AI Import Map -->
+    <script type="importmap">
+    {
+        "imports": {
+            "@google/generative-ai": "https://cdn.jsdelivr.net/npm/@google/generative-ai@latest/dist/index.mjs"
+        }
+    }
+    </script>
+    
+    <!-- Minimal styles for text input (maintaining improvU design language) -->
+    <style>
+        /* Chat input styling - matches improvU design system */
+        .chat-input-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid #E5E8F0;
+            border-radius: 100px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: #1E2875;
+            background: #F8F9FB;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .chat-input:focus {
+            outline: none;
+            border-color: #4169E1;
+            background: #FFFFFF;
+        }
+        .chat-input::placeholder {
+            color: #6B7280;
+        }
+        .chat-input:disabled {
+            background: #E5E8F0;
+            cursor: not-allowed;
+        }
+        .send-btn {
+            background: #4169E1;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+        }
+        .send-btn:hover:not(:disabled) {
+            background: #5B7FFF;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(65, 105, 225, 0.4);
+        }
+        .send-btn:disabled {
+            background: #A5B4FC;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .send-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* AI Avatar in messages */
+        .ai-avatar {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            background: #FFD700;
+            color: #1E2875;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .message.ai-message .message-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: #4169E1;
+            color: white;
+        }
+        .message.ai-message .ai-text {
+            flex: 1;
+            white-space: pre-wrap;
+        }
+        
+        /* Error message styling */
+        .message.error-message .message-content {
+            background: #FEE2E2 !important;
+            color: #991B1B !important;
+        }
+        .message.error-message .ai-avatar {
+            background: #EF4444;
+            color: white;
+        }
+        
+        /* Typing indicator in AI messages */
+        .message.ai-message.typing .message-content {
+            padding: 12px 16px;
+        }
+        .message.ai-message .typing-indicator {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        .message.ai-message .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+                        <!-- Speech Bubble -->
+                        <path d="M18 4H6C4.9 4 4 4.9 4 6V14C4 15.1 4.9 16 6 16H8L12 20L16 16H18C19.1 16 20 15.1 20 14V6C20 4.9 19.1 4 18 4Z" fill="#4169E1"/>
+                        <!-- Growth Arrow -->
+                        <path d="M9 10L12 7L15 10" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 7V13" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
+                        <!-- Conversation Dots -->
+                        <circle cx="9" cy="9" r="1" fill="#FFFFFF"/>
+                        <circle cx="12" cy="9" r="1" fill="#FFFFFF"/>
+                        <circle cx="15" cy="9" r="1" fill="#FFFFFF"/>
+                    </svg>
+                    <a href="index.html" class="logo-text">improvU</a>
+                </div>
+                <div class="nav-links">
+                    <a href="jazz-ai.html" class="nav-link active">Jazz</a>
+                    <a href="convoquest.html" class="nav-link">ConvoQuest</a>
+                    <a href="improvcircle.html" class="nav-link">ImprovCircle</a>
+                    <button class="nav-login-btn">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- JAZZ Main Content -->
+    <section class="jazz-main">
+        <div class="container">
+            <div class="jazz-layout">
+                <!-- Left Sidebar -->
+                <div class="jazz-sidebar">
+                    <div class="jazz-header">
+                        <h1 class="jazz-title">Jazz AI Chat</h1>
+                        <button class="new-session-btn" id="newSessionBtn">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            New Session
+                        </button>
+                    </div>
+
+                    <!-- Topic Selection List -->
+                    <div class="session-list" id="topicList">
+                        <div class="session-item" data-topic="Planning a Trip">
+                            <h3>Planning a Trip</h3>
+                            <p>Practice travel conversations</p>
+                        </div>
+                        <div class="session-item" data-topic="Job Interview Practice">
+                            <h3>Job Interview Practice</h3>
+                            <p>Build confidence for interviews</p>
+                        </div>
+                        <div class="session-item" data-topic="Coffee Shop Conversation">
+                            <h3>Coffee Shop Conversation</h3>
+                            <p>Casual small talk practice</p>
+                        </div>
+                        <div class="session-item" data-topic="First Date Scenarios">
+                            <h3>First Date Scenarios</h3>
+                            <p>Dating conversation skills</p>
+                        </div>
+                        <div class="session-item" data-topic="Networking Event Chat">
+                            <h3>Networking Event Chat</h3>
+                            <p>Professional networking</p>
+                        </div>
+                    </div>
+
+                    <div class="user-profile">
+                        <div class="user-avatar">U</div>
+                        <div class="user-info">
+                            <h4>User Name</h4>
+                            <p>Level 7</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Chat Area -->
+                <div class="jazz-chat">
+                    <div class="scenario-header">
+                        <span class="scenario-badge" id="scenarioBadge">Select a topic to begin</span>
+                    </div>
+
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- Welcome message -->
+                        <div class="message ai-message">
+                            <div class="message-content">
+                                <div class="ai-avatar">J</div>
+                                <span class="ai-text">Hey there! 👋 I'm Jazz, your improv practice partner. Pick a scenario from the left sidebar and let's start practicing together! Remember, there are no wrong answers here - just "Yes, and..." thinking!</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text Input Area (replacing voice input) -->
+                    <div class="voice-input">
+                        <div class="chat-input-container">
+                            <input 
+                                type="text" 
+                                class="chat-input" 
+                                id="chatInput" 
+                                placeholder="Type your response here..." 
+                                disabled
+                                autocomplete="off"
+                            >
+                            <button class="send-btn" id="sendBtn" disabled>
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Send
+                            </button>
+                        </div>
+                        <p class="voice-prompt" id="inputPrompt">Select a topic to start chatting</p>
+                    </div>
+                </div>
+
+                <!-- Right Sidebar - Feedback -->
+                <div class="jazz-feedback">
+                    <h3>Conversation Feedback</h3>
+                    
+                    <div class="feedback-metric">
+                        <div class="metric-header">
+                            <span>Confidence</span>
+                            <span class="metric-value" id="confidenceValue">--</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="confidenceFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="feedback-metric">
+                        <div class="metric-header">
+                            <span>Flow</span>
+                            <span class="metric-value" id="flowValue">--</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="flowFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="session-settings">
+                        <h4>Session Settings</h4>
+                        <div class="setting-item">
+                            <span>Model</span>
+                            <span class="setting-value">Gemini 1.5 Flash</span>
+                        </div>
+                        <div class="setting-item">
+                            <span>Mode</span>
+                            <span class="setting-value">Streaming</span>
+                        </div>
+                        <div class="setting-item">
+                            <span>Messages</span>
+                            <span class="setting-value" id="messageCount">0</span>
+                        </div>
+                    </div>
+
+                    <button class="end-session-btn" id="endSessionBtn">End Session & Get Feedback</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Application Script -->
+    <script type="module">
+        // ============================================
+        // IMPORTS
+        // ============================================
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        
+        /**
+         * Get API key from various sources
+         * Priority: 1) Global config, 2) localStorage, 3) User prompt
+         * 
+         * Note: For production, use a backend proxy to protect your API key.
+         * This approach is for development/demo purposes only.
+         */
+        async function getApiKey() {
+            // Method 1: Check for global config (set by build process or separate config file)
+            if (typeof window !== 'undefined' && window.GEMINI_API_KEY) {
+                return window.GEMINI_API_KEY;
+            }
+            
+            // Method 2: Check localStorage for previously stored key
+            const storedKey = localStorage.getItem('gemini_api_key');
+            if (storedKey) {
+                return storedKey;
+            }
+            
+            // Method 3: Prompt user for API key (development convenience)
+            const key = prompt(
+                '🔑 Enter your Gemini API key:\n\n' +
+                'Get a free key at:\nhttps://makersuite.google.com/app/apikey\n\n' +
+                '(Key will be saved in localStorage for convenience)'
+            );
+            
+            if (key && key.trim()) {
+                localStorage.setItem('gemini_api_key', key.trim());
+                return key.trim();
+            }
+            
+            return null;
+        }
+
+        /**
+         * Generate system instruction for JAZZ based on selected topic
+         */
+        function getSystemInstruction(topic) {
+            return `You are JAZZ, an encouraging improv coach from improvU. You teach 'Yes, and...' principles through conversation practice.
+
+YOUR PERSONALITY:
+- Supportive, playful, and judgment-free
+- You celebrate every attempt the user makes
+- You gently guide them to build on ideas rather than blocking them
+- You keep things light and fun
+- You're enthusiastic but not overwhelming
+
+CONVERSATION GUIDELINES:
+- Keep responses concise (2-4 sentences max)
+- Always model "Yes, and..." thinking in your responses
+- Build on whatever the user says, never shut down their ideas
+- Occasionally remind users about improv principles in a natural way
+- If they seem stuck, offer a gentle prompt or question to help them
+- Use emoji sparingly to keep things friendly 😊
+- Stay in character for the scenario
+
+CURRENT SCENARIO: ${topic}
+
+Begin by briefly setting up the scenario (1-2 sentences) and invite the user to participate with an open-ended question or prompt.`;
+        }
+
+        // ============================================
+        // DOM ELEMENTS
+        // ============================================
+        
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const inputPrompt = document.getElementById('inputPrompt');
+        const scenarioBadge = document.getElementById('scenarioBadge');
+        const topicList = document.getElementById('topicList');
+        const newSessionBtn = document.getElementById('newSessionBtn');
+        const endSessionBtn = document.getElementById('endSessionBtn');
+        const confidenceValue = document.getElementById('confidenceValue');
+        const confidenceFill = document.getElementById('confidenceFill');
+        const flowValue = document.getElementById('flowValue');
+        const flowFill = document.getElementById('flowFill');
+        const messageCountEl = document.getElementById('messageCount');
+
+        // ============================================
+        // APPLICATION STATE
+        // ============================================
+        
+        let genAI = null;           // Google Generative AI instance
+        let chat = null;            // Current chat session
+        let currentTopic = null;    // Selected topic
+        let isGenerating = false;   // Prevents multiple simultaneous requests
+        let messageCount = 0;       // Total messages in session
+        let confidenceScore = 0;    // Simulated confidence metric
+        let flowScore = 0;          // Simulated flow metric
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
+        /**
+         * Initialize the application
+         */
+        async function init() {
+            const API_KEY = await getApiKey();
+            
+            if (!API_KEY) {
+                showError("API key not configured. Please refresh the page and enter your Gemini API key.");
+                return;
+            }
+            
+            try {
+                // Initialize Google Generative AI
+                genAI = new GoogleGenerativeAI(API_KEY);
+                console.log('✅ Gemini AI initialized successfully');
+            } catch (error) {
+                console.error('❌ Failed to initialize Gemini AI:', error);
+                showError("Failed to initialize AI. Please check your API key and refresh the page.");
+            }
+        }
+
+        // ============================================
+        // TOPIC SELECTION
+        // ============================================
+        
+        // Attach click handlers to all topic items
+        topicList.querySelectorAll('.session-item').forEach(item => {
+            item.addEventListener('click', () => selectTopic(item));
+        });
+
+        /**
+         * Handle topic selection
+         */
+        async function selectTopic(topicElement) {
+            if (!genAI) {
+                showError("AI not initialized. Please refresh the page and enter your API key.");
+                return;
+            }
+            
+            // Update visual selection state
+            topicList.querySelectorAll('.session-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            topicElement.classList.add('active');
+            
+            // Update current topic
+            currentTopic = topicElement.dataset.topic;
+            scenarioBadge.textContent = `Scenario: ${currentTopic}`;
+            
+            // Enable chat input
+            chatInput.disabled = false;
+            sendBtn.disabled = false;
+            inputPrompt.textContent = 'Type your response and press Enter or click Send';
+            
+            // Clear previous conversation
+            clearChat();
+            
+            // Initialize new chat session with Gemini
+            await initializeChat();
+        }
+
+        /**
+         * Initialize a new chat session with Gemini
+         */
+        async function initializeChat() {
+            try {
+                // Create model instance with system instruction
+                const model = genAI.getGenerativeModel({ 
+                    model: "gemini-2.5-flash",
+                    systemInstruction: getSystemInstruction(currentTopic)
+                });
+                
+                // Start a new chat session
+                chat = model.startChat({
+                    history: [],
+                    generationConfig: {
+                        maxOutputTokens: 500,
+                        temperature: 0.9,  // Higher creativity for improv
+                    },
+                });
+                
+                // Get initial AI message to kick off the conversation
+                await sendToAI("Let's begin our practice session!");
+                
+            } catch (error) {
+                console.error('❌ Failed to initialize chat:', error);
+                showError("Oops! Connection issue. Please try again.");
+            }
+        }
+
+        // ============================================
+        // CHAT FUNCTIONALITY
+        // ============================================
+        
+        // Send message on button click
+        sendBtn.addEventListener('click', handleSend);
+        
+        // Send message on Enter key (Shift+Enter for new line)
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSend();
+            }
+        });
+
+        /**
+         * Handle sending a message
+         */
+        async function handleSend() {
+            const message = chatInput.value.trim();
+            
+            // Validation
+            if (!message || isGenerating || !chat) return;
+            
+            // Add user message to chat UI
+            addUserMessage(message);
+            chatInput.value = '';
+            
+            // Send to Gemini AI
+            await sendToAI(message);
+        }
+
+        /**
+         * Send message to Gemini AI and stream response
+         */
+        async function sendToAI(userMessage) {
+            if (isGenerating) return;
+            
+            isGenerating = true;
+            sendBtn.disabled = true;
+            chatInput.disabled = true;
+            
+            // Show typing indicator while waiting for response
+            const typingDiv = showTypingIndicator();
+            
+            try {
+                // Use streaming for real-time response display
+                const result = await chat.sendMessageStream(userMessage);
+                
+                // Remove typing indicator and create AI message container
+                typingDiv.remove();
+                const aiMessageDiv = createAIMessageElement();
+                const textSpan = aiMessageDiv.querySelector('.ai-text');
+                
+                // Stream the response chunk by chunk
+                let fullResponse = '';
+                for await (const chunk of result.stream) {
+                    const chunkText = chunk.text();
+                    fullResponse += chunkText;
+                    textSpan.textContent = fullResponse;
+                    scrollToBottom();
+                }
+                
+                // Update conversation metrics
+                updateMetrics();
+                
+            } catch (error) {
+                console.error('❌ AI response error:', error);
+                typingDiv.remove();
+                
+                // Provide user-friendly error message
+                if (error.message?.includes('API key')) {
+                    showError("API key issue. Please refresh and re-enter your key.");
+                } else {
+                    showError("Oops! Connection issue. Please try again.");
+                }
+            } finally {
+                isGenerating = false;
+                sendBtn.disabled = false;
+                chatInput.disabled = false;
+                chatInput.focus();
+            }
+        }
+
+        // ============================================
+        // MESSAGE DISPLAY FUNCTIONS
+        // ============================================
+        
+        /**
+         * Add a user message to the chat
+         */
+        function addUserMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message user-message';
+            messageDiv.innerHTML = `<div class="message-content">${escapeHtml(text)}</div>`;
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+            messageCount++;
+            updateMessageCount();
+        }
+
+        /**
+         * Create an AI message element (for streaming)
+         */
+        function createAIMessageElement() {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ai-message';
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="ai-avatar">J</div>
+                    <span class="ai-text"></span>
+                </div>
+            `;
+            chatMessages.appendChild(messageDiv);
+            messageCount++;
+            updateMessageCount();
+            return messageDiv;
+        }
+
+        /**
+         * Show typing indicator while AI is generating response
+         */
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai-message typing';
+            typingDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="ai-avatar">J</div>
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            scrollToBottom();
+            return typingDiv;
+        }
+
+        /**
+         * Show an error message in the chat
+         */
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'message ai-message error-message';
+            errorDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="ai-avatar">!</div>
+                    <span class="ai-text">${escapeHtml(message)}</span>
+                </div>
+            `;
+            chatMessages.appendChild(errorDiv);
+            scrollToBottom();
+        }
+
+        /**
+         * Auto-scroll chat to the bottom
+         */
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        /**
+         * Clear all chat messages
+         */
+        function clearChat() {
+            chatMessages.innerHTML = '';
+            messageCount = 0;
+            confidenceScore = 0;
+            flowScore = 0;
+            updateMetrics();
+            updateMessageCount();
+        }
+
+        // ============================================
+        // SESSION MANAGEMENT
+        // ============================================
+        
+        /**
+         * Start a new session - reset everything
+         */
+        newSessionBtn.addEventListener('click', () => {
+            // Reset state
+            chat = null;
+            currentTopic = null;
+            
+            // Reset UI elements
+            topicList.querySelectorAll('.session-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            scenarioBadge.textContent = 'Select a topic to begin';
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+            inputPrompt.textContent = 'Select a topic to start chatting';
+            
+            // Clear chat and show welcome message
+            clearChat();
+            showWelcomeMessage();
+        });
+
+        /**
+         * End session and show feedback
+         */
+        endSessionBtn.addEventListener('click', () => {
+            if (messageCount < 2) {
+                alert('Have a conversation first to get feedback!');
+                return;
+            }
+            
+            // Generate feedback summary
+            const feedbackMsg = `🎉 Great session practicing "${currentTopic}"!
+
+📊 Your Stats:
+• Messages exchanged: ${messageCount}
+• Confidence: ${confidenceScore}%
+• Flow: ${flowScore}%
+
+💡 Tips for next time:
+• Keep building on ideas with "Yes, and..."
+• Don't be afraid to take the conversation in unexpected directions
+• The more you practice, the more natural it becomes!
+
+Ready for another round? Click "New Session" to try a different scenario!`;
+            
+            // Display feedback as AI message
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = 'message ai-message';
+            feedbackDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="ai-avatar">J</div>
+                    <span class="ai-text">${escapeHtml(feedbackMsg)}</span>
+                </div>
+            `;
+            chatMessages.appendChild(feedbackDiv);
+            scrollToBottom();
+            
+            // Disable further input
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+            inputPrompt.textContent = 'Session ended — Click "New Session" to continue';
+            chat = null;
+        });
+
+        /**
+         * Show the initial welcome message
+         */
+        function showWelcomeMessage() {
+            const welcomeDiv = document.createElement('div');
+            welcomeDiv.className = 'message ai-message';
+            welcomeDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="ai-avatar">J</div>
+                    <span class="ai-text">Hey there! 👋 I'm Jazz, your improv practice partner. Pick a scenario from the left sidebar and let's start practicing together! Remember, there are no wrong answers here - just "Yes, and..." thinking!</span>
+                </div>
+            `;
+            chatMessages.appendChild(welcomeDiv);
+        }
+
+        // ============================================
+        // METRICS & UTILITIES
+        // ============================================
+        
+        /**
+         * Update conversation metrics (simulated for demo)
+         * In production, this could use sentiment analysis or other AI evaluation
+         */
+        function updateMetrics() {
+            if (messageCount > 0) {
+                // Simulated metrics that improve with conversation length
+                // Base scores increase with each exchange
+                confidenceScore = Math.min(95, 50 + (messageCount * 5) + Math.floor(Math.random() * 5));
+                flowScore = Math.min(95, 55 + (messageCount * 4) + Math.floor(Math.random() * 5));
+                
+                // Update UI
+                confidenceValue.textContent = confidenceScore + '%';
+                confidenceFill.style.width = confidenceScore + '%';
+                flowValue.textContent = flowScore + '%';
+                flowFill.style.width = flowScore + '%';
+            } else {
+                // Reset to defaults
+                confidenceValue.textContent = '--';
+                confidenceFill.style.width = '0%';
+                flowValue.textContent = '--';
+                flowFill.style.width = '0%';
+            }
+        }
+
+        /**
+         * Update the message count display
+         */
+        function updateMessageCount() {
+            messageCountEl.textContent = messageCount;
+        }
+
+        /**
+         * Escape HTML to prevent XSS
+         */
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============================================
+        // APPLICATION START
+        // ============================================
+        
+        // Initialize the application when the page loads
+        init();
+    </script>
+</body>
+</html>
+
