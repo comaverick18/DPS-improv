@@ -1,50 +1,82 @@
 ## improvU (DPS-improv)
 
-### Project overview
-improvU is a static, front-end only site that helps people build conversation confidence through AI practice (JAZZ), real-world challenges (ConvoQuest), and community practice (ImprovCircle). The homepage highlights the value proposition and routes users to try features or join the waitlist via a Typeform CTA.
+### Project Overview
+improvU is a web application that helps people build conversation confidence through:
+- **JAZZ** - AI-powered practice partner using Google's Gemini API
+- **ConvoQuest** - Real-world conversation challenges
+- **ImprovCircle** - Community practice sessions
 
-Key characteristics:
+The homepage highlights the value proposition and routes users to try features or join the waitlist via Typeform.
+
+### Key Features
+- **JAZZ AI Chat**: Real-time conversation practice with Gemini 2.5 Flash
+  - "Yes, and..." improv technique coaching
+  - Multiple scenario options (Coffee Shop, Job Interview, Networking, etc.)
+  - Real-time streaming responses
+  - Session feedback and metrics
+  - Interactive onboarding tutorial
 - Pure HTML/CSS/JS, no build step required
 - Mobile-responsive layout
 - Accessible button and focus states
-- Hero CTA links to Typeform waitlist: `https://form.typeform.com/to/R8oNnhtQ`
 
-### Live hosted link (Vercel)
+### Live Hosted Link (Vercel)
 - Production: https://YOUR-VERCEL-DOMAIN.vercel.app
 
-### Getting started (viewing/running locally)
-Option 1: Open the file directly
+### Getting Started
+
+#### Option 1: Open directly
 1. Clone/download the repo
 2. Open `index.html` in your browser
 
-Option 2: Serve locally (recommended for accurate asset paths and routing)
-- Using Node (serve):
-  - `npx serve .` then open the printed local URL (e.g., `http://localhost:3000`)
-- Using Python:
-  - Python 3: `python -m http.server 8000` then visit `http://localhost:8000`
+#### Option 2: Local server (recommended)
+```bash
+# Using Node (serve)
+npx serve .
+# Then open http://localhost:3000
 
-### Project structure
-- `index.html`: Main landing page with hero, features, and CTAs
-- `styles.css`: Global styles following the design system
-- `script.js`: Client interactions (CTA handling, modals, minor animations)
-- `jazz.html`, `convoquest.html`, `improvcircle.html`: Feature demo pages
-- `DPS-improvU/`: Additional static assets/pages (if used)
-- `design.json`: Design tokens and references
+# Or using Python 3
+python -m http.server 8000
+# Then open http://localhost:8000
+```
 
-### Notable behaviors
-- Hero CTA button (`Start Building Confidence`) links directly to the Typeform.
+### Setting Up JAZZ AI
+The JAZZ feature requires a Google Gemini API key:
 
+1. Get a free API key at: https://makersuite.google.com/app/apikey
+2. When you first visit the JAZZ page, you'll be prompted to enter your key
+3. The key is stored in localStorage for convenience
+
+> **Note**: For production, implement a backend proxy to protect your API key.
+
+### Project Structure
+```
+├── index.html          # Landing page with hero, features, CTAs
+├── jazz-ai.html        # AI chat practice (Gemini integration)
+├── convoquest.html     # Real-world challenges feature
+├── improvcircle.html   # Community practice feature
+├── styles.css          # Global styles and design system
+├── script.js           # Client interactions and animations
+├── design.json         # Design tokens and references
+└── .env.local          # API keys (gitignored)
+```
+
+### Notable Behaviors
+- Hero CTA button links directly to Typeform waitlist: `https://form.typeform.com/to/R8oNnhtQ`
+- JAZZ uses streaming responses for real-time AI feedback
+- "Yes, and..." detection rewards users for good improv technique
 
 ### Deploying to Vercel
 1. Push this repository to GitHub/GitLab/Bitbucket
-2. In Vercel, click “New Project” → Import the repo
-3. Framework preset: “Other” (no build). Build Command: `None`. Output Directory: `/` (root)
-4. Deploy
-5. Update the “Live hosted link” in this README with your assigned Vercel domain
+2. In Vercel, click "New Project" → Import the repo
+3. Framework preset: "Other" (no build)
+4. Build Command: `None`
+5. Output Directory: `/` (root)
+6. Deploy and update the live link above
 
-Optional: If you add a build step later, configure the appropriate framework preset and output directory in Vercel.
+### Tech Stack
+- HTML5 / CSS3 / Vanilla JavaScript
+- Google Generative AI (Gemini 2.5 Flash)
+- Inter font family
 
 ### License
 Proprietary (update if you wish to open-source).
-
-
