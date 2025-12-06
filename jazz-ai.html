@@ -1,4 +1,4 @@
-t p<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -74,6 +74,56 @@ t p<!DOCTYPE html>
         /* Ensure scenario header doesn't grow */
         .scenario-header {
             flex: 0 0 auto !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* ============================================
+           COUNTDOWN TIMER
+           ============================================ */
+        .timer-container {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #1E2875 0%, #4169E1 100%);
+            border-radius: 100px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .timer-container.active {
+            display: flex;
+        }
+        .timer-container svg {
+            width: 20px;
+            height: 20px;
+        }
+        .timer-display {
+            font-family: 'Inter', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+        .timer-progress {
+            width: 60px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .timer-progress-fill {
+            height: 100%;
+            background: #FFD700;
+            border-radius: 3px;
+            transition: width 1s linear;
+        }
+        .timer-container.warning {
+            background: linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+            animation: timerPulse 0.5s ease-in-out infinite;
+        }
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
         }
 
         /* ============================================
@@ -208,6 +258,20 @@ t p<!DOCTYPE html>
             animation: badgePop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
         }
+        .blocking-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 12px;
+            margin-top: 8px;
+            animation: badgePop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
         @keyframes badgePop {
             0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
@@ -282,43 +346,64 @@ t p<!DOCTYPE html>
             height: 20px;
         }
 
-        /* Difficulty tags */
-        .difficulty-tag {
-            display: inline-block;
-            font-size: 10px;
-            font-weight: 700;
+        /* Session Status Indicator */
+        .session-status {
+            padding: 16px;
+            background: linear-gradient(135deg, #F8FAFC 0%, #EEF2FF 100%);
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+        .status-label {
+            font-size: 12px;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            padding: 4px 10px;
-            border-radius: 10px;
-            margin-top: 8px;
+            color: #6B7280;
+            margin-bottom: 8px;
         }
-        .difficulty-tag.beginner {
-            background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
-            color: #065F46;
+        .status-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1E2875;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .difficulty-tag.intermediate {
-            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
-            color: #92400E;
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10B981;
+            animation: statusPulse 2s infinite;
         }
-        .difficulty-tag.advanced {
-            background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
-            color: #991B1B;
+        .status-dot.teaching { background: #4169E1; }
+        .status-dot.playing { background: #10B981; }
+        .status-dot.feedback { background: #FFD700; }
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
-        /* Session items */
-        .session-item {
-            border-radius: 14px;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        .session-item:hover {
-            background: #F8FAFC;
-            border-color: #E2E8F0;
-        }
-        .session-item.active {
+        /* Goal Display */
+        .goal-display {
+            padding: 16px;
             background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
-            border-color: #4169E1;
+            border: 2px solid #4169E1;
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+        .goal-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #4169E1;
+            margin-bottom: 6px;
+        }
+        .goal-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1E2875;
         }
 
         /* ============================================
@@ -344,11 +429,45 @@ t p<!DOCTYPE html>
         .progress-fill {
             background: linear-gradient(90deg, #4169E1, #10B981) !important;
         }
+        .progress-fill.warning {
+            background: linear-gradient(90deg, #F59E0B, #EF4444) !important;
+        }
+
+        /* AI Feedback Section */
+        .ai-feedback-section {
+            margin-top: 20px;
+            padding: 16px;
+            background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+            border-radius: 14px;
+            display: none;
+        }
+        .ai-feedback-section.visible {
+            display: block;
+            animation: fadeSlideIn 0.4s ease;
+        }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .ai-feedback-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #065F46;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ai-feedback-content {
+            font-size: 13px;
+            color: #374151;
+            line-height: 1.6;
+        }
 
         /* ============================================
-           ONBOARDING MODAL
+           GOAL SELECTION MODAL
            ============================================ */
-        .onboarding-modal {
+        .goal-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -362,16 +481,16 @@ t p<!DOCTYPE html>
             backdrop-filter: blur(8px);
             animation: fadeIn 0.3s ease;
         }
-        .onboarding-modal.hidden { display: none; }
+        .goal-modal.hidden { display: none; }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        .onboarding-content {
+        .goal-content {
             background: white;
             border-radius: 28px;
             padding: 48px;
-            max-width: 560px;
+            max-width: 600px;
             width: 90%;
             max-height: 85vh;
             overflow-y: auto;
@@ -382,77 +501,93 @@ t p<!DOCTYPE html>
             from { transform: translateY(30px) scale(0.95); opacity: 0; }
             to { transform: translateY(0) scale(1); opacity: 1; }
         }
-        .onboarding-header {
+        .goal-header {
             text-align: center;
             margin-bottom: 32px;
         }
-        .onboarding-header .ai-avatar {
+        .goal-header .ai-avatar {
             width: 72px;
             height: 72px;
             font-size: 32px;
             margin: 0 auto 20px;
         }
-        .onboarding-header h2 {
+        .goal-header h2 {
             color: #1E2875;
-            font-size: 32px;
-            margin: 0;
+            font-size: 28px;
+            margin: 0 0 8px;
             font-weight: 700;
         }
-        .onboarding-body h3 {
-            color: #1E2875;
-            font-size: 18px;
-            margin: 28px 0 14px;
-            font-weight: 600;
-        }
-        .onboarding-body h3:first-child { margin-top: 0; }
-        .onboarding-body p {
+        .goal-header p {
             color: #6B7280;
-            line-height: 1.7;
-            margin: 0 0 14px;
             font-size: 15px;
+            margin: 0;
         }
-        .onboarding-body ol {
-            color: #6B7280;
-            padding-left: 24px;
-            line-height: 2;
-            margin: 0 0 28px;
-        }
-        .onboarding-body strong { color: #1E2875; }
         
-        /* Example boxes */
-        .example-box {
+        .goal-options {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin: 20px 0 28px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
         }
-        .example-bad, .example-good {
-            padding: 20px;
-            border-radius: 16px;
+        .goal-option {
+            padding: 16px 20px;
+            border: 2px solid #E5E8F0;
+            border-radius: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
         }
-        .example-bad {
-            background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
-            border: 2px solid #FECACA;
+        .goal-option:hover {
+            border-color: #4169E1;
+            background: #F8FAFC;
         }
-        .example-good {
-            background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
-            border: 2px solid #BBF7D0;
+        .goal-option.selected {
+            border-color: #4169E1;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
         }
-        .example-box .label {
-            font-weight: 700;
-            display: block;
-            margin-bottom: 14px;
-            font-size: 14px;
+        .goal-option h4 {
+            margin: 0 0 4px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1E2875;
         }
-        .example-box .dialogue {
-            margin: 8px 0;
+        .goal-option p {
+            margin: 0;
             font-size: 13px;
-            color: #374151;
-            line-height: 1.5;
+            color: #6B7280;
         }
 
-        /* Start button */
-        .start-btn {
+        .custom-goal-section {
+            margin-bottom: 24px;
+        }
+        .custom-goal-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1E2875;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .custom-goal-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #E5E8F0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            color: #1E2875;
+            transition: all 0.2s ease;
+        }
+        .custom-goal-input:focus {
+            outline: none;
+            border-color: #4169E1;
+            box-shadow: 0 0 0 4px rgba(65, 105, 225, 0.1);
+        }
+        .custom-goal-input::placeholder {
+            color: #9CA3AF;
+        }
+
+        .goal-submit-btn {
             display: block;
             width: 100%;
             background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
@@ -465,11 +600,16 @@ t p<!DOCTYPE html>
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 6px 20px rgba(65, 105, 225, 0.35);
-            margin-top: 8px;
         }
-        .start-btn:hover {
+        .goal-submit-btn:hover:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 8px 28px rgba(65, 105, 225, 0.45);
+        }
+        .goal-submit-btn:disabled {
+            background: #CBD5E1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         /* ============================================
@@ -514,55 +654,58 @@ t p<!DOCTYPE html>
            RESPONSIVE
            ============================================ */
         @media (max-width: 768px) {
-            .example-box { grid-template-columns: 1fr; }
-            .onboarding-content { padding: 28px; }
-            .onboarding-header h2 { font-size: 26px; }
+            .goal-options { grid-template-columns: 1fr; }
+            .goal-content { padding: 28px; }
+            .goal-header h2 { font-size: 24px; }
         }
     </style>
 </head>
 <body>
     <!-- ============================================
-         ONBOARDING MODAL
+         GOAL SELECTION MODAL
          ============================================ -->
-    <div class="onboarding-modal" id="onboardingModal">
-        <div class="onboarding-content">
-            <div class="onboarding-header">
+    <div class="goal-modal" id="goalModal">
+        <div class="goal-content">
+            <div class="goal-header">
                 <div class="ai-avatar">J</div>
-                <h2>Welcome to Jazz! 🎭</h2>
+                <h2>Welcome to Jazz</h2>
+                <p>What would you like to practice today?</p>
             </div>
             
-            <div class="onboarding-body">
-                <h3>What is "Yes, And..."?</h3>
-                <p>It's the <strong>#1 rule of improv!</strong> Instead of blocking ideas, you <strong>accept</strong> what's offered and <strong>build</strong> on it.</p>
-                
-                <div class="example-box">
-                    <div class="example-bad">
-                        <span class="label">❌ Blocking</span>
-                        <p class="dialogue"><strong>Partner:</strong> "Let's go to the moon!"</p>
-                        <p class="dialogue"><strong>You:</strong> "That's impossible."</p>
-                    </div>
-                    <div class="example-good">
-                        <span class="label">✅ Yes, And...</span>
-                        <p class="dialogue"><strong>Partner:</strong> "Let's go to the moon!"</p>
-                        <p class="dialogue"><strong>You:</strong> "Yes! And let's pack snacks for the trip!"</p>
-                    </div>
+            <div class="goal-options" id="goalOptions">
+                <div class="goal-option" data-goal="Networking Event">
+                    <h4>Networking Event</h4>
+                    <p>Professional mingling</p>
                 </div>
-                
-                <h3>How Jazz Works</h3>
-                <ol>
-                    <li><strong>Pick a scenario</strong> from the sidebar</li>
-                    <li><strong>I'll set the scene</strong> and start our conversation</li>
-                    <li><strong>You respond</strong> using "Yes, and..." thinking</li>
-                    <li><strong>We build a story together!</strong> No wrong answers 😊</li>
-                </ol>
-                
-                <p style="text-align: center; color: #4169E1; font-weight: 600; font-size: 16px;">
-                    The goal isn't perfection — it's practice!
-                </p>
+                <div class="goal-option" data-goal="Job Interview">
+                    <h4>Job Interview</h4>
+                    <p>Build confidence</p>
+                </div>
+                <div class="goal-option" data-goal="Asking for a Promotion">
+                    <h4>Asking for a Promotion</h4>
+                    <p>Workplace conversations</p>
+                </div>
+                <div class="goal-option" data-goal="Approaching Someone for a Date">
+                    <h4>Asking Someone Out</h4>
+                    <p>Dating confidence</p>
+                </div>
+                <div class="goal-option" data-goal="Coffee Shop Conversation">
+                    <h4>Coffee Shop Chat</h4>
+                    <p>Casual small talk</p>
+                </div>
+                <div class="goal-option" data-goal="Team Meeting">
+                    <h4>Team Meeting</h4>
+                    <p>Group discussions</p>
+                </div>
             </div>
             
-            <button class="start-btn" id="startPracticing">
-                Got it! Let's Practice 🚀
+            <div class="custom-goal-section">
+                <label class="custom-goal-label">Or enter your own scenario:</label>
+                <input type="text" class="custom-goal-input" id="customGoalInput" placeholder="e.g., Negotiating a raise, Making new friends...">
+            </div>
+            
+            <button class="goal-submit-btn" id="goalSubmitBtn" disabled>
+                Start Learning
             </button>
         </div>
     </div>
@@ -604,43 +747,29 @@ t p<!DOCTYPE html>
                         </button>
                     </div>
 
+                    <!-- Session Status -->
+                    <div class="session-status">
+                        <div class="status-label">Current Phase</div>
+                        <div class="status-value">
+                            <span class="status-dot teaching" id="statusDot"></span>
+                            <span id="statusText">Waiting...</span>
+                        </div>
+                    </div>
+
+                    <!-- Goal Display (hidden until goal selected) -->
+                    <div class="goal-display" id="goalDisplay" style="display: none;">
+                        <div class="goal-label">Your Goal</div>
+                        <div class="goal-value" id="goalValueText">--</div>
+                    </div>
+
                     <!-- How to Play Button -->
                     <button class="how-to-play-btn" id="howToPlayBtn">
                         <svg viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
                             <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
                         </svg>
-                        How to Play
+                        Restart Tutorial
                     </button>
-
-                    <!-- Topic Selection List -->
-                    <div class="session-list" id="topicList">
-                        <div class="session-item" data-topic="Coffee Shop Conversation">
-                            <h3>Coffee Shop Chat</h3>
-                            <p>Casual small talk</p>
-                            <span class="difficulty-tag beginner">Beginner</span>
-                        </div>
-                        <div class="session-item" data-topic="Planning a Trip">
-                            <h3>Planning a Trip</h3>
-                            <p>Travel conversations</p>
-                            <span class="difficulty-tag beginner">Beginner</span>
-                        </div>
-                        <div class="session-item" data-topic="Networking Event">
-                            <h3>Networking Event</h3>
-                            <p>Professional mingling</p>
-                            <span class="difficulty-tag intermediate">Intermediate</span>
-                        </div>
-                        <div class="session-item" data-topic="Job Interview Practice">
-                            <h3>Job Interview</h3>
-                            <p>Build confidence</p>
-                            <span class="difficulty-tag intermediate">Intermediate</span>
-                        </div>
-                        <div class="session-item" data-topic="First Date Scenario">
-                            <h3>First Date</h3>
-                            <p>Dating skills</p>
-                            <span class="difficulty-tag advanced">Advanced</span>
-                        </div>
-                    </div>
 
                     <div class="user-profile">
                         <div class="user-avatar">U</div>
@@ -654,17 +783,28 @@ t p<!DOCTYPE html>
                 <!-- Main Chat Area -->
                 <div class="jazz-chat">
                     <div class="scenario-header">
-                        <span class="scenario-badge" id="scenarioBadge">Select a scenario to begin</span>
+                        <span class="scenario-badge" id="scenarioBadge">Learning "Yes, and..."</span>
+                        <!-- Timer (hidden until playing) -->
+                        <div class="timer-container" id="timerContainer">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span class="timer-display" id="timerDisplay">1:30</span>
+                            <div class="timer-progress">
+                                <div class="timer-progress-fill" id="timerProgressFill" style="width: 100%"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="chat-messages" id="chatMessages">
-                        <!-- Welcome message inserted by JS -->
+                        <!-- Messages inserted by JS -->
                     </div>
 
                     <!-- Suggested Responses -->
                     <div class="suggested-responses" id="suggestedResponses" style="display: none;">
-                        <p>💡 Need a starter? Try one:</p>
-                        <div class="suggestions-container">
+                        <p>Need a starter? Try one:</p>
+                        <div class="suggestions-container" id="suggestionsContainer">
                             <button class="suggestion-chip" data-suggestion="Yes, and we could also...">Yes, and we could also...</button>
                             <button class="suggestion-chip" data-suggestion="That sounds great! What if...">That sounds great! What if...</button>
                             <button class="suggestion-chip" data-suggestion="I love that idea! And...">I love that idea! And...</button>
@@ -679,10 +819,9 @@ t p<!DOCTYPE html>
                                 class="chat-input" 
                                 id="chatInput" 
                                 placeholder="Type your response here..." 
-                                disabled
                                 autocomplete="off"
                             >
-                            <button class="send-btn" id="sendBtn" disabled>
+                            <button class="send-btn" id="sendBtn">
                                 <svg viewBox="0 0 24 24" fill="none">
                                     <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -691,7 +830,7 @@ t p<!DOCTYPE html>
                             </button>
                         </div>
                         <p class="input-hint" id="inputPrompt">
-                            Pick a scenario to start chatting
+                            Type your response <span class="keyboard-hint">(Enter to send)</span>
                         </p>
                     </div>
                 </div>
@@ -702,24 +841,35 @@ t p<!DOCTYPE html>
                     
                     <div class="feedback-metric">
                         <div class="metric-header">
-                            <span>"Yes, And" Usage</span>
-                            <span class="metric-value" id="confidenceValue">--</span>
+                            <span>"Yes, And" Count</span>
+                            <span class="metric-value" id="yesAndValue">0</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="confidenceFill" style="width: 0%"></div>
+                            <div class="progress-fill" id="yesAndFill" style="width: 0%"></div>
                         </div>
-                        <p class="metric-label">How often you build on ideas</p>
+                        <p class="metric-label">Times you accepted and built on ideas</p>
+                    </div>
+
+                    <div class="feedback-metric">
+                        <div class="metric-header">
+                            <span>Blocking Count</span>
+                            <span class="metric-value" id="blockingValue">0</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill warning" id="blockingFill" style="width: 0%"></div>
+                        </div>
+                        <p class="metric-label">Times you rejected or shut down ideas</p>
                     </div>
 
                     <div class="feedback-metric">
                         <div class="metric-header">
                             <span>Engagement</span>
-                            <span class="metric-value" id="flowValue">--</span>
+                            <span class="metric-value" id="engagementValue">--</span>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress-fill" id="flowFill" style="width: 0%"></div>
+                            <div class="progress-fill" id="engagementFill" style="width: 0%"></div>
                         </div>
-                        <p class="metric-label">Response speed & flow</p>
+                        <p class="metric-label">Response quality and flow</p>
                     </div>
 
                     <div class="session-settings">
@@ -738,7 +888,20 @@ t p<!DOCTYPE html>
                         </div>
                     </div>
 
-                    <button class="end-session-btn" id="endSessionBtn">End & Get Feedback</button>
+                    <!-- AI Feedback Section (shown after session) -->
+                    <div class="ai-feedback-section" id="aiFeedbackSection">
+                        <div class="ai-feedback-title">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            Improvement Tips
+                        </div>
+                        <div class="ai-feedback-content" id="aiFeedbackContent">
+                            <!-- AI-generated feedback appears here -->
+                        </div>
+                    </div>
+
+                    <button class="end-session-btn" id="endSessionBtn">End Session Early</button>
                 </div>
             </div>
         </div>
@@ -762,7 +925,7 @@ t p<!DOCTYPE html>
             if (storedKey) return storedKey;
             
             const key = prompt(
-                '🔑 Enter your Gemini API key:\n\n' +
+                'Enter your Gemini API key:\n\n' +
                 'Get a free key at:\nhttps://makersuite.google.com/app/apikey\n\n' +
                 '(Key will be saved for convenience)'
             );
@@ -773,28 +936,44 @@ t p<!DOCTYPE html>
             return null;
         }
 
-        function getSystemInstruction(topic) {
-            return `You are JAZZ, an encouraging improv coach from improvU. You teach 'Yes, and...' principles through conversation practice.
+        // ============================================
+        // SYSTEM PROMPT - Multi-mode AI Instruction
+        // ============================================
+        
+        function getSystemInstruction(userGoal) {
+            return `You are JAZZ, an encouraging and playful improv coach from a web app called improvU.
 
-YOUR PERSONALITY:
-- Supportive, playful, and judgment-free
-- You celebrate every attempt the user makes
-- You gently guide them to build on ideas rather than blocking them
-- You keep things light and fun
-- You're enthusiastic but not overwhelming
+IMPORTANT RULES (Apply in all modes):
+- You MUST NOT use any emojis.
+- All your responses MUST be short and concise, so the user can read and quickly respond. Particularly during "yes and..." practice sessions.
+- When creating a list, you MUST use the round bullet character (•). Do NOT use asterisks (*) or hyphens (-). For example: • This is a correct list item.
 
-CONVERSATION GUIDELINES:
-- Keep responses concise (2-3 sentences max)
-- Always model "Yes, and..." thinking in your responses
-- Build on whatever the user says, never shut down their ideas
-- Occasionally acknowledge good "Yes, and" technique when you see it
-- If they seem stuck, offer a gentle prompt or question
-- Use emoji sparingly to keep things friendly 😊
-- Stay in character for the scenario
+MODES OF OPERATION:
 
-CURRENT SCENARIO: ${topic}
+1. TEACHING MODE:
+Your initial goal is to teach the user the 'Yes, and...' concept. You will stay in this mode until the user agrees to start a practice session.
 
-Begin by briefly setting up the scenario (1-2 sentences) and invite the user to participate.`;
+Teaching Flow:
+1. Your very first message must be a short welcome of 2-3 sentences. Introduce yourself as JAZZ from improvU and ask the user if they're ready to learn about the 'Yes, and...' concept.
+2. After the user confirms, explain the objective of 'Yes, and...' using a bulleted list. End this message with a question to check for understanding (e.g., "Does that make sense?").
+3. Next, explain the rules of how to play using a bulleted list. Add a section at the bottom to explain the user does not have to start with "Yes and..."; it's a foundational guideline, but you can accept a response with other affirmative phrases like "Okay," "Sure," "Right," or even rephrasing with questions like "Cool, and then what?" to keep the scene moving, with the key being acceptance and addition, not just those exact words. End with a question to see if they have any questions.
+4. Patiently answer any questions. Always end your clarifications with a question to ensure they've understood.
+5. Once you are confident the user understands, you MUST ask them if they would like to start a practice session.
+
+2. TOPIC SELECTION MODE:
+This mode is triggered when the user agrees to start a practice session.
+Your only response in this mode MUST be similar to: "Great! To get started, I will set up a scene based on your goal: ${userGoal}. Ready to begin?" Do not add any other text or formatting.
+
+3. PLAYING MODE:
+This mode is triggered after the user confirms they are ready to begin. When the user says something like "yes", "ready", "let's go", "start", etc. after the topic selection message, enter this mode.
+
+Playing Flow:
+1. Upon entering this mode, your first message MUST be a creative and unique starting prompt for an improv scene related to the goal: ${userGoal}. You start the scene and assume the role of the other party in the scenario. Keep it to 2-3 sentences maximum.
+2. After you provide the starting prompt, ALL your subsequent responses in this mode MUST begin with the exact phrase "Yes, and...".
+3. In this mode, you MUST NOT ask questions at the end of your turn. Commit to the scene and just add the next piece of information. Your goal is to be a fun and creative improv partner.
+4. Keep all responses to 2-3 sentences maximum.
+
+USER'S GOAL: ${userGoal}`;
         }
 
         // ============================================
@@ -806,57 +985,118 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
         const sendBtn = document.getElementById('sendBtn');
         const inputPrompt = document.getElementById('inputPrompt');
         const scenarioBadge = document.getElementById('scenarioBadge');
-        const topicList = document.getElementById('topicList');
         const newSessionBtn = document.getElementById('newSessionBtn');
         const endSessionBtn = document.getElementById('endSessionBtn');
         const howToPlayBtn = document.getElementById('howToPlayBtn');
-        const onboardingModal = document.getElementById('onboardingModal');
-        const startPracticingBtn = document.getElementById('startPracticing');
         const suggestedResponses = document.getElementById('suggestedResponses');
-        const confidenceValue = document.getElementById('confidenceValue');
-        const confidenceFill = document.getElementById('confidenceFill');
-        const flowValue = document.getElementById('flowValue');
-        const flowFill = document.getElementById('flowFill');
+        const suggestionsContainer = document.getElementById('suggestionsContainer');
+        
+        // Goal Modal Elements
+        const goalModal = document.getElementById('goalModal');
+        const goalOptions = document.getElementById('goalOptions');
+        const customGoalInput = document.getElementById('customGoalInput');
+        const goalSubmitBtn = document.getElementById('goalSubmitBtn');
+        
+        // Sidebar Elements
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const goalDisplay = document.getElementById('goalDisplay');
+        const goalValueText = document.getElementById('goalValueText');
+        
+        // Timer Elements
+        const timerContainer = document.getElementById('timerContainer');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerProgressFill = document.getElementById('timerProgressFill');
+        
+        // Feedback Elements
+        const yesAndValue = document.getElementById('yesAndValue');
+        const yesAndFill = document.getElementById('yesAndFill');
+        const blockingValue = document.getElementById('blockingValue');
+        const blockingFill = document.getElementById('blockingFill');
+        const engagementValue = document.getElementById('engagementValue');
+        const engagementFill = document.getElementById('engagementFill');
         const messageCountEl = document.getElementById('messageCount');
+        const aiFeedbackSection = document.getElementById('aiFeedbackSection');
+        const aiFeedbackContent = document.getElementById('aiFeedbackContent');
 
         // ============================================
         // STATE
         // ============================================
         
+        // App States: 'GOAL_SELECTION' | 'TEACHING' | 'TOPIC_SELECTION' | 'PLAYING' | 'FEEDBACK'
+        let currentState = 'GOAL_SELECTION';
         let genAI = null;
         let chat = null;
-        let currentTopic = null;
+        let userGoal = null;
         let isGenerating = false;
+        
+        // Metrics
         let messageCount = 0;
         let yesAndCount = 0;
+        let blockingCount = 0;
         let userMessageCount = 0;
         let lastMessageTime = Date.now();
         let totalResponseTime = 0;
+        
+        // Timer
+        let timerInterval = null;
+        let timeRemaining = 90; // seconds
+        const TOTAL_TIME = 90;
+        
+        // Suggestions
         let suggestionTimeout = null;
 
         // ============================================
-        // ONBOARDING
+        // GOAL SELECTION
         // ============================================
         
-        const hasSeenOnboarding = localStorage.getItem('jazz_onboarding_complete');
-        if (hasSeenOnboarding) onboardingModal.classList.add('hidden');
-
-        startPracticingBtn.addEventListener('click', () => {
-            localStorage.setItem('jazz_onboarding_complete', 'true');
-            onboardingModal.classList.add('hidden');
+        let selectedGoal = null;
+        
+        goalOptions.querySelectorAll('.goal-option').forEach(option => {
+            option.addEventListener('click', () => {
+                goalOptions.querySelectorAll('.goal-option').forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedGoal = option.dataset.goal;
+                customGoalInput.value = '';
+                updateGoalSubmitButton();
+            });
         });
-
-        howToPlayBtn.addEventListener('click', () => {
-            onboardingModal.classList.remove('hidden');
+        
+        customGoalInput.addEventListener('input', () => {
+            if (customGoalInput.value.trim()) {
+                goalOptions.querySelectorAll('.goal-option').forEach(o => o.classList.remove('selected'));
+                selectedGoal = customGoalInput.value.trim();
+            } else {
+                selectedGoal = null;
+            }
+            updateGoalSubmitButton();
+        });
+        
+        function updateGoalSubmitButton() {
+            goalSubmitBtn.disabled = !selectedGoal;
+        }
+        
+        goalSubmitBtn.addEventListener('click', async () => {
+            if (!selectedGoal) return;
+            
+            userGoal = selectedGoal;
+            goalModal.classList.add('hidden');
+            
+            // Show goal in sidebar
+            goalDisplay.style.display = 'block';
+            goalValueText.textContent = userGoal;
+            
+            // Initialize and start teaching
+            await initializeAI();
         });
 
         // ============================================
         // INITIALIZATION
         // ============================================
         
-        async function init() {
+        async function initializeAI() {
+            updateState('TEACHING');
             chatInput.placeholder = "Connecting to Jazz AI...";
-            showWelcomeMessage();
             
             const API_KEY = await getApiKey();
             if (!API_KEY) {
@@ -867,65 +1107,145 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
             
             try {
                 genAI = new GoogleGenerativeAI(API_KEY);
-                console.log('✅ Gemini AI initialized');
+                console.log('Gemini AI initialized');
                 chatInput.placeholder = "Type your response here...";
+                
+                await startChat();
             } catch (error) {
-                console.error('❌ Failed to initialize:', error);
+                console.error('Failed to initialize:', error);
                 showError("Failed to connect. Please check your API key.");
             }
         }
-
-        // ============================================
-        // TOPIC SELECTION
-        // ============================================
         
-        topicList.querySelectorAll('.session-item').forEach(item => {
-            item.addEventListener('click', () => selectTopic(item));
-        });
-
-        async function selectTopic(topicElement) {
-            if (!genAI) {
-                showError("AI not ready. Please refresh the page.");
-                return;
-            }
-            
-            topicList.querySelectorAll('.session-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            topicElement.classList.add('active');
-            
-            currentTopic = topicElement.dataset.topic;
-            scenarioBadge.textContent = `Scenario: ${currentTopic}`;
-            
-            chatInput.disabled = false;
-            sendBtn.disabled = false;
-            inputPrompt.innerHTML = 'Type your response <span class="keyboard-hint">(Enter to send)</span>';
-            
-            clearChat();
-            await initializeChat();
-        }
-
-        async function initializeChat() {
+        async function startChat() {
             try {
                 const model = genAI.getGenerativeModel({ 
                     model: "gemini-2.5-flash",
-                    systemInstruction: getSystemInstruction(currentTopic)
+                    systemInstruction: getSystemInstruction(userGoal)
                 });
                 
                 chat = model.startChat({
                     history: [],
                     generationConfig: {
-                        maxOutputTokens: 400,
-                        temperature: 0.9,
+                        maxOutputTokens: 500,
+                        temperature: 0.8,
                     },
                 });
                 
-                await sendToAI("Let's begin!");
-                startSuggestionTimer();
+                // AI sends first message
+                await sendToAI("Hello, I'm ready to learn!");
             } catch (error) {
-                console.error('❌ Chat init failed:', error);
+                console.error('Chat init failed:', error);
                 showError("Connection issue. Please try again.");
             }
+        }
+
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+        
+        function updateState(newState) {
+            currentState = newState;
+            
+            // Update status indicator
+            statusDot.className = 'status-dot';
+            switch (newState) {
+                case 'GOAL_SELECTION':
+                    statusText.textContent = 'Select a Goal';
+                    break;
+                case 'TEACHING':
+                    statusDot.classList.add('teaching');
+                    statusText.textContent = 'Learning';
+                    scenarioBadge.textContent = 'Learning "Yes, and..."';
+                    break;
+                case 'TOPIC_SELECTION':
+                    statusDot.classList.add('teaching');
+                    statusText.textContent = 'Ready to Practice';
+                    scenarioBadge.textContent = 'Starting Practice';
+                    break;
+                case 'PLAYING':
+                    statusDot.classList.add('playing');
+                    statusText.textContent = 'Playing';
+                    scenarioBadge.textContent = `Practicing: ${userGoal}`;
+                    startTimer();
+                    break;
+                case 'FEEDBACK':
+                    statusDot.classList.add('feedback');
+                    statusText.textContent = 'Session Complete';
+                    scenarioBadge.textContent = 'Session Feedback';
+                    stopTimer();
+                    generateFeedback();
+                    break;
+            }
+        }
+        
+        // Detect state transitions from AI responses
+        function detectStateTransition(aiResponse) {
+            const lowerResponse = aiResponse.toLowerCase();
+            
+            if (currentState === 'TEACHING') {
+                // Check if AI is asking to start practice
+                if (lowerResponse.includes('ready to begin') || 
+                    lowerResponse.includes('start a practice') ||
+                    lowerResponse.includes('would you like to start') ||
+                    lowerResponse.includes('want to start') ||
+                    lowerResponse.includes('shall we start') ||
+                    lowerResponse.includes('set up a scene')) {
+                    updateState('TOPIC_SELECTION');
+                }
+            }
+        }
+        
+        // Detect user intent to start playing
+        function detectUserReadyToPlay(userMessage) {
+            if (currentState !== 'TOPIC_SELECTION') return false;
+            
+            const lowerMessage = userMessage.toLowerCase();
+            const readyPhrases = ['yes', 'ready', 'let\'s go', 'start', 'begin', 'sure', 'okay', 'ok', 'yep', 'yeah', 'absolutely', 'let\'s do it', 'i\'m ready'];
+            
+            return readyPhrases.some(phrase => lowerMessage.includes(phrase));
+        }
+
+        // ============================================
+        // TIMER
+        // ============================================
+        
+        function startTimer() {
+            timeRemaining = TOTAL_TIME;
+            timerContainer.classList.add('active');
+            timerContainer.classList.remove('warning');
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                // Warning state when 15 seconds left
+                if (timeRemaining <= 15) {
+                    timerContainer.classList.add('warning');
+                }
+                
+                if (timeRemaining <= 0) {
+                    updateState('FEEDBACK');
+                }
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            timerContainer.classList.remove('active');
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            const progressPercent = (timeRemaining / TOTAL_TIME) * 100;
+            timerProgressFill.style.width = progressPercent + '%';
         }
 
         // ============================================
@@ -948,8 +1268,14 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
             const message = chatInput.value.trim();
             if (!message || isGenerating || !chat) return;
             
+            // Track response time
             const responseTime = Date.now() - lastMessageTime;
             totalResponseTime += responseTime;
+            
+            // Check if user is ready to play (state transition)
+            if (detectUserReadyToPlay(message)) {
+                updateState('PLAYING');
+            }
             
             addUserMessage(message);
             chatInput.value = '';
@@ -981,9 +1307,13 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
                     textSpan.textContent = fullResponse;
                     scrollToBottom();
                 }
+                
+                // Detect state transitions from AI response
+                detectStateTransition(fullResponse);
+                
                 updateMetrics();
             } catch (error) {
-                console.error('❌ AI error:', error);
+                console.error('AI error:', error);
                 typingDiv.remove();
                 showError("Connection issue. Please try again.");
             } finally {
@@ -995,51 +1325,56 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
         }
 
         // ============================================
-        // SUGGESTIONS
+        // PATTERN DETECTION
         // ============================================
         
-        function startSuggestionTimer() { resetSuggestionTimer(); }
-        
-        function resetSuggestionTimer() {
-            clearTimeout(suggestionTimeout);
-            suggestionTimeout = setTimeout(() => {
-                if (chat && !isGenerating && userMessageCount > 0) showSuggestions();
-            }, 12000);
+        function hasYesAndPattern(text) {
+            const patterns = [
+                /yes,?\s+and/i, /absolutely/i, /great idea/i, /love that/i, 
+                /that sounds/i, /building on/i, /i like that/i, /perfect/i, 
+                /definitely/i, /what if we/i, /we could also/i, /let's also/i, 
+                /and we/i, /and maybe/i, /sure,?\s+and/i, /okay,?\s+and/i,
+                /right,?\s+and/i, /cool,?\s+and/i, /that's great/i
+            ];
+            return patterns.some(p => p.test(text));
         }
         
-        function showSuggestions() { suggestedResponses.style.display = 'block'; }
-        function hideSuggestions() { suggestedResponses.style.display = 'none'; }
-
-        document.querySelectorAll('.suggestion-chip').forEach(chip => {
-            chip.addEventListener('click', () => {
-                chatInput.value = chip.dataset.suggestion;
-                chatInput.focus();
-                hideSuggestions();
-            });
-        });
+        function hasBlockingPattern(text) {
+            const patterns = [
+                /\bno\b/i, /\bcan't\b/i, /\bcannot\b/i, /\bwon't\b/i, 
+                /that won't work/i, /that's impossible/i, /that doesn't make sense/i,
+                /i don't think/i, /that's not/i, /we shouldn't/i, /bad idea/i,
+                /that's wrong/i, /never/i, /impossible/i
+            ];
+            return patterns.some(p => p.test(text));
+        }
 
         // ============================================
         // MESSAGES
         // ============================================
         
-        function hasYesAndPattern(text) {
-            const patterns = [/yes,?\s+and/i, /absolutely/i, /great idea/i, /love that/i, 
-                /that sounds/i, /building on/i, /i like that/i, /perfect/i, /definitely/i,
-                /what if we/i, /we could also/i, /let's also/i, /and we/i, /and maybe/i];
-            return patterns.some(p => p.test(text));
-        }
-
         function addUserMessage(text) {
             const messageDiv = document.createElement('div');
             messageDiv.className = 'message user-message';
             
-            const usedYesAnd = hasYesAndPattern(text);
-            if (usedYesAnd) yesAndCount++;
-            userMessageCount++;
+            let badge = '';
+            if (currentState === 'PLAYING') {
+                const usedYesAnd = hasYesAndPattern(text);
+                const usedBlocking = hasBlockingPattern(text) && !usedYesAnd;
+                
+                if (usedYesAnd) {
+                    yesAndCount++;
+                    badge = '<span class="yes-and-badge">Nice "Yes, and..."!</span>';
+                } else if (usedBlocking) {
+                    blockingCount++;
+                    badge = '<span class="blocking-badge">Try accepting the idea!</span>';
+                }
+                userMessageCount++;
+            }
             
             messageDiv.innerHTML = `
                 <div class="message-content">${escapeHtml(text)}</div>
-                ${usedYesAnd ? '<span class="yes-and-badge">✨ Nice "Yes, and..."!</span>' : ''}
+                ${badge}
             `;
             chatMessages.appendChild(messageDiv);
             scrollToBottom();
@@ -1098,6 +1433,7 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
             messageCount = 0;
             userMessageCount = 0;
             yesAndCount = 0;
+            blockingCount = 0;
             totalResponseTime = 0;
             lastMessageTime = Date.now();
             updateMetrics();
@@ -1105,99 +1441,181 @@ Begin by briefly setting up the scenario (1-2 sentences) and invite the user to 
             hideSuggestions();
         }
 
-        function showWelcomeMessage() {
-            const welcomeDiv = document.createElement('div');
-            welcomeDiv.className = 'message ai-message';
-            welcomeDiv.innerHTML = `
-                <div class="message-content">
-                    <div class="ai-avatar">J</div>
-                    <span class="ai-text">Hey! 👋 I'm Jazz, your improv practice partner.
-
-🎭 We practice "Yes, and..." here — accept ideas and build on them!
-
-Pick a scenario from the sidebar to get started. There are no wrong answers! ✨</span>
-                </div>
-            `;
-            chatMessages.appendChild(welcomeDiv);
+        // ============================================
+        // SUGGESTIONS
+        // ============================================
+        
+        function resetSuggestionTimer() {
+            clearTimeout(suggestionTimeout);
+            if (currentState === 'PLAYING') {
+                suggestionTimeout = setTimeout(() => {
+                    if (chat && !isGenerating) showSuggestions();
+                }, 10000);
+            }
         }
+        
+        function showSuggestions() { 
+            if (currentState === 'PLAYING') {
+                suggestedResponses.style.display = 'block'; 
+            }
+        }
+        function hideSuggestions() { suggestedResponses.style.display = 'none'; }
+
+        document.querySelectorAll('.suggestion-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                chatInput.value = chip.dataset.suggestion;
+                chatInput.focus();
+                hideSuggestions();
+            });
+        });
 
         // ============================================
         // SESSION MANAGEMENT
         // ============================================
         
         newSessionBtn.addEventListener('click', () => {
+            // Reset everything
+            stopTimer();
             chat = null;
-            currentTopic = null;
-            topicList.querySelectorAll('.session-item').forEach(i => i.classList.remove('active'));
-            scenarioBadge.textContent = 'Select a scenario to begin';
-            chatInput.disabled = true;
-            sendBtn.disabled = true;
-            inputPrompt.innerHTML = 'Pick a scenario to start chatting';
+            userGoal = null;
+            selectedGoal = null;
             clearChat();
-            showWelcomeMessage();
             clearTimeout(suggestionTimeout);
+            
+            // Reset UI
+            goalDisplay.style.display = 'none';
+            aiFeedbackSection.classList.remove('visible');
+            goalOptions.querySelectorAll('.goal-option').forEach(o => o.classList.remove('selected'));
+            customGoalInput.value = '';
+            goalSubmitBtn.disabled = true;
+            
+            // Show goal modal
+            goalModal.classList.remove('hidden');
+            updateState('GOAL_SELECTION');
+        });
+        
+        howToPlayBtn.addEventListener('click', () => {
+            // Restart the teaching flow
+            stopTimer();
+            clearChat();
+            aiFeedbackSection.classList.remove('visible');
+            
+            if (genAI && userGoal) {
+                startChat();
+            }
         });
 
         endSessionBtn.addEventListener('click', () => {
-            if (messageCount < 2) {
+            if (currentState === 'PLAYING' && userMessageCount > 0) {
+                updateState('FEEDBACK');
+            } else if (currentState !== 'PLAYING') {
+                alert('Start a practice session first!');
+            } else {
                 alert('Have a conversation first!');
-                return;
             }
+        });
+
+        // ============================================
+        // FEEDBACK GENERATION
+        // ============================================
+        
+        async function generateFeedback() {
+            // Disable input
+            chatInput.disabled = true;
+            sendBtn.disabled = true;
+            inputPrompt.textContent = 'Session complete - Click "New" to start another';
             
+            // Calculate metrics
             const yesAndRate = userMessageCount > 0 ? Math.round((yesAndCount / userMessageCount) * 100) : 0;
+            const blockingRate = userMessageCount > 0 ? Math.round((blockingCount / userMessageCount) * 100) : 0;
             const avgTime = userMessageCount > 0 ? Math.round(totalResponseTime / userMessageCount / 1000) : 0;
             
-            const feedbackMsg = `🎉 Great session practicing "${currentTopic}"!
-
-📊 Your Stats:
-• Messages: ${messageCount}
-• "Yes, And" usage: ${yesAndRate}% (${yesAndCount}/${userMessageCount})
-• Avg response: ${avgTime}s
-
-💡 Tips:
-${yesAndRate < 50 ? '• Try starting with "Yes, and...", "Great idea!", or "I love that!"' : '• Great "Yes, and" usage! Keep it up!'}
-${avgTime > 15 ? '• Try responding faster — improv is about going with your gut!' : '• Nice quick responses — keeps the energy flowing!'}
-
-Click "New" to try another scenario!`;
+            // Generate AI feedback summary in chat
+            const feedbackSummary = generateFeedbackSummary(yesAndRate, blockingRate, avgTime);
             
             const feedbackDiv = document.createElement('div');
             feedbackDiv.className = 'message ai-message';
             feedbackDiv.innerHTML = `
                 <div class="message-content">
                     <div class="ai-avatar">J</div>
-                    <span class="ai-text">${escapeHtml(feedbackMsg)}</span>
+                    <span class="ai-text">${escapeHtml(feedbackSummary)}</span>
                 </div>
             `;
             chatMessages.appendChild(feedbackDiv);
             scrollToBottom();
             
-            chatInput.disabled = true;
-            sendBtn.disabled = true;
-            inputPrompt.innerHTML = 'Session ended — Click "New" to continue';
-            chat = null;
-            clearTimeout(suggestionTimeout);
-            hideSuggestions();
-        });
+            // Show improvement tips in sidebar
+            const tips = generateImprovementTips(yesAndRate, blockingRate, avgTime);
+            aiFeedbackContent.innerHTML = tips;
+            aiFeedbackSection.classList.add('visible');
+        }
+        
+        function generateFeedbackSummary(yesAndRate, blockingRate, avgTime) {
+            let summary = `Great practice session on "${userGoal}"!\n\n`;
+            summary += `Your Stats:\n`;
+            summary += `• Messages exchanged: ${messageCount}\n`;
+            summary += `• "Yes, And" usage: ${yesAndRate}% (${yesAndCount}/${userMessageCount})\n`;
+            summary += `• Blocking moments: ${blockingRate}% (${blockingCount}/${userMessageCount})\n`;
+            summary += `• Average response time: ${avgTime}s\n\n`;
+            
+            if (yesAndRate >= 70) {
+                summary += `Excellent work! You really embraced the "Yes, and..." mindset.`;
+            } else if (yesAndRate >= 50) {
+                summary += `Good effort! Keep practicing to build that "Yes, and..." muscle.`;
+            } else {
+                summary += `Nice start! Remember, the key is accepting ideas before adding to them.`;
+            }
+            
+            return summary;
+        }
+        
+        function generateImprovementTips(yesAndRate, blockingRate, avgTime) {
+            let tips = '';
+            
+            if (yesAndRate < 50) {
+                tips += '<p>• Try starting responses with "Yes, and...", "Great idea!", or "I love that!"</p>';
+            }
+            if (blockingRate > 30) {
+                tips += '<p>• When you feel like saying "no", try finding something to agree with first</p>';
+            }
+            if (avgTime > 10) {
+                tips += '<p>• Trust your instincts - improv is about going with your gut!</p>';
+            }
+            if (yesAndRate >= 70 && blockingRate < 20) {
+                tips += '<p>• Fantastic flow! Try more challenging scenarios to push yourself.</p>';
+            }
+            
+            if (!tips) {
+                tips = '<p>• Great session! Keep practicing to make "Yes, and..." second nature.</p>';
+            }
+            
+            return tips;
+        }
 
         // ============================================
         // METRICS
         // ============================================
         
         function updateMetrics() {
+            yesAndValue.textContent = yesAndCount;
+            blockingValue.textContent = blockingCount;
+            
             if (userMessageCount > 0) {
                 const yesAndRate = Math.round((yesAndCount / userMessageCount) * 100);
-                confidenceValue.textContent = yesAndRate + '%';
-                confidenceFill.style.width = yesAndRate + '%';
+                yesAndFill.style.width = yesAndRate + '%';
+                
+                const blockingRate = Math.round((blockingCount / userMessageCount) * 100);
+                blockingFill.style.width = Math.min(blockingRate * 2, 100) + '%';
                 
                 const avgTime = totalResponseTime / userMessageCount;
-                let engagement = avgTime < 6000 ? 95 : avgTime < 12000 ? 80 : avgTime < 20000 ? 65 : 50;
-                flowValue.textContent = engagement + '%';
-                flowFill.style.width = engagement + '%';
+                let engagement = avgTime < 5000 ? 95 : avgTime < 10000 ? 80 : avgTime < 15000 ? 65 : 50;
+                engagementValue.textContent = engagement + '%';
+                engagementFill.style.width = engagement + '%';
             } else {
-                confidenceValue.textContent = '--';
-                confidenceFill.style.width = '0%';
-                flowValue.textContent = '--';
-                flowFill.style.width = '0%';
+                yesAndFill.style.width = '0%';
+                blockingFill.style.width = '0%';
+                engagementValue.textContent = '--';
+                engagementFill.style.width = '0%';
             }
         }
 
@@ -1212,9 +1630,9 @@ Click "New" to try another scenario!`;
         }
 
         // ============================================
-        // START
+        // START - Show goal modal on load
         // ============================================
-        init();
+        updateState('GOAL_SELECTION');
     </script>
 </body>
 </html>
