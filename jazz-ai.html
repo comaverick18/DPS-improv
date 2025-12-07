@@ -872,7 +872,7 @@
                         <h4>Session Info</h4>
                         <div class="setting-item">
                             <span>Model</span>
-                            <span class="setting-value">Gemini 2.5 Flash</span>
+                            <span class="setting-value">Gemini 1.5 Flash</span>
                         </div>
                         <div class="setting-item">
                             <span>Mode</span>
@@ -1244,7 +1244,7 @@ USER'S GOAL: ${userGoal}`;
         async function startChat() {
             try {
                 const model = genAI.getGenerativeModel({ 
-                    model: "gemini-2.5-flash",
+                    model: "gemini-1.5-flash",
                     systemInstruction: getSystemInstruction(userGoal)
                 });
                 
