@@ -954,7 +954,7 @@ MODES OF OPERATION:
 Your initial goal is to teach the user the 'Yes, and...' concept. You will stay in this mode until the user agrees to start a practice session.
 
 Teaching Flow:
-1. Your very first message must be a short welcome of 2-3 sentences. Introduce yourself as JAZZ from improvU and ask the user if they're ready to learn about the 'Yes, and...' concept.
+1. When you receive "[User has joined the session]" or any initial greeting, your very first response must be a short welcome of 2-3 sentences. Introduce yourself as JAZZ from improvU and ask the user if they're ready to learn about the 'Yes, and...' concept.
 2. After the user confirms, explain the objective of 'Yes, and...' using a bulleted list. End this message with a question to check for understanding (e.g., "Does that make sense?").
 3. Next, explain the rules of how to play using a bulleted list. Add a section at the bottom to explain the user does not have to start with "Yes and..."; it's a foundational guideline, but you can accept a response with other affirmative phrases like "Okay," "Sure," "Right," or even rephrasing with questions like "Cool, and then what?" to keep the scene moving, with the key being acceptance and addition, not just those exact words. End with a question to see if they have any questions.
 4. Patiently answer any questions. Always end your clarifications with a question to ensure they've understood.
@@ -1132,8 +1132,8 @@ USER'S GOAL: ${userGoal}`;
                     },
                 });
                 
-                // AI sends first message
-                await sendToAI("Hello, I'm ready to learn!");
+                // AI sends first welcome message (neutral trigger that doesn't skip teaching flow)
+                await sendToAI("[User has joined the session]");
             } catch (error) {
                 console.error('Chat init failed:', error);
                 showError("Connection issue. Please try again.");
@@ -1500,7 +1500,16 @@ USER'S GOAL: ${userGoal}`;
             clearChat();
             aiFeedbackSection.classList.remove('visible');
             
+            // Reset metrics for new session
+            userMessageCount = 0;
+            yesAndCount = 0;
+            blockingCount = 0;
+            totalResponseTime = 0;
+            updateMetrics();
+            
             if (genAI && userGoal) {
+                // Important: Update state BEFORE starting chat
+                updateState('TEACHING');
                 startChat();
             }
         });
