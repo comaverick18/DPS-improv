@@ -64,13 +64,6 @@
         .voice-input {
             display: none !important;
         }
-        /* Suggested responses - part of bottom section */
-        .suggested-responses {
-            flex: 0 0 auto !important;
-            padding: 16px 24px !important;
-            background: #F8FAFC !important;
-            border-top: 1px dashed #E2E8F0 !important;
-        }
         /* Ensure scenario header doesn't grow */
         .scenario-header {
             flex: 0 0 auto !important;
@@ -613,44 +606,6 @@
         }
 
         /* ============================================
-           SUGGESTED RESPONSES
-           ============================================ */
-        .suggested-responses {
-            padding: 16px 24px;
-            background: #F8FAFC;
-            border-top: 1px dashed #E2E8F0;
-        }
-        .suggested-responses p {
-            font-size: 13px;
-            color: #6B7280;
-            margin: 0 0 12px 0;
-            font-weight: 500;
-        }
-        .suggestions-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .suggestion-chip {
-            background: white;
-            border: 2px solid #E2E8F0;
-            color: #4169E1;
-            font-size: 13px;
-            font-weight: 500;
-            padding: 10px 18px;
-            border-radius: 100px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .suggestion-chip:hover {
-            background: #4169E1;
-            color: white;
-            border-color: #4169E1;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(65, 105, 225, 0.25);
-        }
-
-        /* ============================================
            RESPONSIVE
            ============================================ */
         @media (max-width: 768px) {
@@ -799,16 +754,6 @@
 
                     <div class="chat-messages" id="chatMessages">
                         <!-- Messages inserted by JS -->
-                    </div>
-
-                    <!-- Suggested Responses -->
-                    <div class="suggested-responses" id="suggestedResponses" style="display: none;">
-                        <p>Need a starter? Try one:</p>
-                        <div class="suggestions-container" id="suggestionsContainer">
-                            <button class="suggestion-chip" data-suggestion="Yes, and we could also...">Yes, and we could also...</button>
-                            <button class="suggestion-chip" data-suggestion="That sounds great! What if...">That sounds great! What if...</button>
-                            <button class="suggestion-chip" data-suggestion="I love that idea! And...">I love that idea! And...</button>
-                        </div>
                     </div>
 
                     <!-- Text Input Area - PINNED TO BOTTOM -->
@@ -988,8 +933,6 @@ USER'S GOAL: ${userGoal}`;
         const newSessionBtn = document.getElementById('newSessionBtn');
         const endSessionBtn = document.getElementById('endSessionBtn');
         const howToPlayBtn = document.getElementById('howToPlayBtn');
-        const suggestedResponses = document.getElementById('suggestedResponses');
-        const suggestionsContainer = document.getElementById('suggestionsContainer');
         
         // Goal Modal Elements
         const goalModal = document.getElementById('goalModal');
@@ -1042,9 +985,7 @@ USER'S GOAL: ${userGoal}`;
         let timerInterval = null;
         let timeRemaining = 90; // seconds
         const TOTAL_TIME = 90;
-        
-        // Suggestions
-        let suggestionTimeout = null;
+        let timerStarted = false; // Track if timer has been started this session
 
         // ============================================
         // GOAL SELECTION
@@ -1167,7 +1108,7 @@ USER'S GOAL: ${userGoal}`;
                     statusDot.classList.add('playing');
                     statusText.textContent = 'Playing';
                     scenarioBadge.textContent = `Practicing: ${userGoal}`;
-                    startTimer();
+                    // Timer starts after AI sends first scene message, not here
                     break;
                 case 'FEEDBACK':
                     statusDot.classList.add('feedback');
@@ -1259,10 +1200,6 @@ USER'S GOAL: ${userGoal}`;
                 handleSend();
             }
         });
-        chatInput.addEventListener('input', () => {
-            hideSuggestions();
-            resetSuggestionTimer();
-        });
 
         async function handleSend() {
             const message = chatInput.value.trim();
@@ -1279,11 +1216,9 @@ USER'S GOAL: ${userGoal}`;
             
             addUserMessage(message);
             chatInput.value = '';
-            hideSuggestions();
             
             await sendToAI(message);
             lastMessageTime = Date.now();
-            resetSuggestionTimer();
         }
 
         async function sendToAI(userMessage) {
@@ -1310,6 +1245,12 @@ USER'S GOAL: ${userGoal}`;
                 
                 // Detect state transitions from AI response
                 detectStateTransition(fullResponse);
+                
+                // Start timer when AI sends first scene message in PLAYING mode
+                if (currentState === 'PLAYING' && !timerStarted) {
+                    timerStarted = true;
+                    startTimer();
+                }
                 
                 updateMetrics();
             } catch (error) {
@@ -1438,36 +1379,7 @@ USER'S GOAL: ${userGoal}`;
             lastMessageTime = Date.now();
             updateMetrics();
             updateMessageCount();
-            hideSuggestions();
         }
-
-        // ============================================
-        // SUGGESTIONS
-        // ============================================
-        
-        function resetSuggestionTimer() {
-            clearTimeout(suggestionTimeout);
-            if (currentState === 'PLAYING') {
-                suggestionTimeout = setTimeout(() => {
-                    if (chat && !isGenerating) showSuggestions();
-                }, 10000);
-            }
-        }
-        
-        function showSuggestions() { 
-            if (currentState === 'PLAYING') {
-                suggestedResponses.style.display = 'block'; 
-            }
-        }
-        function hideSuggestions() { suggestedResponses.style.display = 'none'; }
-
-        document.querySelectorAll('.suggestion-chip').forEach(chip => {
-            chip.addEventListener('click', () => {
-                chatInput.value = chip.dataset.suggestion;
-                chatInput.focus();
-                hideSuggestions();
-            });
-        });
 
         // ============================================
         // SESSION MANAGEMENT
@@ -1476,11 +1388,11 @@ USER'S GOAL: ${userGoal}`;
         newSessionBtn.addEventListener('click', () => {
             // Reset everything
             stopTimer();
+            timerStarted = false;
             chat = null;
             userGoal = null;
             selectedGoal = null;
             clearChat();
-            clearTimeout(suggestionTimeout);
             
             // Reset UI
             goalDisplay.style.display = 'none';
@@ -1497,6 +1409,7 @@ USER'S GOAL: ${userGoal}`;
         howToPlayBtn.addEventListener('click', () => {
             // Restart the teaching flow
             stopTimer();
+            timerStarted = false;
             clearChat();
             aiFeedbackSection.classList.remove('visible');
             
