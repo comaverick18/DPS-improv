@@ -8,19 +8,19 @@ improvU is a web application that helps people build conversation confidence thr
 
 The homepage highlights the value proposition and routes users to try features or join the waitlist via Typeform.
 
-### Key Features
+### Key Feature Developement:
 - **JAZZ AI Chat**: Real-time conversation practice with Gemini 2.5 Flash
   - "Yes, and..." improv technique coaching
   - Multiple scenario options (Coffee Shop, Job Interview, Networking, etc.)
   - Real-time streaming responses
   - Session feedback and metrics
   - Interactive onboarding tutorial
-- Pure HTML/CSS/JS, no build step required
+- Pure HTML/CSS/JS
 - Mobile-responsive layout
 - Accessible button and focus states
 
 ### Live Hosted Link (Vercel)
-- Production: https://YOUR-VERCEL-DOMAIN.vercel.app
+- Production: https://dps-improv.vercel.app/
 
 ### Getting Started
 
