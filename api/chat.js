@@ -31,8 +31,8 @@ export default async function handler(req, res) {
         
         if (stream) {
             // Streaming endpoint
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${apiKey}`;
-            
+            const url = `https://generativelanguage.googleapis.com/v1/models/${model}:streamGenerateContent?alt=sse&key=${apiKey}`;
+
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
             res.end();
         } else {
             // Non-streaming endpoint
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+            const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
             
             const response = await fetch(url, {
                 method: 'POST',
