@@ -1046,7 +1046,21 @@ USER'S GOAL: ${userGoal}`;
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition = null;
         let isRecording = false;
+        let recognitionCooldown = false;
+        let permissionGranted = false;
         const originalPlaceholder = chatInput.placeholder;
+        
+        // Check permission status using Permissions API
+        if (navigator.permissions) {
+            navigator.permissions.query({ name: 'microphone' }).then(result => {
+                permissionGranted = (result.state === 'granted');
+                result.onchange = () => {
+                    permissionGranted = (result.state === 'granted');
+                };
+            }).catch(() => {
+                // Permissions API not fully supported, will rely on recognition errors
+            });
+        }
         
         // Check for browser support
         if (SpeechRecognition) {
@@ -1054,6 +1068,11 @@ USER'S GOAL: ${userGoal}`;
             recognition.continuous = false;
             recognition.interimResults = true;
             recognition.lang = 'en-US';
+            
+            recognition.onstart = () => {
+                // Permission was granted if we got here
+                permissionGranted = true;
+            };
             
             recognition.onresult = (event) => {
                 const transcript = Array.from(event.results)
@@ -1063,17 +1082,36 @@ USER'S GOAL: ${userGoal}`;
             };
             
             recognition.onend = () => {
-                stopRecording();
+                // Only update UI, don't call stop() again
+                isRecording = false;
+                micBtn.classList.remove('recording');
+                chatInput.placeholder = originalPlaceholder;
+                
+                // Add cooldown to prevent rapid restart issues
+                recognitionCooldown = true;
+                setTimeout(() => { recognitionCooldown = false; }, 300);
             };
             
             recognition.onerror = (event) => {
                 console.error('Speech recognition error:', event.error);
+                
+                // Reset state
+                isRecording = false;
+                micBtn.classList.remove('recording');
+                chatInput.placeholder = originalPlaceholder;
+                
                 if (event.error === 'not-allowed') {
-                    alert('Microphone access was denied. Please allow microphone access in your browser settings.');
+                    permissionGranted = false;
+                    alert('Microphone access was denied. Please allow microphone access in your browser settings and refresh the page.');
+                } else if (event.error === 'aborted') {
+                    // User or system aborted, just reset silently
                 } else if (event.error === 'no-speech') {
-                    // Silent fail for no speech detected - just stop recording
+                    // No speech detected, reset silently
                 }
-                stopRecording();
+                
+                // Add cooldown after error
+                recognitionCooldown = true;
+                setTimeout(() => { recognitionCooldown = false; }, 500);
             };
         } else {
             // Browser doesn't support speech recognition
@@ -1082,7 +1120,7 @@ USER'S GOAL: ${userGoal}`;
         }
         
         function startRecording() {
-            if (!recognition || isRecording || chatInput.disabled) return;
+            if (!recognition || isRecording || chatInput.disabled || recognitionCooldown) return;
             
             try {
                 recognition.start();
@@ -1092,6 +1130,10 @@ USER'S GOAL: ${userGoal}`;
                 chatInput.focus();
             } catch (error) {
                 console.error('Failed to start recording:', error);
+                // Reset state if start fails
+                isRecording = false;
+                micBtn.classList.remove('recording');
+                chatInput.placeholder = originalPlaceholder;
             }
         }
         
@@ -1099,13 +1141,11 @@ USER'S GOAL: ${userGoal}`;
             if (!isRecording) return;
             
             try {
-                recognition.stop();
+                recognition.abort(); // Use abort() instead of stop() to immediately halt
             } catch (error) {
                 // Already stopped
             }
-            isRecording = false;
-            micBtn.classList.remove('recording');
-            chatInput.placeholder = originalPlaceholder;
+            // Note: onend handler will reset the UI state
         }
         
         micBtn.addEventListener('click', () => {
@@ -1114,7 +1154,7 @@ USER'S GOAL: ${userGoal}`;
                 return;
             }
             
-            if (chatInput.disabled) return;
+            if (chatInput.disabled || recognitionCooldown) return;
             
             if (isRecording) {
                 stopRecording();
