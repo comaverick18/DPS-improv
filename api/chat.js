@@ -1,4 +1,4 @@
-// Vercel Serverless Function - Proxy for OpenAI API
+// Vercel Serverless Function - Proxy for Google Gemini API
 // This keeps the API key secure on the server side
 
 export default async function handler(req, res) {
@@ -8,35 +8,53 @@ export default async function handler(req, res) {
     }
 
     // Check if API key is configured
-    if (!process.env.OPENAI_API_KEY) {
-        console.error('OPENAI_API_KEY not configured');
+    if (!process.env.GEMINI_API_KEY) {
+        console.error('GEMINI_API_KEY not configured');
         return res.status(500).json({ error: 'Server configuration error' });
     }
 
     try {
         const { messages, stream } = req.body;
+        
+        // Convert OpenAI-style messages to Gemini format
+        // Gemini uses "contents" with "parts" and different role names
+        const systemInstruction = messages.find(m => m.role === 'system')?.content || '';
+        const conversationMessages = messages.filter(m => m.role !== 'system');
+        
+        const geminiContents = conversationMessages.map(msg => ({
+            role: msg.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: msg.content }]
+        }));
 
-        // If streaming is requested, handle it differently
+        const apiKey = process.env.GEMINI_API_KEY;
+        const model = 'gemini-1.5-flash';
+        
         if (stream) {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            // Streaming endpoint
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${apiKey}`;
+            
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: 'gpt-4o-mini',
-                    messages: messages,
-                    max_tokens: 500,
-                    temperature: 0.8,
-                    stream: true
+                    systemInstruction: {
+                        parts: [{ text: systemInstruction }]
+                    },
+                    contents: geminiContents,
+                    generationConfig: {
+                        maxOutputTokens: 500,
+                        temperature: 0.8
+                    }
                 })
             });
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
+                console.error('Gemini API error:', errorData);
                 return res.status(response.status).json({ 
-                    error: errorData.error?.message || `OpenAI API error: ${response.status}` 
+                    error: errorData.error?.message || `Gemini API error: ${response.status}` 
                 });
             }
 
@@ -59,25 +77,31 @@ export default async function handler(req, res) {
 
             res.end();
         } else {
-            // Non-streaming request
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            // Non-streaming endpoint
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+            
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: 'gpt-4o-mini',
-                    messages: messages,
-                    max_tokens: 500,
-                    temperature: 0.8
+                    systemInstruction: {
+                        parts: [{ text: systemInstruction }]
+                    },
+                    contents: geminiContents,
+                    generationConfig: {
+                        maxOutputTokens: 500,
+                        temperature: 0.8
+                    }
                 })
             });
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
+                console.error('Gemini API error:', errorData);
                 return res.status(response.status).json({ 
-                    error: errorData.error?.message || `OpenAI API error: ${response.status}` 
+                    error: errorData.error?.message || `Gemini API error: ${response.status}` 
                 });
             }
 
@@ -89,4 +113,3 @@ export default async function handler(req, res) {
         res.status(500).json({ error: 'Failed to process request' });
     }
 }
-

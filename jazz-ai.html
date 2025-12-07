@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- OpenAI Configuration -->
+    <!-- Gemini API Configuration (key stored securely on server) -->
     
     <style>
         /* ============================================
@@ -865,7 +865,7 @@
                         <h4>Session Info</h4>
                         <div class="setting-item">
                             <span>Model</span>
-                            <span class="setting-value">GPT-4o-mini</span>
+                            <span class="setting-value">Gemini 1.5 Flash</span>
                         </div>
                         <div class="setting-item">
                             <span>Mode</span>
@@ -1393,7 +1393,7 @@ USER'S GOAL: ${userGoal}`;
                 const aiMessageDiv = createAIMessageElement();
                 const textSpan = aiMessageDiv.querySelector('.ai-text');
                 
-                // Process streaming response
+                // Process streaming response (Gemini format)
                 const reader = response.body.getReader();
                 const decoder = new TextDecoder();
                 let fullResponse = '';
@@ -1406,10 +1406,12 @@ USER'S GOAL: ${userGoal}`;
                     const lines = chunk.split('\n');
                     
                     for (const line of lines) {
-                        if (line.startsWith('data: ') && line !== 'data: [DONE]') {
+                        // Gemini SSE format: data: {...}
+                        if (line.startsWith('data: ')) {
                             try {
                                 const json = JSON.parse(line.slice(6));
-                                const content = json.choices?.[0]?.delta?.content;
+                                // Gemini response structure
+                                const content = json.candidates?.[0]?.content?.parts?.[0]?.text;
                                 if (content) {
                                     fullResponse += content;
                                     textSpan.textContent = fullResponse;
