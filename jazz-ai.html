@@ -181,6 +181,50 @@
             width: 18px;
             height: 18px;
         }
+
+        /* ============================================
+           MICROPHONE BUTTON
+           ============================================ */
+        .mic-btn {
+            background: #F1F5F9;
+            color: #4169E1;
+            border: 2px solid #E5E8F0;
+            padding: 14px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mic-btn:hover:not(:disabled) {
+            background: #E0E7FF;
+            border-color: #4169E1;
+            transform: translateY(-2px);
+        }
+        .mic-btn.recording {
+            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+            color: white;
+            border-color: #EF4444;
+            animation: micPulse 1.5s ease-in-out infinite;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+        }
+        .mic-btn:disabled {
+            background: #F3F4F6;
+            color: #9CA3AF;
+            border-color: #E5E8F0;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .mic-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        @keyframes micPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+
         .input-hint {
             text-align: center;
             font-size: 13px;
@@ -766,6 +810,13 @@
                                 placeholder="Type your response here..." 
                                 autocomplete="off"
                             >
+                            <button class="mic-btn" id="micBtn" title="Click to speak" aria-label="Voice input">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    <path d="M12 19v4M8 23h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
                             <button class="send-btn" id="sendBtn">
                                 <svg viewBox="0 0 24 24" fill="none">
                                     <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -928,6 +979,7 @@ USER'S GOAL: ${userGoal}`;
         const chatMessages = document.getElementById('chatMessages');
         const chatInput = document.getElementById('chatInput');
         const sendBtn = document.getElementById('sendBtn');
+        const micBtn = document.getElementById('micBtn');
         const inputPrompt = document.getElementById('inputPrompt');
         const scenarioBadge = document.getElementById('scenarioBadge');
         const newSessionBtn = document.getElementById('newSessionBtn');
@@ -986,6 +1038,90 @@ USER'S GOAL: ${userGoal}`;
         let timeRemaining = 90; // seconds
         const TOTAL_TIME = 90;
         let timerStarted = false; // Track if timer has been started this session
+
+        // ============================================
+        // SPEECH RECOGNITION
+        // ============================================
+        
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        let isRecording = false;
+        const originalPlaceholder = chatInput.placeholder;
+        
+        // Check for browser support
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+            
+            recognition.onresult = (event) => {
+                const transcript = Array.from(event.results)
+                    .map(result => result[0].transcript)
+                    .join('');
+                chatInput.value = transcript;
+            };
+            
+            recognition.onend = () => {
+                stopRecording();
+            };
+            
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                if (event.error === 'not-allowed') {
+                    alert('Microphone access was denied. Please allow microphone access in your browser settings.');
+                } else if (event.error === 'no-speech') {
+                    // Silent fail for no speech detected - just stop recording
+                }
+                stopRecording();
+            };
+        } else {
+            // Browser doesn't support speech recognition
+            micBtn.disabled = true;
+            micBtn.title = 'Speech recognition not supported in this browser. Try Chrome or Edge.';
+        }
+        
+        function startRecording() {
+            if (!recognition || isRecording || chatInput.disabled) return;
+            
+            try {
+                recognition.start();
+                isRecording = true;
+                micBtn.classList.add('recording');
+                chatInput.placeholder = 'Listening...';
+                chatInput.focus();
+            } catch (error) {
+                console.error('Failed to start recording:', error);
+            }
+        }
+        
+        function stopRecording() {
+            if (!isRecording) return;
+            
+            try {
+                recognition.stop();
+            } catch (error) {
+                // Already stopped
+            }
+            isRecording = false;
+            micBtn.classList.remove('recording');
+            chatInput.placeholder = originalPlaceholder;
+        }
+        
+        micBtn.addEventListener('click', () => {
+            if (!recognition) {
+                alert('Speech recognition is not supported in this browser. Please use Chrome or Edge.');
+                return;
+            }
+            
+            if (chatInput.disabled) return;
+            
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        });
 
         // ============================================
         // GOAL SELECTION
@@ -1227,6 +1363,8 @@ USER'S GOAL: ${userGoal}`;
             isGenerating = true;
             sendBtn.disabled = true;
             chatInput.disabled = true;
+            micBtn.disabled = true;
+            if (isRecording) stopRecording();
             
             const typingDiv = showTypingIndicator();
             
@@ -1261,6 +1399,7 @@ USER'S GOAL: ${userGoal}`;
                 isGenerating = false;
                 sendBtn.disabled = false;
                 chatInput.disabled = false;
+                if (recognition) micBtn.disabled = false;
                 chatInput.focus();
             }
         }
@@ -1445,6 +1584,8 @@ USER'S GOAL: ${userGoal}`;
             // Disable input
             chatInput.disabled = true;
             sendBtn.disabled = true;
+            micBtn.disabled = true;
+            if (isRecording) stopRecording();
             inputPrompt.textContent = 'Session complete - Click "New" to start another';
             
             // Calculate metrics
