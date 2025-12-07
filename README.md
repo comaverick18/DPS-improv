@@ -22,31 +22,55 @@ The homepage highlights the value proposition and routes users to try features o
 ### Live Hosted Link (Vercel)
 - Production: https://dps-improv.vercel.app/
 
-### Getting Started
+### Setup
 
-#### Option 1: Open directly
-1. Clone/download the repo
-2. Open `index.html` in your browser
+Follow these steps to run the app locally:
 
-#### Option 2: Local server (recommended)
-```bash
-# Using Node (serve)
-npx serve .
-# Then open http://localhost:3000
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/comaverick18/DPS-improv.git
+   cd DPS-improv
+   ```
 
-# Or using Python 3
-python -m http.server 8000
-# Then open http://localhost:8000
-```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-### Setting Up JAZZ AI
-The JAZZ feature requires a Google Gemini API key:
+3. **Set up your API key**
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env.local
 
-1. Get a free API key at: https://makersuite.google.com/app/apikey
-2. When you first visit the JAZZ page, you'll be prompted to enter your key
-3. The key is stored in localStorage for convenience
+   # Then edit .env.local and add your own Gemini API key
+   # Get a free key at: https://aistudio.google.com/apikey
+   ```
 
-> **Note**: For production, implement a backend proxy to protect your API key.
+4. **Run a local development server**
+   ```bash
+   # Using Vercel CLI (recommended - supports API routes)
+   npx vercel dev
+
+   # Or use a simple HTTP server (frontend only)
+   npx serve .
+   # Then open http://localhost:3000
+
+   # Or using Python 3
+   python -m http.server 8000
+   # Then open http://localhost:8000
+   ```
+
+5. **Open the app**
+   - Navigate to `http://localhost:3000` (or the port shown)
+   - Click "Try JAZZ" to start practicing improv with AI
+
+### JAZZ AI Feature
+The JAZZ AI chat uses Google's **Gemini 2.5 Flash** model with a secure server-side proxy:
+
+- API key is stored securely in environment variables (not exposed to the browser)
+- Real-time streaming responses for natural conversation flow
+- System instructions guide the AI to act as an improv coach
+- Pattern detection for "Yes, and..." technique and blocking behaviors
 
 ### Project Structure
 ```
@@ -54,10 +78,13 @@ The JAZZ feature requires a Google Gemini API key:
 ├── jazz-ai.html        # AI chat practice (Gemini integration)
 ├── convoquest.html     # Real-world challenges feature
 ├── improvcircle.html   # Community practice feature
+├── api/
+│   └── chat.js         # Vercel serverless function - Gemini API proxy
 ├── styles.css          # Global styles and design system
 ├── script.js           # Client interactions and animations
 ├── design.json         # Design tokens and references
-└── .env.local          # API keys (gitignored)
+├── .env.example        # Example environment variables
+└── .env.local          # Your API keys (gitignored, create from .env.example)
 ```
 
 ### Notable Behaviors
@@ -71,7 +98,10 @@ The JAZZ feature requires a Google Gemini API key:
 3. Framework preset: "Other" (no build)
 4. Build Command: `None`
 5. Output Directory: `/` (root)
-6. Deploy and update the live link above
+6. **Add environment variable**: Go to Settings → Environment Variables → Add `GEMINI_API_KEY`
+7. Deploy and update the live link above
+
+**Important**: Make sure to add your `GEMINI_API_KEY` in Vercel's environment variables for the serverless function to work in production.
 
 ### Tech Stack
 - HTML5 / CSS3 / Vanilla JavaScript
