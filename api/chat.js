@@ -27,11 +27,11 @@ export default async function handler(req, res) {
         }));
 
         const apiKey = process.env.GEMINI_API_KEY;
-        const model = 'gemini-1.5-flash';
+        const model = 'gemini-2.5-flash';
         
         if (stream) {
             // Streaming endpoint
-            const url = `https://generativelanguage.googleapis.com/v1/models/${model}:streamGenerateContent?alt=sse&key=${apiKey}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
             const response = await fetch(url, {
                 method: 'POST',
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    systemInstruction: {
+                    system_instruction: {
                         parts: [{ text: systemInstruction }]
                     },
                     contents: geminiContents,
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
             res.end();
         } else {
             // Non-streaming endpoint
-            const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
             
             const response = await fetch(url, {
                 method: 'POST',
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    systemInstruction: {
+                    system_instruction: {
                         parts: [{ text: systemInstruction }]
                     },
                     contents: geminiContents,
