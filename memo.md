@@ -8,7 +8,7 @@ Google AI Studio served as my initial prototyping environment. I used it to test
 
 Cursor with Claude became my main development partner. I used it for architecture decisions, debugging API integration issues, CSS refinement to match improvU's brand identity, and building the feedback analysis logic that calculates "Yes, and..." usage. Claude Code helped with final deployment issues and environment variable setup for Vercel.
 
-Human judgment was critical in several areas. I had to define what constitutes a "Yes, and..." response versus a more normal response. The three-minute session length came from manual testing until it felt right. I chose which metrics actually matter for feedback rather than tracking everything possible. I wrote system prompts that balance helpfulness with over-praising. Most importantly, I decided when to stop adding features and ship the prototype.
+Human judgment was critical. I had to define what constitutes a "Yes, and..." response versus a more normal response. The three-minute session length came from manual testing until it felt right. I chose which metrics actually matter for feedback rather than tracking everything possible. I wrote system prompts that balance helpfulness with over-praising. Most importantly, I decided when to stop adding features and ship the prototype.
 
 
 ## 2. Why the AI Feature Looks the Way It Does
