@@ -1,4 +1,4 @@
-# improvU - Final Product Requirements Document (Phase 3)
+# improvU - Final Product Requirements Document
 
 ## 1. Product Overview
 
