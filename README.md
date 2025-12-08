@@ -1,5 +1,44 @@
 ## improvU (DPS-improv)
 
+## What It Does
+
+improvU helps people overcome conversation anxiety and build confidence through improv training. The core feature, **JAZZ**, is an AI-powered practice partner that teaches the foundational "Yes, and..." improv technique through interactive conversation and personalized feedback.
+
+**Live Demo:** https://dps-improv.vercel.app/
+
+**Demo Video:** [Watch the 3-minute walkthrough](PLACEHOLDER_YOUTUBE_LINK)
+
+## How to Use
+
+1. Visit https://dps-improv.vercel.app/
+2. Click "Try JAZZ" from the homepage
+3. Select a practice scenario (Networking Event, Job Interview, etc.)
+4. Have a 3-minute conversation with the AI coach
+5. Receive feedback on your "Yes, and..." usage and engagement
+
+## How This Project Uses AI
+
+JAZZ uses Google's Gemini 1.5 Flash model to power conversational practice sessions. The AI acts as your practice partner in realistic scenarios—like a networking event or job interview—and responds in character while modeling good improv behavior.
+
+After each 3-minute session, the AI analyzes your conversation transcript to generate personalized feedback. It tracks how often you used "Yes, and..." responses (building on ideas), identifies blocking moments (shutting down conversations), and measures your engagement quality. The feedback includes specific improvement tips based on your session.
+
+The AI integration makes practice adaptive and judgment-free. Unlike static tutorials, JAZZ responds to whatever you say and adjusts its coaching to your actual performance.
+
+## Technologies Used
+
+- **Frontend:** HTML5, CSS3, Vanilla JavaScript
+- **AI Model:** Google Gemini 1.5 Flash via Gemini API
+- **Hosting:** Vercel with serverless functions
+- **API Integration:** Secure server-side proxy (API key in environment variables)
+
+## Project Documentation
+
+- [Final PRD](prd_final.md) - Complete product requirements and technical specifications
+- [Implementation & Ethics Memo](memo.md) - AI usage, decisions, and ethical considerations
+
+
+---
+---
 ### Project Overview
 improvU is a web application that helps people build conversation confidence through:
 - **JAZZ** - AI-powered practice partner using Google's Gemini API
