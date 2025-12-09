@@ -1340,19 +1340,24 @@ USER'S GOAL: ${userGoal}`;
         async function handleSend() {
             const message = chatInput.value.trim();
             if (!message || isGenerating || conversationHistory.length === 0) return;
-            
+
             // Track response time
             const responseTime = Date.now() - lastMessageTime;
             totalResponseTime += responseTime;
-            
+
             // Check if user is ready to play (state transition)
             if (detectUserReadyToPlay(message)) {
                 updateState('PLAYING');
             }
-            
+            // Start timer on first user response during Playing phase (but not on the same message that triggered the state change)
+            else if (currentState === 'PLAYING' && !timerStarted) {
+                timerStarted = true;
+                startTimer();
+            }
+
             addUserMessage(message);
             chatInput.value = '';
-            
+
             await sendToAI(message);
             lastMessageTime = Date.now();
         }
@@ -1426,16 +1431,10 @@ USER'S GOAL: ${userGoal}`;
                 
                 // Add assistant response to history
                 conversationHistory.push({ role: "assistant", content: fullResponse });
-                
+
                 // Detect state transitions from AI response
                 detectStateTransition(fullResponse);
-                
-                // Start timer when AI sends first scene message in PLAYING mode
-                if (currentState === 'PLAYING' && !timerStarted) {
-                    timerStarted = true;
-                    startTimer();
-                }
-                
+
                 updateMetrics();
             } catch (error) {
                 console.error('AI error:', error);
