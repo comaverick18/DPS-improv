@@ -1085,6 +1085,8 @@ USER'S GOAL: ${userGoal}`;
         let recognitionCooldown = false;
         let permissionGranted = false;
         let silenceTimer = null;
+        let finalTranscript = '';
+        let interimTranscript = '';
         const originalPlaceholder = chatInput.placeholder;
         const SILENCE_TIMEOUT = 2500; // 2.5 seconds
         
@@ -1119,10 +1121,11 @@ USER'S GOAL: ${userGoal}`;
                     silenceTimer = null;
                 }
 
-                // Get both interim and final results
-                let interimTranscript = '';
-                let finalTranscript = '';
+                // Reset transcripts
+                interimTranscript = '';
+                finalTranscript = '';
 
+                // Get both interim and final results
                 for (let i = 0; i < event.results.length; i++) {
                     const transcript = event.results[i][0].transcript;
                     if (event.results[i].isFinal) {
@@ -1150,6 +1153,11 @@ USER'S GOAL: ${userGoal}`;
                     silenceTimer = null;
                 }
 
+                // Clear transcript variables to prevent repopulation
+                // (Don't update chatInput.value here - it may have been cleared by handleSend)
+                finalTranscript = '';
+                interimTranscript = '';
+
                 // Only update UI, don't call stop() again
                 isRecording = false;
                 micBtn.classList.remove('recording');
@@ -1168,6 +1176,10 @@ USER'S GOAL: ${userGoal}`;
                     clearTimeout(silenceTimer);
                     silenceTimer = null;
                 }
+
+                // Clear transcript variables
+                finalTranscript = '';
+                interimTranscript = '';
 
                 // Reset state
                 isRecording = false;
@@ -1195,7 +1207,11 @@ USER'S GOAL: ${userGoal}`;
         
         function startRecording() {
             if (!recognition || isRecording || chatInput.disabled || recognitionCooldown) return;
-            
+
+            // Clear transcript variables for fresh start
+            finalTranscript = '';
+            interimTranscript = '';
+
             try {
                 recognition.start();
                 isRecording = true;
@@ -1219,6 +1235,10 @@ USER'S GOAL: ${userGoal}`;
                 clearTimeout(silenceTimer);
                 silenceTimer = null;
             }
+
+            // Clear transcript variables
+            finalTranscript = '';
+            interimTranscript = '';
 
             try {
                 recognition.stop(); // Use stop() to trigger proper onend event
@@ -1445,6 +1465,11 @@ USER'S GOAL: ${userGoal}`;
             const message = chatInput.value.trim();
             if (!message || isGenerating || conversationHistory.length === 0) return;
 
+            // IMMEDIATELY clear input and speech variables to prevent repopulation
+            chatInput.value = '';
+            finalTranscript = '';
+            interimTranscript = '';
+
             // Track response time
             const responseTime = Date.now() - lastMessageTime;
             totalResponseTime += responseTime;
@@ -1460,7 +1485,6 @@ USER'S GOAL: ${userGoal}`;
             }
 
             addUserMessage(message);
-            chatInput.value = '';
 
             await sendToAI(message);
             lastMessageTime = Date.now();
