@@ -117,7 +117,7 @@ If development continued:
 
 1. **User Accounts & History:** Save sessions, track progress over time, show improvement trends
 2. **Advanced Feedback:** Use sentiment analysis, measure creativity/detail in responses, identify patterns across sessions
-3. **Voice Integration:** Add Web Speech API for audio practice mode
+3. **Voice Integration:** Add Web Speech API for audio practice mode. Speech to Speech
 4. **ConvoQuest Build:** Launch real-world challenge system with XP and badges
 5. **Community Features:** Implement ImprovCircle with WebRTC for live peer practice
 6. **Mobile App:** Native iOS/Android versions for on-the-go practice
