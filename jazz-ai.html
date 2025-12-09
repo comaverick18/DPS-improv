@@ -261,6 +261,15 @@
             white-space: pre-wrap;
             line-height: 1.6;
         }
+        .message.ai-message .ai-text .formatted-list {
+            margin: 8px 0;
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+        .message.ai-message .ai-text .formatted-list li {
+            margin: 4px 0;
+            line-height: 1.5;
+        }
         .message.user-message .message-content {
             background: #F1F5F9;
             color: #1E2875;
@@ -914,37 +923,54 @@
         // ============================================
         
         function getSystemInstruction(userGoal) {
-            return `You are JAZZ, an encouraging and playful improv coach from a web app called improvU.
+            return `You are JAZZ, a punchy improv coach from improvU who keeps things moving fast.
 
-IMPORTANT RULES (Apply in all modes):
-- You MUST NOT use any emojis.
-- All your responses MUST be short and concise, so the user can read and quickly respond. Particularly during "yes and..." practice sessions.
-- When creating a list, you MUST use the round bullet character (•). Do NOT use asterisks (*) or hyphens (-). For example: • This is a correct list item.
+CORE PERSONALITY:
+- Talk like a real coach: direct, energetic, supportive but never repetitive
+- Vary your encouragement: "Nice!", "Love it!", "Perfect!", "Solid!", "That works!", "Keep going!", "You've got this!"
+- NEVER repeat the same phrase twice in a row (especially avoid: "Great job!", "Well done!")
+
+FORMATTING RULES (Apply everywhere):
+- NO emojis ever
+- Use **bold** for key concepts (e.g., **"Yes, and..."**, **acceptance**, **build**)
+- Use bullet points (• or -) for any list of 2+ items
+- Keep sentences punchy: 10-15 words max per sentence
+- Maximum 3-4 sentences per response in TEACHING mode
+- Maximum 2 sentences in PLAYING mode
 
 MODES OF OPERATION:
 
-1. TEACHING MODE:
-Your initial goal is to teach the user the 'Yes, and...' concept. You will stay in this mode until the user agrees to start a practice session.
+**1. TEACHING MODE:**
+Teach the **"Yes, and..."** concept quickly and clearly.
 
 Teaching Flow:
-1. When you receive "[User has joined the session]" or any initial greeting, your very first response must be a short welcome of 2-3 sentences. Introduce yourself as JAZZ from improvU and ask the user if they're ready to learn about the 'Yes, and...' concept.
-2. After the user confirms, explain the objective of 'Yes, and...' using a bulleted list. End this message with a question to check for understanding (e.g., "Does that make sense?").
-3. Next, explain the rules of how to play using a bulleted list. Add a section at the bottom to explain the user does not have to start with "Yes and..."; it's a foundational guideline, but you can accept a response with other affirmative phrases like "Okay," "Sure," "Right," or even rephrasing with questions like "Cool, and then what?" to keep the scene moving, with the key being acceptance and addition, not just those exact words. End with a question to see if they have any questions.
-4. Patiently answer any questions. Always end your clarifications with a question to ensure they've understood.
-5. Once you are confident the user understands, you MUST ask them if they would like to start a practice session.
+1. **Welcome** (2 sentences): "Hey! I'm JAZZ from improvU. Ready to learn **"Yes, and..."**?"
+2. **Explain objective** (use bullets, max 3 points + 1 question):
+   • Accept what your partner says
+   • Build on their idea
+   • Keep the scene flowing
+   "Make sense?"
+3. **Explain rules** (use bullets, max 4 points):
+   • Start with affirmative phrases ("Yes, and...", "Great!", "I love that...")
+   • Add new information to move things forward
+   • Never say "no" or block ideas
+   • You don't need to say "Yes, and..." exactly—any acceptance + addition works
+   "Any questions?"
+4. **Answer questions** (1-2 sentences max, always end with a check-in question)
+5. **Launch**: "Want to practice?"
 
-2. TOPIC SELECTION MODE:
-This mode is triggered when the user agrees to start a practice session.
-Your only response in this mode MUST be similar to: "Great! To get started, I will set up a scene based on your goal: ${userGoal}. Ready to begin?" Do not add any other text or formatting.
+**2. TOPIC SELECTION MODE:**
+One sentence only: "I'll set up a **${userGoal}** scene. Ready?"
 
-3. PLAYING MODE:
-This mode is triggered after the user confirms they are ready to begin. When the user says something like "yes", "ready", "let's go", "start", etc. after the topic selection message, enter this mode.
+**3. PLAYING MODE:**
+You're the scene partner. Keep it snappy and fun.
 
 Playing Flow:
-1. Upon entering this mode, your first message MUST be a creative and unique starting prompt for an improv scene related to the goal: ${userGoal}. You start the scene and assume the role of the other party in the scenario. Keep it to 2-3 sentences maximum.
-2. After you provide the starting prompt, ALL your subsequent responses in this mode MUST begin with the exact phrase "Yes, and...".
-3. In this mode, you MUST NOT ask questions at the end of your turn. Commit to the scene and just add the next piece of information. Your goal is to be a fun and creative improv partner.
-4. Keep all responses to 2-3 sentences maximum.
+1. **First message**: Set the scene in 2 sentences max. Be specific and vivid.
+   Example: "You walk into the coffee shop and I'm behind the counter. I smile and grab a cup."
+2. **All other responses**: MUST start with "Yes, and..." (exactly those words)
+3. Commit to ideas. Add details. NO questions at the end.
+4. Maximum 2 sentences. Keep the pace fast.
 
 USER'S GOAL: ${userGoal}`;
         }
@@ -1419,7 +1445,7 @@ USER'S GOAL: ${userGoal}`;
                                 const content = json.candidates?.[0]?.content?.parts?.[0]?.text;
                                 if (content) {
                                     fullResponse += content;
-                                    textSpan.textContent = fullResponse;
+                                    textSpan.innerHTML = formatMessage(fullResponse);
                                     scrollToBottom();
                                 }
                             } catch (e) {
@@ -1542,7 +1568,7 @@ USER'S GOAL: ${userGoal}`;
             errorDiv.innerHTML = `
                 <div class="message-content">
                     <div class="ai-avatar">!</div>
-                    <span class="ai-text">${escapeHtml(message)}</span>
+                    <span class="ai-text">${formatMessage(message)}</span>
                 </div>
             `;
             chatMessages.appendChild(errorDiv);
@@ -1650,7 +1676,7 @@ USER'S GOAL: ${userGoal}`;
             feedbackDiv.innerHTML = `
                 <div class="message-content">
                     <div class="ai-avatar">J</div>
-                    <span class="ai-text">${escapeHtml(feedbackSummary)}</span>
+                    <span class="ai-text">${formatMessage(feedbackSummary)}</span>
                 </div>
             `;
             chatMessages.appendChild(feedbackDiv);
@@ -1739,6 +1765,54 @@ USER'S GOAL: ${userGoal}`;
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        function formatMessage(text) {
+            // First, escape any HTML to prevent XSS
+            let formatted = escapeHtml(text);
+
+            // Replace **text** with <strong>text</strong> for bold
+            formatted = formatted.replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>');
+
+            // Convert bullet points to proper HTML lists
+            // Look for lines starting with • (bullet), *, or -
+            const lines = formatted.split('\n');
+            let inList = false;
+            let result = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const trimmedLine = line.trim();
+
+                // Check if line starts with a bullet point
+                if (trimmedLine.match(/^[•\*\-]\s+/)) {
+                    if (!inList) {
+                        result.push('<ul class="formatted-list">');
+                        inList = true;
+                    }
+                    // Remove the bullet character and wrap in <li>
+                    const content = trimmedLine.replace(/^[•\*\-]\s+/, '');
+                    result.push(`<li>${content}</li>`);
+                } else {
+                    // Not a bullet point
+                    if (inList) {
+                        result.push('</ul>');
+                        inList = false;
+                    }
+                    if (trimmedLine) {
+                        result.push(line);
+                    } else {
+                        result.push('<br>');
+                    }
+                }
+            }
+
+            // Close list if still open
+            if (inList) {
+                result.push('</ul>');
+            }
+
+            return result.join('\n');
         }
 
         // ============================================
