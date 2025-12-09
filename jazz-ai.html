@@ -258,16 +258,39 @@
         }
         .message.ai-message .ai-text {
             flex: 1;
-            white-space: pre-wrap;
+            white-space: normal;
             line-height: 1.6;
         }
+
+        /* Compact spacing for message content */
+        .message-content p {
+            margin: 5px 0 0 0;
+            line-height: 1.5;
+        }
+        .message-content p:last-child {
+            margin-bottom: 0;
+        }
+        .message-content ul,
+        .message-content ol {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+        .message-content li {
+            margin: 2px 0;
+            line-height: 1.5;
+        }
+        .message-content strong {
+            font-weight: 600;
+        }
+
+        /* Legacy formatted-list class (keep for compatibility) */
         .message.ai-message .ai-text .formatted-list {
-            margin: 8px 0;
+            margin: 5px 0;
             padding-left: 20px;
             list-style-type: disc;
         }
         .message.ai-message .ai-text .formatted-list li {
-            margin: 4px 0;
+            margin: 2px 0;
             line-height: 1.5;
         }
         .message.user-message .message-content {
