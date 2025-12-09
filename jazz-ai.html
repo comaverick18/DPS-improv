@@ -1084,7 +1084,9 @@ USER'S GOAL: ${userGoal}`;
         let isRecording = false;
         let recognitionCooldown = false;
         let permissionGranted = false;
+        let silenceTimer = null;
         const originalPlaceholder = chatInput.placeholder;
+        const SILENCE_TIMEOUT = 2500; // 2.5 seconds
         
         // Check permission status using Permissions API
         if (navigator.permissions) {
@@ -1101,7 +1103,7 @@ USER'S GOAL: ${userGoal}`;
         // Check for browser support
         if (SpeechRecognition) {
             recognition = new SpeechRecognition();
-            recognition.continuous = false;
+            recognition.continuous = true;
             recognition.interimResults = true;
             recognition.lang = 'en-US';
             
@@ -1111,18 +1113,48 @@ USER'S GOAL: ${userGoal}`;
             };
             
             recognition.onresult = (event) => {
-                const transcript = Array.from(event.results)
-                    .map(result => result[0].transcript)
-                    .join('');
-                chatInput.value = transcript;
+                // Clear existing silence timer
+                if (silenceTimer) {
+                    clearTimeout(silenceTimer);
+                    silenceTimer = null;
+                }
+
+                // Get both interim and final results
+                let interimTranscript = '';
+                let finalTranscript = '';
+
+                for (let i = 0; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                // Update input box with combined results
+                chatInput.value = finalTranscript + interimTranscript;
+
+                // Start new silence timer - stop recording after 2.5 seconds of silence
+                silenceTimer = setTimeout(() => {
+                    if (isRecording && recognition) {
+                        recognition.stop();
+                    }
+                }, SILENCE_TIMEOUT);
             };
             
             recognition.onend = () => {
+                // Clear any pending silence timer
+                if (silenceTimer) {
+                    clearTimeout(silenceTimer);
+                    silenceTimer = null;
+                }
+
                 // Only update UI, don't call stop() again
                 isRecording = false;
                 micBtn.classList.remove('recording');
                 chatInput.placeholder = originalPlaceholder;
-                
+
                 // Add cooldown to prevent rapid restart issues
                 recognitionCooldown = true;
                 setTimeout(() => { recognitionCooldown = false; }, 300);
@@ -1130,7 +1162,13 @@ USER'S GOAL: ${userGoal}`;
             
             recognition.onerror = (event) => {
                 console.error('Speech recognition error:', event.error);
-                
+
+                // Clear any pending silence timer
+                if (silenceTimer) {
+                    clearTimeout(silenceTimer);
+                    silenceTimer = null;
+                }
+
                 // Reset state
                 isRecording = false;
                 micBtn.classList.remove('recording');
@@ -1175,9 +1213,15 @@ USER'S GOAL: ${userGoal}`;
         
         function stopRecording() {
             if (!isRecording) return;
-            
+
+            // Clear any pending silence timer
+            if (silenceTimer) {
+                clearTimeout(silenceTimer);
+                silenceTimer = null;
+            }
+
             try {
-                recognition.abort(); // Use abort() instead of stop() to immediately halt
+                recognition.stop(); // Use stop() to trigger proper onend event
             } catch (error) {
                 // Already stopped
             }
