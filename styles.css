@@ -12,8 +12,8 @@ html {
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    line-height: 1.6;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    line-height: 1.7;
     color: #6B7280;
     background-color: #F8F9FB;
 }
@@ -42,18 +42,35 @@ body {
 .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
 .logo-icon {
-    width: 24px;
-    height: 24px;
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #0F172A 0%, #1E2875 100%);
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+}
+
+.logo-icon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, #4169E1 0%, #FFD700 100%);
+    border-radius: 4px;
 }
 
 .logo-text {
-    font-size: 20px;
-    font-weight: 700;
-    color: #1E2875;
+    font-size: 28px;
+    font-weight: 800;
+    color: #0F172A;
+    letter-spacing: -0.02em;
 }
 
 .nav-links {
@@ -124,10 +141,10 @@ body {
 /* Typography - Following design.json typography specs */
 .hero-title {
     font-size: 96px;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.05;
-    color: #1E2875;
-    letter-spacing: -0.02em;
+    color: #1A365D;
+    letter-spacing: -0.03em;
     margin-bottom: 32px;
     margin-top: -20px;
 }
@@ -152,7 +169,7 @@ body {
     padding: 16px 40px;
     border-radius: 100px;
     border: none;
-    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+    box-shadow: 0 10px 25px -5px rgba(65, 105, 225, 0.3), 0 8px 10px -6px rgba(65, 105, 225, 0.25);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
@@ -161,8 +178,8 @@ body {
 
 .btn-primary:hover {
     background: #5B7FFF;
-    box-shadow: 0 6px 16px rgba(65, 105, 225, 0.4);
-    transform: translateY(-2px);
+    box-shadow: 0 15px 35px -5px rgba(65, 105, 225, 0.4), 0 12px 15px -6px rgba(65, 105, 225, 0.3);
+    transform: translateY(-3px);
 }
 
 .btn-primary:active {
@@ -258,16 +275,17 @@ body {
 
 .system-item {
     background: #FFFFFF;
-    border-radius: 24px;
-    box-shadow: 0 4px 16px rgba(30, 40, 117, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
     padding: 32px 32px;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .system-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(30, 40, 117, 0.12);
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.15), 0 12px 15px -6px rgba(15, 23, 42, 0.1);
 }
 
 .system-icon {
@@ -288,8 +306,9 @@ body {
     font-size: 20px;
     font-weight: 700;
     line-height: 1.3;
-    color: #1E2875;
+    color: #0F172A;
     margin-bottom: 16px;
+    letter-spacing: -0.01em;
 }
 
 .system-description {
@@ -310,13 +329,13 @@ body {
     border-radius: 100px;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+    box-shadow: 0 10px 25px -5px rgba(65, 105, 225, 0.3), 0 8px 10px -6px rgba(65, 105, 225, 0.25);
 }
 
 .system-cta-btn:hover {
     background: #5B7FFF;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(65, 105, 225, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px -5px rgba(65, 105, 225, 0.4), 0 12px 15px -6px rgba(65, 105, 225, 0.3);
     color: #FFFFFF;
     text-decoration: none;
 }
@@ -357,7 +376,7 @@ body {
 
 /* Alternating Features Section - Following design.json specs */
 .alternating-features {
-    background: #FFFFFF;
+    background: #F8FAFC;
     padding: 0;
 }
 
@@ -408,10 +427,10 @@ body {
 
 .feature-title {
     font-size: 48px;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.2;
-    color: #1E2875;
-    letter-spacing: -0.01em;
+    color: #1A365D;
+    letter-spacing: -0.02em;
     margin-bottom: 8px;
 }
 
@@ -442,13 +461,13 @@ body {
     border-radius: 100px;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+    box-shadow: 0 10px 25px -5px rgba(65, 105, 225, 0.3), 0 8px 10px -6px rgba(65, 105, 225, 0.25);
 }
 
 .feature-cta-btn:hover {
     background: #5B7FFF;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(65, 105, 225, 0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px -5px rgba(65, 105, 225, 0.4), 0 12px 15px -6px rgba(65, 105, 225, 0.3);
     color: #FFFFFF;
     text-decoration: none;
 }
@@ -456,12 +475,17 @@ body {
 .feature-mockup {
     width: 100%;
     height: auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .feature-mockup svg {
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 8px 24px rgba(30, 40, 117, 0.12));
+    display: block;
+    border-radius: 12px;
+    filter: drop-shadow(0 10px 25px rgba(15, 23, 42, 0.15)) drop-shadow(0 8px 10px rgba(15, 23, 42, 0.1));
 }
 
 /* Reverse layout for alternating effect */
@@ -552,8 +576,8 @@ body {
 .success-story {
     text-align: center;
     padding: 24px 20px;
-    background: rgba(65, 105, 225, 0.05);
-    border-radius: 12px;
+    background: #FFFFFF;
+    border-radius: 16px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     min-width: 280px;
     width: 280px;
@@ -562,17 +586,20 @@ body {
     flex-direction: column;
     justify-content: center;
     flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
 .success-story:hover {
-    background: rgba(65, 105, 225, 0.08);
-    transform: translateY(-2px);
+    background: #FFFFFF;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
 }
 
 .success-story .quote {
     font-size: 16px;
     font-weight: 600;
-    color: #1E2875;
+    color: #0F172A;
     margin-bottom: 8px;
     position: relative;
     padding: 0 20px;
@@ -640,10 +667,10 @@ body {
 .section-title {
     display: block;
     font-size: 64px;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.05;
-    color: #1E2875;
-    letter-spacing: -0.02em;
+    color: #1A365D;
+    letter-spacing: -0.03em;
     margin-bottom: 32px;
     margin-top: 0;
     max-width: 800px;
@@ -672,15 +699,16 @@ body {
 .benefit-item {
     background: #FFFFFF;
     border-radius: 20px;
-    box-shadow: 0 4px 16px rgba(30, 40, 117, 0.08);
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
     padding: 32px 24px;
     text-align: center;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .benefit-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(30, 40, 117, 0.12);
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.15), 0 12px 15px -6px rgba(15, 23, 42, 0.1);
 }
 
 .benefit-link {
@@ -711,8 +739,9 @@ body {
     font-size: 20px;
     font-weight: 700;
     line-height: 1.3;
-    color: #1E2875;
+    color: #0F172A;
     margin-bottom: 12px;
+    letter-spacing: -0.01em;
 }
 
 .benefit-description {
@@ -1058,8 +1087,9 @@ body {
     font-size: 24px;
     font-weight: 700;
     line-height: 1.3;
-    color: #1E2875;
+    color: #0F172A;
     margin-bottom: 16px;
+    letter-spacing: -0.01em;
 }
 
 .process-description {
@@ -1102,10 +1132,11 @@ body {
 
 .process-footer-title {
     font-size: 40px;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.25;
-    color: #1E2875;
+    color: #1A365D;
     margin-bottom: 16px;
+    letter-spacing: -0.02em;
 }
 
 .process-footer-description {
@@ -1131,13 +1162,14 @@ body {
 .portfolio-item {
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(30, 40, 117, 0.12);
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(15, 23, 42, 0.1);
     transition: all 0.4s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .portfolio-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 12px 32px rgba(30, 40, 117, 0.16);
+    transform: scale(1.03);
+    box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.2), 0 12px 15px -6px rgba(15, 23, 42, 0.15);
 }
 
 .portfolio-image {
@@ -1222,19 +1254,20 @@ body {
 
 .final-cta-title {
     font-size: 64px;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1.1;
     color: #FFFFFF;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     margin-bottom: 32px;
 }
 
 .final-cta-subtitle {
     font-size: 32px;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.3;
     color: #FFFFFF;
     margin-bottom: 24px;
+    letter-spacing: -0.01em;
 }
 
 .final-cta-description {
@@ -1250,22 +1283,23 @@ body {
 
 .final-cta-button {
     background: #FFFFFF;
-    color: #1E2875;
+    color: #0F172A;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     padding: 20px 48px;
     border-radius: 100px;
     border: 2px solid #FFFFFF;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 48px;
+    box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.3), 0 8px 10px -6px rgba(255, 255, 255, 0.25);
 }
 
 .final-cta-button:hover {
     background: transparent;
     color: #FFFFFF;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px -5px rgba(255, 255, 255, 0.4), 0 12px 15px -6px rgba(255, 255, 255, 0.3);
 }
 
 .rating-section {
