@@ -118,18 +118,23 @@
         .chat-input-container {
             display: flex;
             gap: 12px;
-            align-items: center;
+            align-items: flex-end;
         }
         .chat-input {
             flex: 1;
             padding: 16px 24px;
             border: 2px solid #E5E8F0;
-            border-radius: 100px;
+            border-radius: 24px;
             font-size: 15px;
             font-family: 'Inter', sans-serif;
             color: #1E2875;
             background: #F8F9FB;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            resize: none;
+            overflow-y: hidden;
+            min-height: 50px;
+            max-height: 200px;
+            line-height: 1.5;
         }
         .chat-input:focus {
             outline: none;
@@ -828,13 +833,13 @@
                     <!-- Text Input Area - PINNED TO BOTTOM -->
                     <div class="chat-input-area">
                         <div class="chat-input-container">
-                            <input 
-                                type="text" 
-                                class="chat-input" 
-                                id="chatInput" 
-                                placeholder="Type your response here..." 
+                            <textarea
+                                class="chat-input"
+                                id="chatInput"
+                                rows="1"
+                                placeholder="Type your response here..."
                                 autocomplete="off"
-                            >
+                            ></textarea>
                             <button class="mic-btn" id="micBtn" title="Click to speak" aria-label="Voice input">
                                 <svg viewBox="0 0 24 24" fill="none">
                                     <path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z" stroke="currentColor" stroke-width="2"/>
@@ -1256,15 +1261,36 @@ USER'S GOAL: ${userGoal}`;
                 alert('Speech recognition is not supported in this browser. Please use Chrome or Edge.');
                 return;
             }
-            
+
             if (chatInput.disabled || recognitionCooldown) return;
-            
+
             if (isRecording) {
                 stopRecording();
             } else {
                 startRecording();
             }
         });
+
+        // ============================================
+        // AUTO-RESIZE TEXTAREA
+        // ============================================
+
+        function autoResize() {
+            // Reset height to auto to get the correct scrollHeight
+            chatInput.style.height = 'auto';
+            // Set height to scrollHeight (content height)
+            chatInput.style.height = chatInput.scrollHeight + 'px';
+
+            // If scrollHeight exceeds max-height, enable scrollbar
+            if (chatInput.scrollHeight > 200) {
+                chatInput.style.overflowY = 'auto';
+            } else {
+                chatInput.style.overflowY = 'hidden';
+            }
+        }
+
+        // Attach auto-resize to input event
+        chatInput.addEventListener('input', autoResize);
 
         // ============================================
         // GOAL SELECTION
@@ -1470,6 +1496,8 @@ USER'S GOAL: ${userGoal}`;
 
             // IMMEDIATELY clear input and speech variables to prevent repopulation
             chatInput.value = '';
+            chatInput.style.height = 'auto'; // Reset textarea height to single line
+            chatInput.style.overflowY = 'hidden'; // Reset overflow
             finalTranscript = '';
             interimTranscript = '';
 
