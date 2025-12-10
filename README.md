@@ -6,7 +6,7 @@ improvU helps people overcome conversation anxiety and build confidence through 
 
 **Live Demo:** https://dps-improv.vercel.app/
 
-**Demo Video:** [Watch the 3-minute walkthrough](PLACEHOLDER_YOUTUBE_LINK)
+**Demo Video:** https://youtu.be/S033lU-Y3rc
 
 ## How to Use
 
