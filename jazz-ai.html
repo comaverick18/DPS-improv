@@ -1144,6 +1144,7 @@ USER'S GOAL: ${userGoal}`;
                 const combinedText = finalTranscript + interimTranscript;
                 if (combinedText.trim()) {
                     chatInput.value = combinedText;
+                    autoResize(); // Manually trigger resize since setting value programmatically doesn't fire input event
                 }
 
                 // Start new silence timer - stop recording after 2.5 seconds of silence
