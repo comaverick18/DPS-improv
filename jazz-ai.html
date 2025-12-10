@@ -1135,8 +1135,11 @@ USER'S GOAL: ${userGoal}`;
                     }
                 }
 
-                // Update input box with combined results
-                chatInput.value = finalTranscript + interimTranscript;
+                // Update input box with combined results (only if not empty)
+                const combinedText = finalTranscript + interimTranscript;
+                if (combinedText.trim()) {
+                    chatInput.value = combinedText;
+                }
 
                 // Start new silence timer - stop recording after 2.5 seconds of silence
                 silenceTimer = setTimeout(() => {
