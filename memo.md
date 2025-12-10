@@ -15,7 +15,7 @@ Human judgment was critical. I had to define what constitutes a "Yes, and..." re
 
 I chose practice conversations with feedback instead of just a chatbot because improvU's value is building conversational confidence through practice. JAZZ needed to model good behavior, let users practice, and show them what to improve. A basic chatbot wouldn't teach anything.
 
-The full JAZZ concept had multiple phases, voice input, user accounts, and adaptive difficulty. I simplified significantly. Text-only avoids complexity without proving the concept. The single practice flow of tutorial to practice to feedback keeps things focused. No accounts means avoiding database and privacy issues entirely.
+The full JAZZ concept will have multiple phases, voice input, user accounts, and adaptive difficulty. I simplified significantly. Text-only avoids complexity without proving the concept. The single practice flow of tutorial to practice to feedback keeps things focused. No accounts means avoiding database and privacy issues entirely.
 
 This matters because someone anxious about networking can select "Networking Event," practice building on small talk, and see concrete feedback. The AI stays patient and judgment-free, creating the safe space improvU promises.
 
