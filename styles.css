@@ -2910,3 +2910,1507 @@ body {
 .pricing-card {
     animation: fadeInUp 0.8s ease-out;
 }
+
+/* ============================================
+   CONVOQUEST PAGE - Modern Gamification Design
+   ============================================ */
+
+/* Glassmorphism Base */
+.cq-glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+}
+
+/* Hero Section */
+.cq-hero {
+    background: linear-gradient(135deg, #F8F9FB 0%, #E8EEFF 100%);
+    padding: 140px 0 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cq-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 70%, rgba(65, 105, 225, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+    animation: heroGlow 15s ease-in-out infinite;
+}
+
+@keyframes heroGlow {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-5%, 5%); }
+}
+
+.cq-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.cq-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(65, 105, 225, 0.1);
+    color: #4169E1;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(65, 105, 225, 0.2);
+}
+
+.badge-icon {
+    font-size: 16px;
+}
+
+.cq-hero-title {
+    font-size: 56px;
+    font-weight: 800;
+    color: #1E2875;
+    letter-spacing: -0.03em;
+    margin: 0 0 16px 0;
+    line-height: 1.1;
+}
+
+.cq-hero-subtitle {
+    font-size: 20px;
+    color: #6B7280;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.rotating-text-wrapper {
+    display: inline-block;
+    min-width: 200px;
+}
+
+.rotating-text {
+    display: inline-block;
+    color: #4169E1;
+    font-weight: 600;
+    animation: textRotate 8s ease-in-out infinite;
+}
+
+@keyframes textRotate {
+    0%, 20% { opacity: 1; transform: translateY(0); }
+    25%, 45% { opacity: 0; transform: translateY(-10px); }
+    50%, 70% { opacity: 1; transform: translateY(0); }
+    75%, 95% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* Dashboard Section */
+.cq-dashboard {
+    padding: 40px 0;
+    margin-top: -40px;
+    position: relative;
+    z-index: 10;
+}
+
+.cq-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Stats Section */
+.cq-stats-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.cq-stat-card {
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cq-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.15);
+}
+
+.cq-stat-icon {
+    font-size: 32px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    flex-shrink: 0;
+}
+
+.xp-icon {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+}
+
+.level-icon {
+    position: relative;
+    background: transparent;
+}
+
+.level-ring {
+    width: 56px;
+    height: 56px;
+}
+
+.level-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: 700;
+    color: #4169E1;
+}
+
+.streak-icon {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    animation: streakPulse 2s ease-in-out infinite;
+}
+
+@keyframes streakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.quests-icon {
+    background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+}
+
+.cq-stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cq-stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1E2875;
+}
+
+.cq-stat-label {
+    font-size: 13px;
+    color: #6B7280;
+}
+
+.cq-stat-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #10B981;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 100px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+}
+
+.cq-stat-badge.show {
+    opacity: 1;
+    transform: scale(1);
+    animation: xpPopIn 0.5s ease-out;
+}
+
+@keyframes xpPopIn {
+    0% { transform: scale(0) translateY(10px); opacity: 0; }
+    50% { transform: scale(1.2) translateY(-5px); }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Active Quest Tracker */
+.cq-active-quest {
+    border-radius: 24px;
+    padding: 24px;
+    min-height: 200px;
+}
+
+.cq-active-quest-header {
+    margin-bottom: 20px;
+}
+
+.cq-active-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 100px;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #10B981;
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+.cq-active-quest-empty {
+    text-align: center;
+    padding: 20px;
+}
+
+.cq-active-quest-empty .empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+}
+
+.cq-active-quest-empty p {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 4px 0;
+}
+
+.cq-active-quest-empty span {
+    font-size: 14px;
+    color: #9CA3AF;
+}
+
+.cq-active-quest-content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1E2875;
+    margin: 0 0 8px 0;
+}
+
+.cq-active-quest-content p {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 0 0 16px 0;
+    line-height: 1.5;
+}
+
+.cq-active-quest-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.cq-active-xp {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #1E2875;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 100px;
+}
+
+.cq-active-time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #6B7280;
+}
+
+.cq-active-quest-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.cq-btn-complete {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cq-btn-complete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.cq-btn-abandon {
+    background: transparent;
+    color: #9CA3AF;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #E5E8F0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cq-btn-abandon:hover {
+    background: #FEE2E2;
+    color: #EF4444;
+    border-color: #FCA5A5;
+}
+
+/* Category Filters */
+.cq-filters {
+    padding: 24px 0;
+    position: sticky;
+    top: 80px;
+    z-index: 50;
+    background: rgba(248, 249, 251, 0.9);
+    backdrop-filter: blur(10px);
+}
+
+.cq-filter-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.cq-category-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cq-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: #6B7280;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 18px;
+    border-radius: 100px;
+    border: 2px solid #E5E8F0;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cq-pill:hover {
+    border-color: #4169E1;
+    color: #4169E1;
+}
+
+.cq-pill.active {
+    background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
+    color: white;
+    border-color: transparent;
+}
+
+.pill-icon {
+    font-size: 16px;
+}
+
+.cq-view-toggle {
+    display: flex;
+    gap: 4px;
+    background: white;
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid #E5E8F0;
+}
+
+.cq-view-btn {
+    background: transparent;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #9CA3AF;
+    transition: all 0.2s ease;
+}
+
+.cq-view-btn:hover {
+    color: #4169E1;
+}
+
+.cq-view-btn.active {
+    background: #4169E1;
+    color: white;
+}
+
+/* Quests Grid */
+.cq-quests-section {
+    padding: 20px 0 60px;
+}
+
+.cq-quests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+}
+
+.cq-quests-grid.list-view {
+    grid-template-columns: 1fr;
+}
+
+/* Quest Card */
+.cq-quest-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 20px rgba(31, 38, 135, 0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.cq-quest-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4169E1 0%, #FFD700 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cq-quest-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(31, 38, 135, 0.15);
+}
+
+.cq-quest-card:hover::before {
+    opacity: 1;
+}
+
+.cq-quest-card.completed {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.05) 100%);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.cq-quest-card.completed::before {
+    background: #10B981;
+    opacity: 1;
+}
+
+.cq-quest-card.locked {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.cq-quest-card.locked::after {
+    content: '🔒';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    opacity: 0.3;
+}
+
+/* Quest Card Header */
+.cq-quest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.cq-quest-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.cq-quest-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.cq-difficulty-badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cq-difficulty-badge.easy {
+    background: linear-gradient(135deg, #DCFCE7 0%, #BBF7D0 100%);
+    color: #166534;
+}
+
+.cq-difficulty-badge.medium {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    color: #92400E;
+}
+
+.cq-difficulty-badge.hard {
+    background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+    color: #991B1B;
+}
+
+.cq-xp-badge {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #1E2875;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 100px;
+}
+
+/* Quest Card Content */
+.cq-quest-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1E2875;
+    margin: 0 0 8px 0;
+}
+
+.cq-quest-description {
+    font-size: 14px;
+    color: #6B7280;
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+}
+
+.cq-quest-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.cq-tag {
+    background: rgba(65, 105, 225, 0.1);
+    color: #4169E1;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 100px;
+}
+
+.cq-quest-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.cq-quest-time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #9CA3AF;
+}
+
+.cq-quest-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.cq-btn-details {
+    background: transparent;
+    color: #4169E1;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid #4169E1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cq-btn-details:hover {
+    background: #4169E1;
+    color: white;
+}
+
+.cq-btn-start {
+    background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cq-btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(65, 105, 225, 0.3);
+}
+
+.cq-btn-completed {
+    background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 10px;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Achievements Section */
+.cq-achievements {
+    background: linear-gradient(135deg, #1E2875 0%, #2D3A8C 100%);
+    padding: 60px 0;
+    margin-top: 40px;
+}
+
+.cq-achievements-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.cq-achievements-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+.achievements-icon {
+    font-size: 32px;
+}
+
+.achievements-count {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 16px;
+    border-radius: 100px;
+}
+
+.cq-achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.cq-achievement {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 24px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.cq-achievement:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.cq-achievement.locked {
+    opacity: 0.4;
+}
+
+.cq-achievement-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.cq-achievement.locked .cq-achievement-icon {
+    filter: grayscale(1);
+}
+
+.cq-achievement-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 4px 0;
+}
+
+.cq-achievement-desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+/* Modal Styles */
+.cq-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.cq-modal.active {
+    display: flex;
+}
+
+.cq-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.cq-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 28px;
+    padding: 32px;
+    animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.cq-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6B7280;
+    transition: all 0.2s ease;
+}
+
+.cq-modal-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #1E2875;
+}
+
+.cq-modal-header {
+    margin-bottom: 24px;
+}
+
+.cq-modal-badges {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.cq-modal-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1E2875;
+    margin: 0 0 8px 0;
+}
+
+.cq-modal-header p {
+    font-size: 16px;
+    color: #6B7280;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Modal Tabs */
+.cq-modal-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #E5E8F0;
+    padding-bottom: 12px;
+}
+
+.cq-tab {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #9CA3AF;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cq-tab:hover {
+    color: #4169E1;
+    background: rgba(65, 105, 225, 0.05);
+}
+
+.cq-tab.active {
+    color: #4169E1;
+    background: rgba(65, 105, 225, 0.1);
+}
+
+.cq-tab-content {
+    display: none;
+}
+
+.cq-tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.cq-modal-body h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1E2875;
+    margin: 0 0 12px 0;
+}
+
+.cq-modal-body p {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.cq-objective,
+.cq-skills,
+.cq-time-estimate {
+    margin-bottom: 24px;
+}
+
+.cq-skills-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Tips List */
+.cq-tips-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cq-tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(65, 105, 225, 0.05);
+    border-radius: 12px;
+    border-left: 3px solid #4169E1;
+}
+
+.cq-tip-number {
+    width: 24px;
+    height: 24px;
+    background: #4169E1;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.cq-tip-text {
+    font-size: 14px;
+    color: #374151;
+    line-height: 1.5;
+}
+
+/* Location Finder */
+.cq-location-finder {
+    text-align: center;
+}
+
+.cq-find-location-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.cq-find-location-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+}
+
+.cq-find-location-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.cq-locations-list {
+    text-align: left;
+}
+
+.cq-locations-hint {
+    text-align: center;
+    color: #9CA3AF;
+    font-size: 14px;
+}
+
+.cq-location-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px;
+    background: #F8F9FB;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.cq-location-info h5 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1E2875;
+    margin: 0 0 4px 0;
+}
+
+.cq-location-info p {
+    font-size: 13px;
+    color: #6B7280;
+    margin: 0;
+}
+
+.cq-location-distance {
+    font-size: 13px;
+    font-weight: 600;
+    color: #4169E1;
+}
+
+/* Modal Footer */
+.cq-modal-footer {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #E5E8F0;
+}
+
+.cq-btn-secondary {
+    flex: 1;
+    background: transparent;
+    color: #6B7280;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 14px;
+    border: 1px solid #E5E8F0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cq-btn-secondary:hover {
+    background: #F8F9FB;
+    border-color: #D1D5DB;
+}
+
+.cq-btn-primary {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #4169E1 0%, #5B7FFF 100%);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cq-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(65, 105, 225, 0.3);
+}
+
+/* Completion Modal */
+.cq-completion-modal {
+    text-align: center;
+}
+
+.cq-completion-header {
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.cq-trophy {
+    font-size: 64px;
+    margin-bottom: 16px;
+    animation: trophyBounce 0.6s ease-out;
+}
+
+@keyframes trophyBounce {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.cq-completion-header h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1E2875;
+    margin: 0 0 8px 0;
+}
+
+.cq-completion-header p {
+    font-size: 18px;
+    color: #6B7280;
+}
+
+.cq-completion-xp {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+
+.xp-earned {
+    display: block;
+    font-size: 48px;
+    font-weight: 800;
+    color: #1E2875;
+    animation: xpCount 1s ease-out;
+}
+
+@keyframes xpCount {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.xp-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #92400E;
+}
+
+/* Reflection Section */
+.cq-reflection {
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.cq-reflection h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1E2875;
+    margin: 0 0 8px 0;
+}
+
+.cq-reflection p {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 0 0 12px 0;
+}
+
+.cq-reflection textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 14px;
+    border: 2px solid #E5E8F0;
+    border-radius: 12px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+.cq-reflection textarea:focus {
+    outline: none;
+    border-color: #4169E1;
+}
+
+/* Rating Stars */
+.cq-rating {
+    margin-bottom: 24px;
+}
+
+.cq-rating h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1E2875;
+    margin: 0 0 12px 0;
+}
+
+.cq-rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.cq-star {
+    background: transparent;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.cq-star:hover,
+.cq-star.active {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.cq-completion-actions {
+    margin-top: 24px;
+}
+
+.cq-btn-celebrate {
+    width: 100%;
+}
+
+/* Level Up Modal */
+.cq-levelup-modal {
+    text-align: center;
+}
+
+.cq-levelup-header {
+    margin-bottom: 24px;
+}
+
+.cq-levelup-icon {
+    font-size: 64px;
+    animation: levelUpPop 0.6s ease-out;
+}
+
+@keyframes levelUpPop {
+    0% { transform: scale(0) rotate(-180deg); }
+    50% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0); }
+}
+
+.cq-levelup-header h2 {
+    font-size: 36px;
+    font-weight: 800;
+    color: #1E2875;
+    margin: 16px 0 8px 0;
+}
+
+.cq-new-level {
+    font-size: 24px;
+    font-weight: 700;
+    color: #4169E1;
+    margin: 0;
+}
+
+.cq-levelup-unlocks {
+    background: #F8F9FB;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.cq-levelup-unlocks h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #6B7280;
+    margin: 0 0 12px 0;
+}
+
+.cq-unlock-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.cq-unlock-item:last-child {
+    margin-bottom: 0;
+}
+
+.cq-unlock-icon {
+    font-size: 24px;
+}
+
+.cq-unlock-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1E2875;
+}
+
+/* Confetti Container */
+.cq-confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #FFD700;
+    animation: confettiFall 3s ease-out forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(-100%) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Footer */
+.cq-footer {
+    background: #1E2875;
+    padding: 48px 0 24px;
+}
+
+.cq-footer .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.cq-footer .footer-brand-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+}
+
+.cq-footer .footer-tagline {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 4px 0 0 0;
+}
+
+.cq-footer .footer-links {
+    display: flex;
+    gap: 32px;
+}
+
+.cq-footer .footer-link {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.cq-footer .footer-link:hover {
+    color: white;
+}
+
+.cq-footer .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 24px;
+    text-align: center;
+}
+
+.cq-footer .footer-copyright {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .cq-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cq-stats-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cq-active-quest {
+        order: -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .cq-hero {
+        padding: 120px 0 40px;
+    }
+
+    .cq-hero-title {
+        font-size: 36px;
+    }
+
+    .cq-hero-subtitle {
+        font-size: 16px;
+    }
+
+    .cq-stats-section {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .cq-stat-card {
+        padding: 16px;
+    }
+
+    .cq-stat-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 24px;
+    }
+
+    .cq-stat-value {
+        font-size: 16px;
+    }
+
+    .cq-filter-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cq-category-pills {
+        overflow-x: auto;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .cq-view-toggle {
+        display: none;
+    }
+
+    .cq-quests-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cq-modal-content {
+        padding: 24px;
+        border-radius: 24px 24px 0 0;
+        max-height: 85vh;
+        margin-top: auto;
+    }
+
+    .cq-achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cq-footer .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cq-hero-title {
+        font-size: 28px;
+    }
+
+    .cq-stats-section {
+        grid-template-columns: 1fr;
+    }
+
+    .cq-stat-card {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .cq-category-pills {
+        flex-wrap: nowrap;
+    }
+
+    .cq-pill {
+        white-space: nowrap;
+        font-size: 13px;
+        padding: 8px 14px;
+    }
+
+    .cq-achievements-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .cq-achievement {
+        padding: 16px;
+    }
+
+    .cq-achievement-icon {
+        font-size: 36px;
+    }
+}

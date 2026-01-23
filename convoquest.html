@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
@@ -17,12 +17,9 @@
             <div class="nav-content">
                 <div class="logo">
                     <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
-                        <!-- Speech Bubble -->
                         <path d="M18 4H6C4.9 4 4 4.9 4 6V14C4 15.1 4.9 16 6 16H8L12 20L16 16H18C19.1 16 20 15.1 20 14V6C20 4.9 19.1 4 18 4Z" fill="#4169E1"/>
-                        <!-- Growth Arrow -->
                         <path d="M9 10L12 7L15 10" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M12 7V13" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
-                        <!-- Conversation Dots -->
                         <circle cx="9" cy="9" r="1" fill="#FFFFFF"/>
                         <circle cx="12" cy="9" r="1" fill="#FFFFFF"/>
                         <circle cx="15" cy="9" r="1" fill="#FFFFFF"/>
@@ -39,373 +36,348 @@
         </div>
     </nav>
 
-    <!-- ConvoQuest Main Content -->
-    <section class="convoquest-main">
+    <!-- Hero Section -->
+    <section class="cq-hero">
         <div class="container">
-            <div class="convoquest-header">
-                <h1 class="page-title">Conversation Quests</h1>
-                <p class="page-subtitle">Real-world challenges to build your confidence</p>
+            <div class="cq-hero-content">
+                <div class="cq-hero-badge">
+                    <span class="badge-icon">🎯</span>
+                    <span>Real-World Challenges</span>
+                </div>
+                <h1 class="cq-hero-title">Your Conversation Quest Journey</h1>
+                <p class="cq-hero-subtitle">
+                    Level up your confidence through
+                    <span class="rotating-text-wrapper">
+                        <span class="rotating-text" id="rotatingText">coffee shop chats</span>
+                    </span>
+                </p>
             </div>
+        </div>
+    </section>
 
-            <!-- Progress Section -->
-            <div class="progress-section">
-                <div class="progress-card">
-                    <h3>Your Quest Progress</h3>
-                    <div class="progress-stats">
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-large">
-                                <div class="progress-fill-large" style="width: 20%"></div>
-                            </div>
-                            <span class="progress-text">1/5 completed</span>
+    <!-- Stats Dashboard + Active Quest Section -->
+    <section class="cq-dashboard">
+        <div class="container">
+            <div class="cq-dashboard-grid">
+                <!-- Stats Cards -->
+                <div class="cq-stats-section">
+                    <div class="cq-stat-card cq-glass">
+                        <div class="cq-stat-icon xp-icon">⚡</div>
+                        <div class="cq-stat-content">
+                            <span class="cq-stat-value" id="totalXP">0</span>
+                            <span class="cq-stat-label">Total XP</span>
                         </div>
+                        <div class="cq-stat-badge" id="xpGainBadge">+0</div>
                     </div>
-                    <p class="progress-note">Complete 3 more quests to unlock new challenges!</p>
-                </div>
-            </div>
 
-            <!-- Difficulty Filter -->
-            <div class="difficulty-filter">
-                <span class="filter-label">Difficulty:</span>
-                <button class="difficulty-btn active" data-difficulty="all">All</button>
-                <button class="difficulty-btn" data-difficulty="easy">Easy</button>
-                <button class="difficulty-btn" data-difficulty="medium">Medium</button>
-                <button class="difficulty-btn" data-difficulty="hard">Hard</button>
-            </div>
-
-            <!-- Quests Grid -->
-            <div class="quests-grid">
-                <!-- Coffee Shop Chat - Easy -->
-                <div class="quest-card" data-difficulty="easy">
-                    <div class="quest-header">
-                        <h3>Coffee Shop Chat</h3>
-                        <div class="quest-badges">
-                            <span class="difficulty-badge easy">Easy</span>
-                            <span class="points-badge">50 XP</span>
-                        </div>
-                    </div>
-                    <p class="quest-description">Ask a barista a non-coffee related question and have a brief conversation.</p>
-                    <div class="quest-tags">
-                        <span class="tag">Small Talk</span>
-                        <span class="tag">Curiosity</span>
-                    </div>
-                    <div class="quest-time">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        5 min
-                    </div>
-                    <div class="quest-actions">
-                        <button class="view-details-btn">View details</button>
-                        <button class="start-quest-btn">Start Quest</button>
-                    </div>
-                </div>
-
-                <!-- Book Recommendation - Easy -->
-                <div class="quest-card" data-difficulty="easy">
-                    <div class="quest-header">
-                        <h3>Book Recommendation</h3>
-                        <div class="quest-badges">
-                            <span class="difficulty-badge easy">Easy</span>
-                            <span class="points-badge">75 XP</span>
-                        </div>
-                    </div>
-                    <p class="quest-description">Ask someone for a book recommendation and discuss why they like it.</p>
-                    <div class="quest-tags">
-                        <span class="tag">Active Listening</span>
-                        <span class="tag">Questions</span>
-                    </div>
-                    <div class="quest-time">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        10 min
-                    </div>
-                    <div class="quest-actions">
-                        <button class="view-details-btn">View details</button>
-                        <button class="start-quest-btn">Start Quest</button>
-                    </div>
-                </div>
-
-                <!-- Networking Introduction - Medium -->
-                <div class="quest-card" data-difficulty="medium">
-                    <div class="quest-header">
-                        <h3>Networking Introduction</h3>
-                        <div class="quest-badges">
-                            <span class="difficulty-badge medium">Medium</span>
-                            <span class="points-badge">100 XP</span>
-                        </div>
-                    </div>
-                    <p class="quest-description">Introduce yourself to someone new at a professional event.</p>
-                    <div class="quest-tags">
-                        <span class="tag">First Impressions</span>
-                        <span class="tag">Professional</span>
-                    </div>
-                    <div class="quest-time">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        15 min
-                    </div>
-                    <div class="quest-actions">
-                        <button class="view-details-btn">View details</button>
-                        <button class="start-quest-btn">Start Quest</button>
-                    </div>
-                </div>
-
-                <!-- Elevator Pitch - Hard -->
-                <div class="quest-card" data-difficulty="hard" data-completed="true">
-                    <div class="quest-header">
-                        <h3>Elevator Pitch</h3>
-                        <div class="quest-badges">
-                            <span class="difficulty-badge advanced">Advanced</span>
-                            <span class="points-badge completed">100 XP</span>
-                        </div>
-                    </div>
-                    <p class="quest-description">Share what you do with a stranger in under 60 seconds.</p>
-                    <div class="quest-tags">
-                        <span class="tag">Clarity</span>
-                        <span class="tag">Confidence</span>
-                    </div>
-                    <div class="quest-time">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        5 min
-                    </div>
-                    <div class="quest-actions">
-                        <button class="view-details-btn">View details</button>
-                        <button class="completed-btn">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <div class="cq-stat-card cq-glass">
+                        <div class="cq-stat-icon level-icon">
+                            <svg viewBox="0 0 36 36" class="level-ring">
+                                <circle cx="18" cy="18" r="16" fill="none" stroke="#E5E8F0" stroke-width="3"/>
+                                <circle cx="18" cy="18" r="16" fill="none" stroke="#4169E1" stroke-width="3"
+                                    stroke-dasharray="100" stroke-dashoffset="75" id="levelProgress"
+                                    transform="rotate(-90 18 18)"/>
                             </svg>
-                            Completed
-                        </button>
+                            <span class="level-number" id="currentLevel">1</span>
+                        </div>
+                        <div class="cq-stat-content">
+                            <span class="cq-stat-value">Level <span id="levelDisplay">1</span></span>
+                            <span class="cq-stat-label"><span id="xpToNext">100</span> XP to next</span>
+                        </div>
+                    </div>
+
+                    <div class="cq-stat-card cq-glass">
+                        <div class="cq-stat-icon streak-icon" id="streakIcon">🔥</div>
+                        <div class="cq-stat-content">
+                            <span class="cq-stat-value"><span id="currentStreak">0</span> Days</span>
+                            <span class="cq-stat-label">Current Streak</span>
+                        </div>
+                    </div>
+
+                    <div class="cq-stat-card cq-glass">
+                        <div class="cq-stat-icon quests-icon">✅</div>
+                        <div class="cq-stat-content">
+                            <span class="cq-stat-value"><span id="completedCount">0</span>/<span id="totalQuests">12</span></span>
+                            <span class="cq-stat-label">Quests Completed</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Compliment & Connect - Medium -->
-                <div class="quest-card" data-difficulty="medium">
-                    <div class="quest-header">
-                        <h3>Compliment & Connect</h3>
-                        <div class="quest-badges">
-                            <span class="difficulty-badge medium">Medium</span>
-                            <span class="points-badge">50 XP</span>
+                <!-- Active Quest Tracker -->
+                <div class="cq-active-quest cq-glass" id="activeQuestTracker">
+                    <div class="cq-active-quest-header">
+                        <span class="cq-active-badge">
+                            <span class="pulse-dot"></span>
+                            Active Quest
+                        </span>
+                    </div>
+                    <div class="cq-active-quest-empty" id="noActiveQuest">
+                        <div class="empty-icon">🎮</div>
+                        <p>No active quest</p>
+                        <span>Start a quest below to begin your journey!</span>
+                    </div>
+                    <div class="cq-active-quest-content" id="activeQuestContent" style="display: none;">
+                        <h3 id="activeQuestTitle">Quest Title</h3>
+                        <p id="activeQuestDesc">Quest description here...</p>
+                        <div class="cq-active-quest-meta">
+                            <span class="cq-active-xp" id="activeQuestXP">+50 XP</span>
+                            <span class="cq-active-time" id="activeQuestTime">
+                                <svg viewBox="0 0 24 24" fill="none" width="14" height="14">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                                5 min
+                            </span>
                         </div>
-                    </div>
-                    <p class="quest-description">Give a genuine compliment to a stranger and start a conversation.</p>
-                    <div class="quest-tags">
-                        <span class="tag">Positivity</span>
-                        <span class="tag">Connection</span>
-                    </div>
-                    <div class="quest-time">
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        5 min
-                    </div>
-                    <div class="quest-actions">
-                        <button class="view-details-btn">View details</button>
-                        <button class="start-quest-btn">Start Quest</button>
+                        <div class="cq-active-quest-actions">
+                            <button class="cq-btn-complete" id="completeQuestBtn">
+                                <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                                    <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                Complete Quest
+                            </button>
+                            <button class="cq-btn-abandon" id="abandonQuestBtn">Abandon</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Quest Detail Modal -->
-    <div class="quest-modal" id="questModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="modalTitle">Coffee Shop Chat</h3>
-                <button class="modal-close" id="modalClose">&times;</button>
+    <!-- Category Filters -->
+    <section class="cq-filters">
+        <div class="container">
+            <div class="cq-filter-row">
+                <div class="cq-category-pills">
+                    <button class="cq-pill active" data-category="all">
+                        <span class="pill-icon">🌟</span>
+                        All Quests
+                    </button>
+                    <button class="cq-pill" data-category="starter">
+                        <span class="pill-icon">🌱</span>
+                        Starter
+                    </button>
+                    <button class="cq-pill" data-category="social">
+                        <span class="pill-icon">💬</span>
+                        Social
+                    </button>
+                    <button class="cq-pill" data-category="professional">
+                        <span class="pill-icon">💼</span>
+                        Professional
+                    </button>
+                    <button class="cq-pill" data-category="advanced">
+                        <span class="pill-icon">🚀</span>
+                        Advanced
+                    </button>
+                </div>
+                <div class="cq-view-toggle">
+                    <button class="cq-view-btn active" data-view="grid">
+                        <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                            <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                            <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </button>
+                    <button class="cq-view-btn" data-view="list">
+                        <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                            <line x1="3" y1="6" x2="21" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="3" y1="18" x2="21" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="modal-body">
-                <div class="quest-details">
-                    <div class="quest-objective">
-                        <h4>Objective</h4>
-                        <p id="modalObjective">Ask a barista a non-coffee related question and have a brief conversation.</p>
-                    </div>
-                    
-                    <div class="quest-tips">
-                        <h4>Tips for Success</h4>
-                        <ul id="modalTips">
-                            <li>Choose a time when the coffee shop isn't too busy</li>
-                            <li>Start with a genuine smile and friendly tone</li>
-                            <li>Ask open-ended questions like "How's your day going?"</li>
-                            <li>Practice active listening and follow up on their responses</li>
-                        </ul>
-                    </div>
+        </div>
+    </section>
 
-                    <div class="location-finder">
-                        <h4>Find Nearby Locations</h4>
-                        <button class="find-locations-btn" id="findLocationsBtn">
-                            <svg viewBox="0 0 24 24" fill="none">
+    <!-- Quests Grid -->
+    <section class="cq-quests-section">
+        <div class="container">
+            <div class="cq-quests-grid" id="questsGrid">
+                <!-- Quest cards will be dynamically generated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="cq-achievements">
+        <div class="container">
+            <div class="cq-achievements-header">
+                <h2>
+                    <span class="achievements-icon">🏆</span>
+                    Achievements
+                </h2>
+                <span class="achievements-count"><span id="unlockedBadges">0</span>/8 Unlocked</span>
+            </div>
+            <div class="cq-achievements-grid" id="achievementsGrid">
+                <!-- Achievement badges will be dynamically generated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Quest Detail Modal -->
+    <div class="cq-modal" id="questModal">
+        <div class="cq-modal-overlay"></div>
+        <div class="cq-modal-content cq-glass">
+            <button class="cq-modal-close" id="modalClose">
+                <svg viewBox="0 0 24 24" fill="none" width="24" height="24">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+
+            <div class="cq-modal-header">
+                <div class="cq-modal-badges">
+                    <span class="cq-difficulty-badge" id="modalDifficulty">Easy</span>
+                    <span class="cq-xp-badge" id="modalXP">+50 XP</span>
+                </div>
+                <h2 id="modalTitle">Quest Title</h2>
+                <p id="modalDescription">Quest description here...</p>
+            </div>
+
+            <div class="cq-modal-tabs">
+                <button class="cq-tab active" data-tab="overview">Overview</button>
+                <button class="cq-tab" data-tab="tips">Tips</button>
+                <button class="cq-tab" data-tab="location">Location</button>
+            </div>
+
+            <div class="cq-modal-body">
+                <!-- Overview Tab -->
+                <div class="cq-tab-content active" id="tab-overview">
+                    <div class="cq-objective">
+                        <h4>🎯 Objective</h4>
+                        <p id="modalObjective">Complete this conversation challenge...</p>
+                    </div>
+                    <div class="cq-skills">
+                        <h4>💪 Skills You'll Practice</h4>
+                        <div class="cq-skills-tags" id="modalSkills">
+                            <!-- Skills tags here -->
+                        </div>
+                    </div>
+                    <div class="cq-time-estimate">
+                        <h4>⏱️ Estimated Time</h4>
+                        <p id="modalTime">5-10 minutes</p>
+                    </div>
+                </div>
+
+                <!-- Tips Tab -->
+                <div class="cq-tab-content" id="tab-tips">
+                    <div class="cq-tips-list" id="modalTipsList">
+                        <!-- Tips will be dynamically generated -->
+                    </div>
+                </div>
+
+                <!-- Location Tab -->
+                <div class="cq-tab-content" id="tab-location">
+                    <div class="cq-location-finder">
+                        <button class="cq-find-location-btn" id="findLocationBtn">
+                            <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
                                 <path d="M21 10C21 17 12 23 12 23S3 17 3 10C3 5.03 7.03 1 12 1S21 5.03 21 10Z" stroke="currentColor" stroke-width="2"/>
                                 <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
                             </svg>
-                            Find Coffee Shops Near Me
+                            Find Nearby Locations
                         </button>
-                        <div class="locations-list" id="locationsList"></div>
+                        <div class="cq-locations-list" id="locationsList">
+                            <p class="cq-locations-hint">Click to find places near you for this quest</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="modalCancel">Cancel</button>
-                <button class="btn-primary" id="modalStart">Start Quest</button>
+
+            <div class="cq-modal-footer">
+                <button class="cq-btn-secondary" id="modalCancelBtn">Maybe Later</button>
+                <button class="cq-btn-primary" id="modalStartBtn">
+                    <span>Start Quest</span>
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Quest Completion Modal -->
+    <div class="cq-modal" id="completionModal">
+        <div class="cq-modal-overlay"></div>
+        <div class="cq-modal-content cq-glass cq-completion-modal">
+            <div class="cq-completion-header">
+                <div class="cq-confetti" id="confettiContainer"></div>
+                <div class="cq-trophy">🏆</div>
+                <h2>Quest Complete!</h2>
+                <p id="completedQuestTitle">Coffee Shop Chat</p>
+            </div>
+
+            <div class="cq-completion-xp">
+                <span class="xp-earned" id="xpEarned">+50</span>
+                <span class="xp-label">XP Earned</span>
+            </div>
+
+            <div class="cq-reflection">
+                <h4>📝 Reflection Journal</h4>
+                <p>How did the conversation go? What did you learn?</p>
+                <textarea id="reflectionText" placeholder="Write your thoughts here... (optional)"></textarea>
+            </div>
+
+            <div class="cq-rating">
+                <h4>How did it go?</h4>
+                <div class="cq-rating-stars" id="ratingStars">
+                    <button class="cq-star" data-rating="1">⭐</button>
+                    <button class="cq-star" data-rating="2">⭐</button>
+                    <button class="cq-star" data-rating="3">⭐</button>
+                    <button class="cq-star" data-rating="4">⭐</button>
+                    <button class="cq-star" data-rating="5">⭐</button>
+                </div>
+            </div>
+
+            <div class="cq-completion-actions">
+                <button class="cq-btn-primary cq-btn-celebrate" id="saveCompletionBtn">
+                    <span>Save & Continue</span>
+                    <svg viewBox="0 0 24 24" fill="none" width="18" height="18">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Up Modal -->
+    <div class="cq-modal" id="levelUpModal">
+        <div class="cq-modal-overlay"></div>
+        <div class="cq-modal-content cq-glass cq-levelup-modal">
+            <div class="cq-levelup-header">
+                <div class="cq-confetti"></div>
+                <div class="cq-levelup-icon">⬆️</div>
+                <h2>Level Up!</h2>
+                <p class="cq-new-level">Level <span id="newLevel">2</span></p>
+            </div>
+            <div class="cq-levelup-unlocks" id="levelUnlocks">
+                <!-- Unlocked content shown here -->
+            </div>
+            <button class="cq-btn-primary" id="closeLevelUpBtn">Continue</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="cq-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-brand-text">improvU</span>
+                    <p class="footer-tagline">Building confidence through real conversations</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html" class="footer-link">Home</a>
+                    <a href="jazz-ai.html" class="footer-link">Jazz</a>
+                    <a href="improvcircle.html" class="footer-link">ImprovCircle</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2024 improvU. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
-    <script>
-        // Difficulty filter functionality
-        const difficultyBtns = document.querySelectorAll('.difficulty-btn');
-        const questCards = document.querySelectorAll('.quest-card');
-
-        difficultyBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                // Update active button
-                difficultyBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-
-                const selectedDifficulty = this.dataset.difficulty;
-
-                // Filter quest cards
-                questCards.forEach(card => {
-                    if (selectedDifficulty === 'all' || card.dataset.difficulty === selectedDifficulty) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // Modal functionality
-        const modal = document.getElementById('questModal');
-        const modalClose = document.getElementById('modalClose');
-        const modalCancel = document.getElementById('modalCancel');
-        const viewDetailsBtns = document.querySelectorAll('.view-details-btn');
-
-        viewDetailsBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const questCard = this.closest('.quest-card');
-                const title = questCard.querySelector('h3').textContent;
-                const description = questCard.querySelector('.quest-description').textContent;
-                
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalObjective').textContent = description;
-                
-                // Update tips based on quest type
-                updateModalTips(title);
-                
-                modal.style.display = 'flex';
-            });
-        });
-
-        modalClose.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        modalCancel.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-
-        // Close modal when clicking outside
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        function updateModalTips(questTitle) {
-            const tipsList = document.getElementById('modalTips');
-            let tips = [];
-
-            switch(questTitle) {
-                case 'Coffee Shop Chat':
-                    tips = [
-                        'Choose a time when the coffee shop isn\'t too busy',
-                        'Start with a genuine smile and friendly tone',
-                        'Ask open-ended questions like "How\'s your day going?"',
-                        'Practice active listening and follow up on their responses'
-                    ];
-                    break;
-                case 'Book Recommendation':
-                    tips = [
-                        'Approach someone who looks relaxed and approachable',
-                        'Explain why you\'re asking (e.g., "I\'m looking for something new to read")',
-                        'Ask follow-up questions about why they enjoyed the book',
-                        'Share your own reading preferences to keep the conversation flowing'
-                    ];
-                    break;
-                case 'Networking Introduction':
-                    tips = [
-                        'Have a clear, concise introduction ready',
-                        'Show genuine interest in the other person',
-                        'Ask about their work or interests',
-                        'Exchange contact information if the conversation goes well'
-                    ];
-                    break;
-                default:
-                    tips = [
-                        'Be genuine and authentic',
-                        'Listen actively to their responses',
-                        'Stay positive and friendly',
-                        'Don\'t worry about being perfect'
-                    ];
-            }
-
-            tipsList.innerHTML = tips.map(tip => `<li>${tip}</li>`).join('');
-        }
-
-        // Location finder functionality
-        const findLocationsBtn = document.getElementById('findLocationsBtn');
-        const locationsList = document.getElementById('locationsList');
-
-        findLocationsBtn.addEventListener('click', function() {
-            this.textContent = 'Finding locations...';
-            this.disabled = true;
-
-            // Simulate geolocation and search (in real app, use Google Places API)
-            setTimeout(() => {
-                const locations = [
-                    { name: 'Starbucks Coffee', address: '123 Main St', distance: '0.2 miles' },
-                    { name: 'Local Brew Café', address: '456 Oak Ave', distance: '0.4 miles' },
-                    { name: 'The Coffee Bean', address: '789 Pine St', distance: '0.6 miles' }
-                ];
-
-                locationsList.innerHTML = locations.map(location => `
-                    <div class="location-item">
-                        <div class="location-info">
-                            <h5>${location.name}</h5>
-                            <p>${location.address}</p>
-                        </div>
-                        <div class="location-distance">${location.distance}</div>
-                    </div>
-                `).join('');
-
-                this.textContent = 'Find Coffee Shops Near Me';
-                this.disabled = false;
-            }, 2000);
-        });
-
-        // Start quest functionality
-        const startQuestBtns = document.querySelectorAll('.start-quest-btn');
-        startQuestBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const questCard = this.closest('.quest-card');
-                const questTitle = questCard.querySelector('h3').textContent;
-                
-                // In a real app, this would start the quest tracking
-                alert(`Starting quest: ${questTitle}\n\nGood luck! Remember to journal your experience when you're done.`);
-            });
-        });
-    </script>
+    <script src="convoquest.js"></script>
 </body>
 </html>
