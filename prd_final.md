@@ -38,7 +38,7 @@ Live peer practice sessions via WebRTC. Not built in this phase.
 3. **Feedback Phase:** AI evaluates session transcript and generates improvement tips
 
 **Model & Implementation:**
-- **Model:** Google Gemini 2.5 Flash via Gemini API
+- **Model:** Google Gemini 1.5 Flash via Gemini API
 - **Integration:** Direct API calls from frontend using serverless architecture
 - **API Key:** Stored in Vercel environment variables (not exposed to client)
 - **Rate Limiting:** None currently
