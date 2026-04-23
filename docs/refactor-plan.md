@@ -84,8 +84,8 @@
 ## Proposed New Section Order
 
 1. **Sticky top nav** — logo left; Features, How It Works, JAZZ, ConvoQuest, Community links center; "Download App" primary pill button right; frosted glass backdrop on scroll
-2. **Hero** — eyebrow badge, bold H1 (~80px), one-line subhead, primary + secondary (ghost) CTA pair, soft gradient background (low-opacity blue-to-warm-white), product screenshot framed in browser chrome SVG
-3. **Trust strip** — single quiet row: "As used by" + 5–6 short social proof fragments (muted, small, not a loud carousel)
+2. **Hero** — eyebrow badge, bold H1 (~80px), one-line subhead, primary + secondary (ghost) CTA pair, soft gradient background (cool blue-to-white, no warm tint), product screenshot framed in browser chrome SVG
+3. **Trust strip** — no logos (no rights yet). Single muted pull quote or a quiet "What people are saying" row of 3–5 short text fragments. Understated, static — not a carousel.
 4. **Your Confidence Journey** — eyebrow + H2, three numbered stepper cards (1 JAZZ → 2 ConvoQuest → 3 ImprovCircle) as a visual flow
 5. **JAZZ feature row** — text left, SVG right; eyebrow + H2 + subtitle + paragraph + 3 bullet benefits + inline arrow CTA
 6. **ConvoQuest feature row** — reversed; same Veo-3 pattern
@@ -106,7 +106,8 @@
 
 ### Color
 - Keep navy `#1E2875` + blue `#4169E1` as primary brand
-- Hero gradient: `linear-gradient(160deg, #f0f3ff 0%, #f8f9fb 60%, #fff7e6 100%)` — soft blue-to-warm-white with whisper of yellow
+- Hero gradient: `linear-gradient(180deg, #f4f6ff 0%, #fafbfd 70%, #ffffff 100%)` — cool blue-to-white only; no warm tint in any background
+- Yellow (`#FFD700` / `#FFE600`) strictly as accent: eyebrow labels, small highlights, icon details only
 - No hard red/blue containers
 - Final CTA: soft gradient instead of solid navy wall
 
